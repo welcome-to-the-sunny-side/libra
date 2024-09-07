@@ -3,11 +3,14 @@ struct Condenser
     /*
     tc: O(n + m)
     ml: O(n + m)
+
     info:
         SCC u occurs before SCC v (u < v) in some topological ordering of SCCs 
+
     warning: 
         1-indexed i/o    
         there may be multiple edges between different SCCs
+
     var:
         [n -> number of nodes]
         [c -> number of SCCs]

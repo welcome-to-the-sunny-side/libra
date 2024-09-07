@@ -20,7 +20,6 @@ struct GaussianElimination
                 ++ sz;
                 break;
             }
-
             mask ^= basis[i];
         }
     }
