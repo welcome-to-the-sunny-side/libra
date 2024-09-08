@@ -1,8 +1,6 @@
 template <typename T>
 vector<int> Manachers(const T &s)
 {
-    int n = (int)s.size();
-
     /*
         tc: O(|s|)
         mc: O(|s|)
@@ -21,10 +19,10 @@ vector<int> Manachers(const T &s)
             now there is a palindrome from i - res[z] to j + res[z]
             (watch out for i > j and res[z] = 0)
     */
-
+    int n = (int)s.size();
     if (n == 0)
         return vector<int>();
-
+        
     vector<int> res(2 * n - 1, 0);
     int l = -1, r = -1;
     for (int z = 0; z < 2 * n - 1; z ++)

@@ -1,6 +1,7 @@
 template <typename T>
-vector<int> z_function(int n, const T &s)
+vector<int> z_function(const T &s)
 {
+    int n = s.size();
     vector<int> z(n, n);
     int l = 0, r = 0;
     for (int i = 1; i < n; i++)
