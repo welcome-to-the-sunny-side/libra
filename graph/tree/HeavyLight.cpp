@@ -1,4 +1,4 @@
-template <typename I, typename T>
+template <typename I, typename T, template<typename, typename> typename S>
 struct HeavyLight
 {
     /*
@@ -7,32 +7,31 @@ struct HeavyLight
 
         info:
             1 indexed
-        
         vars:
             I: Info struct of segment tree
             T: Lazy Tag struct of segment tree
+            S: segment tree class (S must support S<I, T>)
+        warning:
+            handle segtree initialization correctly
     */
     int n, r;
     vector<int> par, heavy, depth, root, pos;
-    LazySegmentTree<I, T> tree;
+    S<I, T> tree;
 
-    HeavyLight(int n, int r, const vector<vector<int>> &graph) 
+    template<typename... Args>
+    HeavyLight(int n, int r, const vector<vector<int>> &graph, Args&&... args) :
+    n(n), r(r), par(n + 1), heavy(n + 1), depth(n + 1), root(n + 1), pos(n + 1),
+    tree(forward<Args>(args)...)
     {
-        this->n = n;
-        this->r = r;
-        tree = LazySegmentTree<I, T> (n + 5);
-
-        par = heavy = depth = root = pos = vector<int> (n + 1, 0);
-
         par[r] = -1;
         depth[r] = 0;
         dfs(graph, r);
 
-        heavy.assign(n + 1, -1);
+        fill(heavy.begin(), heavy.end(), -1);
         for (int i = 1, currentPos = 1; i <= n; ++ i)
             if (par[i] == -1 or heavy[par[i]] != i)
                 for (int j = i; j != -1; j = heavy[j])
-                    root[j] = i, pos[j] = currentPos ++;
+                    root[j] = i, pos[j] = currentPos ++;        
     };
 
     int dfs(const vector<vector<int>> &graph, int u)
@@ -52,7 +51,7 @@ struct HeavyLight
     }
 
     template <class BinaryOperation>
-    void process(int u, int v, BinaryOperation op)
+    void Process(int u, int v, BinaryOperation op)
     {
         for (; root[u] != root[v]; v = par[root[v]])
         {
@@ -64,21 +63,18 @@ struct HeavyLight
             swap(u, v);
         op(pos[u], pos[v]);
     }
-
-    void set(int v, const I &info)
+    void Set(int v, const I &info)
     {
         tree.Set(pos[v], info);
     }
-
-    void modify(int u, int v, const T &tag)
+    void Modify(int u, int v, const T &tag)
     {
-        process(u, v, [this, &tag](int l, int r)  {tree.Modify(l, r, tag); });
+        Process(u, v, [this, &tag](int l, int r)  {tree.Modify(l, r, tag); });
     }
-
-    I query(int u, int v)
+    I Query(int u, int v)
     {
         I res = I();
-        process(u, v, [this, &res](int l, int r)    {res.Join(tree.Query(l, r));});
+        Process(u, v, [this, &res](int l, int r)    {res.Join(tree.Query(l, r));});
         return res;
     }
 };
