@@ -9,7 +9,6 @@ array<vector<int>, 3> suffix_array(const T &s, int max_num)
             must pass s such that s[i] works as array index
             returns {suffix array, inverse suffix array, lcp array}
     */
-
     int n = (int)size(s);
     vector<int> sa(n), sa_inv(begin(s), end(s)), lcp(max(0, n - 1));
     iota(begin(sa), end(sa), 0);

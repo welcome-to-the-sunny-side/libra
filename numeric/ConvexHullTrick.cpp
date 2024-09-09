@@ -8,7 +8,6 @@ struct ConvexHullDynamic
             1. inserts lines of form Ax + B
             2. returns inserted line with maximum value of Ax + B for queried x 
     */
-
 	static const int64_t INF=1e18;
 	struct Line
 	{
