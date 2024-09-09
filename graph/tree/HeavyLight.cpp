@@ -1,3 +1,4 @@
+
 template <typename I, typename T, template<typename, typename> typename S>
 struct HeavyLight
 {
@@ -13,6 +14,7 @@ struct HeavyLight
             S: segment tree class (S must support S<I, T>)
         warning:
             handle segtree initialization correctly
+            monoid operations must be commutative here
     */
     int n, r;
     vector<int> par, heavy, depth, root, pos;
@@ -20,14 +22,13 @@ struct HeavyLight
 
     template<typename... Args>
     HeavyLight(int n, int r, const vector<vector<int>> &graph, Args&&... args) :
-    n(n), r(r), par(n + 1), heavy(n + 1), depth(n + 1), root(n + 1), pos(n + 1),
+    n(n), r(r), par(n + 1), heavy(n + 1, -1), depth(n + 1), root(n + 1), pos(n + 1),
     tree(forward<Args>(args)...)
     {
         par[r] = -1;
         depth[r] = 0;
         dfs(graph, r);
 
-        fill(heavy.begin(), heavy.end(), -1);
         for (int i = 1, currentPos = 1; i <= n; ++ i)
             if (par[i] == -1 or heavy[par[i]] != i)
                 for (int j = i; j != -1; j = heavy[j])
