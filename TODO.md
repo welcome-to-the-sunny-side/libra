@@ -4,3 +4,4 @@
 - add vt
 - add wavelet tree
 - add li chao tree
+- merge modint and variable modint, style it properly
