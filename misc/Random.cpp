@@ -1,3 +1,4 @@
+// https://judge.yosupo.jp/submission/52112
 struct Random : std::mt19937
 {
     using std::mt19937::mt19937;
