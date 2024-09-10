@@ -13,34 +13,32 @@ struct Dsu
         to make rollbackable, we do not make modifications in get() [which makes the get() function O(log(N))] 
         and store change info in unite()
     */
-
+    int n;
     vector<int> par, siz;
-    void init(int n)
+    Dsu(int m) : n(m), par(n + 1, 0), siz(n + 1, 1)
     {
-        par.assign(n + 1, 0);
-        siz.assign(n + 1, 1);
         iota(par.begin(), par.end(), 0);
-    }
+    };
     
-    int get(int x)
+    int Get(int x)
     {
-        return (par[x] == x ? x : par[x] = get(par[x]));
+        return (par[x] == x ? x : par[x] = Get(par[x]));
     }
 
-    void unite(int x, int y)
+    void Unite(int x, int y)
     {
-        x = get(x), y = get(y);
+        x = Get(x), y = Get(y);
         if(x == y)
             return;
         if(siz[x] > siz[y]) swap(x, y);
         par[x] = y, siz[y] += siz[x];
     }
 
-    vector<vector<int>> groups()
+    vector<vector<int>> Groups()
     {
         vector<vector<int>> g(n + 1);
         for(int u = 1; u <= n; u ++)
-            g[get(u)].push_back(u);
+            g[Get(u)].push_back(u);
         return g;
     }
 };
