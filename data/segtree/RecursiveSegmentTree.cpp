@@ -44,13 +44,9 @@ struct SegmentTree
     SegmentTree() : SegmentTree(false) {};
     SegmentTree(bool lazy) : SegmentTree(lazy, 0) {};
     SegmentTree(bool lazy, int n) : SegmentTree(lazy, vector<Info> (n)) {};
-    SegmentTree(bool lazy, const vector<Info> &a) : n((int)a.size())
+    SegmentTree(bool lazy, const vector<Info> &a) : 
+    n((int)a.size()), lazy(lazy), infos(4 * n + 5), tags(lazy ? 4 * n + 5 : 0)
     {
-        this->lazy = lazy;
-        infos.resize(4 * n + 5);
-        if(lazy)
-            tags.resize(4 * n + 5);
-        
         auto build = [&](int v, int l, int r, auto &&build) -> void
         {
             if(l > r)
