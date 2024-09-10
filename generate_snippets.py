@@ -16,7 +16,12 @@ def create_snippet(file_path):
 
     # Convert content to a snippet-compatible format
     snippet_content = [line.rstrip('\n') for line in content]
+    
+    # Escape special characters like \ and $
     snippet_content = [line.replace('\\', '\\\\').replace('$', '\\$') for line in snippet_content]
+    
+    # Replace {{CURSOR}} with $0 for cursor position
+    snippet_content = [line.replace('{{CURSOR}}', '$0') for line in snippet_content]
 
     return {
         tab_trigger: {

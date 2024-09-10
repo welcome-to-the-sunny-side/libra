@@ -24,6 +24,6 @@ int32_t main()
     cin >> t;
     while(t --)
     {
-        $0
+        {{CURSOR}}
     }
 }
