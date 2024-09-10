@@ -1,6 +1,7 @@
 template <typename T>
-struct FenwickTree
+class FenwickTree
 {
+public:
     vector<T> fenw;
     int n;
     int pw;

@@ -1,5 +1,4 @@
-
-struct Dsu
+class DSU
 {
     /*
         tc: 
@@ -14,9 +13,10 @@ struct Dsu
             to make rollbackable, we do not make modifications in get() [which makes the get() function O(log(N))] 
             and store change info in unite()
     */
+public:
     int n;
     vector<int> par, siz;
-    Dsu(int m) : n(m), par(n + 1, 0), siz(n + 1, 1)
+    DSU(int m) : n(m), par(n + 1, 0), siz(n + 1, 1)
     {
         iota(par.begin(), par.end(), 0);
     };

@@ -1,5 +1,6 @@
-struct Info
+class Info
 {
+public:
     static constexpr int neutral = inf;
     
     int val;
@@ -11,8 +12,9 @@ struct Info
     };
 };
 template <typename I>
-struct SparseTable
+class SparseTable
 {
+public:
     int n;
     vector<vector<I>> mat;
     SparseTable(const vector<I> &a)
