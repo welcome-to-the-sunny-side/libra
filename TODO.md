@@ -1,4 +1,6 @@
 - add directed path support for hld
 - add centroid decomposition 
 - add splay tree
--
+- add vt
+- add wavelet tree
+- add li chao tree

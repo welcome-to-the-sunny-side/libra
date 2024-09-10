@@ -1,4 +1,3 @@
-
 template <typename I, typename T, template<typename, typename> typename S>
 struct HeavyLight
 {

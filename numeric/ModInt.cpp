@@ -179,5 +179,4 @@ template <const int &MOD>
 _m_int<MOD> _m_int<MOD>::save_inv[_m_int<MOD>::SAVE_INV];
 const int MOD = 998244353;
 using mint = _m_int<MOD>;
-
 void __print(mint x) { cerr << x; }
