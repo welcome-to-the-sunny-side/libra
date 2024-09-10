@@ -13,16 +13,28 @@ struct SegmentTree
         {
             if(lazy)
                 Propagate(v, l, r);
-            if(l > r or r < lb or rb < l)
+
+            if(l > r)
                 return;
+            
             if(lb <= l and r <= rb)
             {
                 op(v, l, r);
                 return;
             }
+            
             int m = (l + r)/2;
-            rec(2 * v, l, m, rec);
-            rec(2 * v + 1, m + 1, r, rec);
+            
+            if(m >= lb)
+                rec(2 * v, l, m, rec);
+            else if(lazy and update)
+                Propagate(2 * v, l, m);
+
+            if(m + 1 <= rb)
+                rec(2 * v + 1, m + 1, r, rec);
+            else if(lazy and update)
+                Propagate(2 * v + 1, m + 1, r);
+            
             if(update)
                 infos[v] = infos[2 * v].Unite(infos[2 * v + 1]);
         };

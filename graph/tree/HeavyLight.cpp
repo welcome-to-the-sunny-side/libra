@@ -50,6 +50,14 @@ struct HeavyLight
         dfs_sz(r, dfs_sz), dfs_hld(r, dfs_hld);
     };
 
+    int LCA(int u, int v)
+    {
+        for (; root[u] != root[v]; v = par[root[v]])
+            if (dep[root[u]] > dep[root[v]])
+                swap(u, v);
+        return (dep[u] < dep[v] ? u : v);
+    }
+
     template <typename O>
     void ProcessPath(int u, int v, O op)
     {
@@ -90,13 +98,5 @@ struct HeavyLight
     I QuerySubtree(int u)
     {
         return tree.Query(pos[u], out[u] - 1);
-    }
-
-    int LCA(int u, int v)
-    {
-        for (; root[u] != root[v]; v = par[root[v]])
-            if (dep[root[u]] > dep[root[v]])
-                swap(u, v);
-        return (dep[u] < dep[v] ? u : v);
     }
 };
