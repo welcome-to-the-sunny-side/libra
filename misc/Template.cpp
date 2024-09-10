@@ -13,8 +13,6 @@ using namespace std;
 #define debug(...)
 #endif
 
-const int64_t inf = 1e9+9, INF = 1e18;
-
 //#define int int64_t
 
 const int N = 3e5+5;

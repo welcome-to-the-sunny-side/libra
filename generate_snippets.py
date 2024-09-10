@@ -4,7 +4,12 @@ import json
 def create_snippet(file_path):
     """Create a VS Code snippet for a given cpp file"""
     filename = os.path.basename(file_path).replace('.cpp', '')
-    tab_trigger = f"Template{filename}"
+    
+    # Special case for "Template.cpp"
+    if filename == "Template":
+        tab_trigger = "algo"
+    else:
+        tab_trigger = f"Template{filename}"
     
     with open(file_path, 'r') as f:
         content = f.readlines()
