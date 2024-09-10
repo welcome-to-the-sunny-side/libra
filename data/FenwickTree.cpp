@@ -1,3 +1,17 @@
+class FenwickTreeNode
+{
+public:
+    int v = 0;
+
+    inline void operator+=(FenwickTreeNode &other)
+    {
+        v += other.v;
+    }
+    inline bool operator<(FenwickTreeNode &other)
+    {
+        return v < other.v;
+    }
+};
 template <typename T>
 class FenwickTree
 {
