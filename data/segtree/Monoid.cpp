@@ -1,5 +1,6 @@
-struct Info
+class Info
 {
+public:
     int sum = 0;
 
     Info() : sum(0) {};
@@ -19,8 +20,9 @@ struct Info
         return Info();
     }
 };
-struct Tag
+class Tag
 {
+public:
     int add = 0;
 
     Tag() : add(0) {};

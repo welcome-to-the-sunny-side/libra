@@ -1,6 +1,7 @@
 template <typename Info>
-struct SimpleSegmentTree
+class SimpleSegmentTree
 {
+public:
     int n;
     vector<Info> infos;
     seg_tree::in_order_layout layout;

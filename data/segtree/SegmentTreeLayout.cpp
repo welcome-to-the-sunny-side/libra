@@ -6,8 +6,9 @@ namespace seg_tree
         return a ? bit_width(unsigned(a)) - 1 : -1;
     }
 
-    struct point
+    class point
     {
+    public:
         int a;
         point() : a(0) {}
         explicit point(int a_) : a(a_) { assert(a >= -1); }
@@ -76,8 +77,9 @@ namespace seg_tree
         point operator--(int) { return point(a--); }
     };
 
-    struct range
+    class range
     {
+    public:
         int a, b;
         range() : a(1), b(1) {}
         range(int a_, int b_) : a(a_), b(b_)
@@ -209,8 +211,9 @@ namespace seg_tree
         }
     };
 
-    struct in_order_layout
+    class in_order_layout
     {
+    public:
         // Alias them in for convenience
         using point = seg_tree::point;
         using range = seg_tree::range;
@@ -274,8 +277,9 @@ namespace seg_tree
         }
     };
 
-    struct circular_layout
+    class circular_layout
     {
+    public:
         // Alias them in for convenience
         using point = seg_tree::point;
         using range = seg_tree::range;

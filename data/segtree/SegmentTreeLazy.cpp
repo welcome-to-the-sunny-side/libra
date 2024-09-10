@@ -1,6 +1,7 @@
 template <typename Info, typename Tag>
-struct LazySegmentTree
+class LazySegmentTree
 {
+public:
     int n;
     vector<Info> infos;
     vector<Tag> tags;

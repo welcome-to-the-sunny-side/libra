@@ -1,5 +1,6 @@
-struct ConvexHullDynamic
+class ConvexHullDynamic
 {
+public:
     /*
         tc: O(log(n)) per insertion amortized, O(log(n)) per query
         ml: O(n)
