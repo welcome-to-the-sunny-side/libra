@@ -1,9 +1,8 @@
-#update file paths
-
 import os
 import json
 
 def create_snippet(file_path):
+    """Create a VS Code snippet for a given cpp file"""
     filename = os.path.basename(file_path).replace('.cpp', '')
     tab_trigger = f"Template{filename}"
     
@@ -12,7 +11,9 @@ def create_snippet(file_path):
 
     # Convert content to a snippet-compatible format
     snippet_content = [line.rstrip('\n') for line in content]
-    snippet_content = [line.replace('"', '\\"') for line in snippet_content]  # Escape double quotes
+
+    # VS Code snippet rules: escape only necessary double quotes
+    snippet_content = [line.replace('\\', '\\\\').replace('$', '\\$') for line in snippet_content]
 
     return {
         tab_trigger: {
@@ -23,8 +24,8 @@ def create_snippet(file_path):
     }
 
 def main():
-    directory = "<path to library>"
-    snippets_file_path = "<path to vscode snippets folder>/cpp_snippets.code-snippets"
+    directory = "/home/derwillezurmacht/Study/Programming/Programs/algo/"
+    snippets_file_path = "/home/derwillezurmacht/.config/Code/User/snippets/cpp_snippets.code-snippets"
     
     snippets = {}
 
