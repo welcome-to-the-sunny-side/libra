@@ -134,6 +134,27 @@ struct SegmentTree
         rec(1, 0, n - 1, rec);
     }
 
+    void Add(int p, const Tag &tag)
+    {
+        auto rec = [&](int v, int l, int r, auto &&rec) -> void
+        {
+            Propagate(v, l, r);
+            if(l == r)
+            {
+                tag.ApplyTo(tags[v]);
+                Propagate(v, l, r);
+                return;
+            }
+            int m = (l + r)/2;
+            if(p <= m)
+                rec(2 * v, l, m, rec), Propagate(2 * v + 1, m + 1, r);
+            else
+                rec(2 * v + 1, m + 1, r, rec), Propagate(2 * v, l, m);  
+            infos[v] = infos[2 * v].Unite(infos[2 * v + 1]);
+        };
+        rec(1, 0, n - 1, rec);
+    }
+
     Info Query(int lb, int rb)
     {
         Info res = Info();
