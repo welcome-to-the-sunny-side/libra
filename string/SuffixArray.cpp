@@ -1,5 +1,5 @@
 template <class T>
-array<vector<int>, 3> suffix_array(const T &s, int max_num)
+array<vector<int>, 3> SuffixArray(const T &s, int max_num)
 {
     /*
         tc: O(|s| + max_num)
@@ -53,7 +53,7 @@ array<vector<int>, 3> suffix_array(const T &s, int max_num)
     return {sa, sa_inv, lcp};
 }
 
-vector<int> convert(string s, char base)
+vector<int> Convert(string s, char base)
 {
     vector<int> a(s.length());
     for(int i = 0; i < s.length(); i ++)

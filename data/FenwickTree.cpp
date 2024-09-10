@@ -12,6 +12,7 @@ struct FenwickTree
         pw = (n == 0 ? 0 : 1ULL << (63 - __builtin_clzll(unsigned(n))));
     }
 
+    // a[x] += v;
     void Modify(int x, T v)
     {
         assert(0 <= x && x < n);
@@ -22,6 +23,7 @@ struct FenwickTree
         }
     }
 
+    /// sum of prefix [0, .. x] 
     T Query(int x)
     {
         ++ x;

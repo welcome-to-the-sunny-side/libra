@@ -1,5 +1,5 @@
 template <typename T>
-vector<int> z_function(const T &s)
+vector<int> Z(const T &s)
 {
     int n = s.size();
     vector<int> z(n, n);

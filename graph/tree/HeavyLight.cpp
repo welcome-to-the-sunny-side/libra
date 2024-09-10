@@ -1,3 +1,4 @@
+
 template <typename I, typename T, template<typename, typename> typename S>
 struct HeavyLight
 {
@@ -12,7 +13,7 @@ struct HeavyLight
         warning:
             - handle segtree initialization correctly
             - monoid operations must be commutative here
-              (implement directed path queries later)
+                (implement directed path queries later)
     */
     int n, r;
     vector<int> par, heavy, dep, root, pos, out;
