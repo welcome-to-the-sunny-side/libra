@@ -1,4 +1,3 @@
-
 template <typename Info, typename Tag>
 struct LazySegmentTree
 {

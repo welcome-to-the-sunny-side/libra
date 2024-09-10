@@ -1,0 +1,4 @@
+- add directed path support for hld
+- add centroid decomposition 
+- add splay tree
+-

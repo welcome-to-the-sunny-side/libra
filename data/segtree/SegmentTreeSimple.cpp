@@ -1,4 +1,3 @@
-
 template <typename Info>
 struct SimpleSegmentTree
 {
