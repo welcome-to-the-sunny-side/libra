@@ -1,4 +1,4 @@
-struct BinaryLifter
+class BinaryLifter
 {
     /*
     tc: O(n logn) preprocessing, O(logn) query
@@ -11,7 +11,7 @@ struct BinaryLifter
         tin[u], tout[u] -> intime, outtime of node u
         up[u][i] -> stores 2^ith ancestor of u
     */
-
+public:
     int n, L, timer;
     vector<int> dep, tin, tout;
     vector<vector<int>> up;

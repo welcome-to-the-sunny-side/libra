@@ -1,4 +1,4 @@
-struct Condenser
+class Condenser
 {
     /*
     tc: O(n + m)
@@ -18,7 +18,7 @@ struct Condenser
         [scc[u] -> outedge list for scc u]
         [grp[u] -> node list for scc u]
     */
-
+public:
     int n, c;
     vector<bool> vis;
     vector<int> stak, comp;

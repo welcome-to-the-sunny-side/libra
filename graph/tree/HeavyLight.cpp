@@ -1,5 +1,5 @@
 template <typename I, typename T, template<typename, typename> typename S>
-struct HeavyLight
+class HeavyLight
 {
     /*
         info:
@@ -14,6 +14,7 @@ struct HeavyLight
             - monoid operations must be commutative here
                 (implement directed path queries later)
     */
+public:
     int n, r;
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;

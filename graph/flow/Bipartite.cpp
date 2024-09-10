@@ -1,4 +1,4 @@
-struct Bipartite
+class Bipartite
 {
     /*
         tc: O(E sqrt(V))
@@ -19,6 +19,7 @@ struct Bipartite
                 - (unvis nodes on the left) + (visited nodes on right) = mvc
             MIS is complement of MVC
     */
+public:
     int n, m;
     int matching = 0;
     vector<vector<int>> adj;
