@@ -6,33 +6,27 @@ struct BinaryLifter
 
     info:
         1 indexed
-        has virtual root node 0
-
-    var:
-        [n -> number of nodes]
-        [dep[u] -> depth of node u]
-        [tin[u], tout[u] -> intime, outtime of node u]
-        [up[u][i] -> stores 2^ith ancestor of u]
+        n -> number of nodes
+        dep[u] -> depth of node u
+        tin[u], tout[u] -> intime, outtime of node u
+        up[u][i] -> stores 2^ith ancestor of u
     */
 
     int n, L, timer;
-
-    vector<int> dep;
-    vector<int> tin, tout;
+    vector<int> dep, tin, tout;
     vector<vector<int>> up;
 
-    void init(int x)
+    BinaryLifter(int m, int r, vector<vector<int>> &adj) : 
+    n(m), L(ceil(log2(n)) + 1), timer(0),
+    dep(n + 1), tin(n + 1), tout(n + 1), up(n + 1, vector<int> (L))
     {
-        n = x;
-        L = ceil(log2(n)) + 1;
+        tin[0] = 0, tout[0] = 1e9;
         timer = 0;
-        dep.assign(n + 1, 0);
-        tin.assign(n + 1, 0);
-        tout.assign(n + 1, 0);
-        up.assign(n + 1, vector<int>(L));
+        dep[r] = 1;
+        Dfs(r, r, adj);
     }
 
-    void dfs(int u, int p, vector<vector<int>> &adj)
+    void Dfs(int u, int p, vector<vector<int>> &adj)
     {
         tin[u] = ++ timer;
         up[u][0] = p;
@@ -42,20 +36,12 @@ struct BinaryLifter
  
         for(auto v : adj[u])
             if (v != p)
-                dep[v] = dep[u] + 1, dfs(v, u, adj);
+                dep[v] = dep[u] + 1, Dfs(v, u, adj);
 
         tout[u] = ++ timer;
     }
 
-    void preprocess(int root, vector<vector<int>> &adj) 
-    {
-        tin[0] = 0, tout[0] = 1e9;
-        timer = 0;
-        dep[1] = 1;
-        dfs(root, root, adj);
-    }
-
-    int get_kth_ancestor(int v, int k)
+    int GetKth(int v, int k)
     {
         if(k != 0)
             for(int i = L - 1; i >= 0 and v > 0; i --)
@@ -64,22 +50,20 @@ struct BinaryLifter
         return v;
     }
 
-    bool is_ancestor(int anc, int v)
+    bool IsAnc(int anc, int v)
     {
-        return tin[anc] <= tin[v] && tout[v] <= tout[anc];
+        return tin[anc] <= tin[v] and tout[v] <= tout[anc];
     }
 
-    int lca(int u, int v)
+    int LCA(int u, int v)
     {
-        if (is_ancestor(u, v))
+        if (IsAnc(u, v))
             return u;
-        if (is_ancestor(v, u))
+        if (IsAnc(v, u))
             return v;
- 
         for (int i = L - 1; i >= 0; --i) 
-            if (!is_ancestor(up[u][i], v))
+            if (!IsAnc(up[u][i], v))
                 u = up[u][i];
- 
         return up[u][0];
     }
 };

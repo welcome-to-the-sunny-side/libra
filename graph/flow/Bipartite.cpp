@@ -1,4 +1,4 @@
-struct BipartiteGraph
+struct Bipartite
 {
     /*
         tc: O(E sqrt(V))
@@ -6,6 +6,7 @@ struct BipartiteGraph
 
         vars:
             n, m: size of left and right partitions
+            adj: left to right edges ONLY
         info:
             Both partitions are individually 1 indexed
             After calling MaxMatching():
@@ -22,10 +23,10 @@ struct BipartiteGraph
     int matching = 0;
     vector<vector<int>> adj;
     vector<int> l, r, lvl;
-    BipartiteGraph(int _n, int _m) : 
-        n(_n), m(_m), adj(n + 1), l(n + 1, -1), r(m + 1, -1) {};
+    Bipartite(int _n, int _m, const vector<vector<int>> &_adj) : 
+        n(_n), m(_m), l(n + 1, -1), r(m + 1, -1), adj(_adj) {};
 
-    void Add(int u, int v)  { adj[u].push_back(v); }
+    // void Add(int u, int v)  { adj[u].push_back(v); }
     bool Dfs(int u)
     {
         int t = exchange(lvl[u], -1) + 1;
