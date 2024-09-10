@@ -24,18 +24,17 @@ struct Condenser
     vector<int> stak, comp;
     vector<vector<int>> adj, rdj, scc, grp;
 
-    Condenser(int n) :  n(n), c(0), 
+    Condenser(int n, const vector<vector<int>> &_adj) :  n(n), c(0), 
                         vis(n + 1, false), 
                         adj(n + 1), rdj(n + 1), scc(n + 1), grp(n + 1),
-                        comp(n + 1, -1) {};
-
-    void add_edge(int u, int v)
+                        comp(n + 1, -1) 
     {
-        adj[u].push_back(v);
-        rdj[v].push_back(u);
-    }
+        for(int u = 1; u <= n; u ++)
+            for(auto v : _adj[u])
+                adj[u].push_back(v), rdj[v].push_back(u);
+    };
 
-    void condense()
+    void Condense()
     {
         auto dfs1 = [&](int u, auto &&dfs1) -> void 
         {
@@ -71,7 +70,7 @@ struct Condenser
             grp[comp[u]].push_back(u);
     }
 
-    void fix()      //remove multiple edges [O(m log(m))]
+    void Fix()      //remove multiple edges [O(m log(m))]
     {
         for(auto &v : scc)
         {
