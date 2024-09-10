@@ -11,8 +11,6 @@ def create_snippet(file_path):
 
     # Convert content to a snippet-compatible format
     snippet_content = [line.rstrip('\n') for line in content]
-
-    # VS Code snippet rules: escape only necessary double quotes
     snippet_content = [line.replace('\\', '\\\\').replace('$', '\\$') for line in snippet_content]
 
     return {
@@ -24,8 +22,12 @@ def create_snippet(file_path):
     }
 
 def main():
-    directory = "/home/derwillezurmacht/Study/Programming/Programs/algo/"
-    snippets_file_path = "/home/derwillezurmacht/.config/Code/User/snippets/cpp_snippets.code-snippets"
+    # Use the current user's home directory dynamically
+    home_dir = os.path.expanduser("~")
+    
+    # Update directory paths using the current user's home directory
+    directory = os.path.join(home_dir, "Study/Programming/Programs/algo/")
+    snippets_file_path = os.path.join(home_dir, ".config/Code/User/snippets/cpp_snippets.code-snippets")
     
     snippets = {}
 
