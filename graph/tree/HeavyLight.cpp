@@ -3,12 +3,13 @@ class HeavyLight
 {
     /*
         info:
-            1 indexed
+            - 1 indexed
+            - range [pos[u], out[u]) represents subtree of u
         vars:
             - I: Info struct of segment tree
             - T: Lazy Tag struct of segment tree
             - S: segment tree class (S must support S<I, T>)
-            - range [pos[u], out[u]) represents subtree of u
+            - on_edge = true => values on edges, internally, value of edge is stored at pos[lower end]
         warning:
             - handle segtree initialization correctly
             - monoid operations must be commutative here
@@ -16,12 +17,13 @@ class HeavyLight
     */
 public:
     int n, r;
+    bool on_edge;
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;
 
     template<typename... Args>
-    HeavyLight(int n, int r, vector<vector<int>> adj, Args&&... args) :
-    n(n), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
+    HeavyLight(int n, int r, bool on_edge, vector<vector<int>> adj, Args&&... args) :
+    n(n), r(r), on_edge(on_edge), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
     tree(forward<Args>(args)...)
     {
         auto dfs_sz = [&](int u, auto &&dfs) -> int
@@ -70,7 +72,13 @@ public:
         }
         if (dep[u] > dep[v])
             swap(u, v);
-        op(pos[u], pos[v]);
+        if(on_edge)
+        {
+            if(u != v)
+                op(pos[u], pos[v] - 1);
+        }
+        else
+            op(pos[u], pos[v]);
     }
     
     void SetVertex(int v, const I &info)
