@@ -3,7 +3,6 @@
 #pragma GCC target("avx,avx2,sse,sse2,sse3,sse4,popcnt")
 
 #include<bits/stdc++.h>
-
 using namespace std;
 
 #ifdef natural_selection
@@ -12,10 +11,6 @@ using namespace std;
 #define endl "\n"
 #define debug(...)
 #endif
-
-//#define int int64_t
-
-const int N = 3e5+5;
 
 int32_t main()
 {
