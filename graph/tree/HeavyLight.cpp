@@ -106,6 +106,7 @@ public:
 template <typename I, typename T, template<typename, typename> typename S>
 class EdgeHeavyLight : public HeavyLight<I, T, S> 
 {
+public:
     using HeavyLight<I, T, S>::HeavyLight;
 
     template <typename O>
