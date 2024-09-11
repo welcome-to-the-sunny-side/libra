@@ -112,4 +112,4 @@ public:
             return (pos[u] < out[u] - 1 ? tree.Query(pos[u] + 1, out[u] - 1) : I());   
         return tree.Query(pos[u], out[u] - 1);
     }
-};
+};;
