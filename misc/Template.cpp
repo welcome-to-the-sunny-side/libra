@@ -6,10 +6,10 @@
 using namespace std;
 
 #ifdef natural_selection
-#include "/dbg.h"
+    #include "/dbg.h"
 #else
-#define endl "\n"
-#define debug(...)
+    #define endl "\n"
+    #define debug(...)
 #endif
 
 int32_t main()
