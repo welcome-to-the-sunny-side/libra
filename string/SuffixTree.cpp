@@ -5,7 +5,7 @@ public:
     vector<int> dep;
     vector<vector<int>> adj;
 
-    SuffixTree(int n, vector<int> sa, vector<int> lcp) : n(n), m(n - 1), dep(2 * n + 1), adj(2 * n + 1) 
+    SuffixTree(int n, vector<int> sa, vector<int> lcp) : n(n), m(n - 1), dep(2 * n), adj(2 * n) 
     {
         vector<int> l(n), r(n), p(n);
         for(int i = 0; i < n; i ++) 
