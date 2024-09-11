@@ -9,7 +9,8 @@ class HeavyLight
             - I: Info struct of segment tree
             - T: Lazy Tag struct of segment tree
             - S: segment tree class (S must support S<I, T>)
-            - on_edge = true => values on edges, internally, value of edge is stored at pos[lower end]
+            - r = tree root
+            - on_edge = true => values on edges. Internally, value of edge is stored at lower node
         warning:
             - handle segtree initialization correctly
             - monoid operations must be commutative here
@@ -17,12 +18,13 @@ class HeavyLight
     */
 public:
     int n, r;
+    bool on_edge;
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;
 
     template<typename... Args>
-    HeavyLight(int n, int r, vector<vector<int>> adj, Args&&... args) :
-    n(n), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
+    HeavyLight(int n, bool on_edge, int r, vector<vector<int>> adj, Args&&... args) :
+    n(n), on_edge(on_edge), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
     tree(forward<Args>(args)...)
     {
         auto dfs_sz = [&](int u, auto &&dfs) -> int
@@ -71,7 +73,11 @@ public:
         }
         if (dep[u] > dep[v])
             swap(u, v);
-        op(pos[u], pos[v]);
+        
+        if(!on_edge)
+            op(pos[u], pos[v]);
+        else if(u != v)
+            op(pos[u] + 1, pos[v]);
     }
     
     void Set(int v, const I &info)
@@ -84,7 +90,10 @@ public:
     }
     void ModifySubtree(int u, const T &tag)
     {
-        tree.Modify(pos[u], out[u] - 1, tag);
+        if(!on_edge)
+            tree.Modify(pos[u], out[u] - 1, tag);
+        else if(pos[u] < out[u] - 1)
+            tree.Modify(pos[u] + 1, out[u] - 1, tag);
     }
 
     I Get(int v)
@@ -99,41 +108,8 @@ public:
     }
     I QuerySubtree(int u)
     {
+        if(on_edge)
+            return (pos[u] < out[u] - 1 ? tree.Query(pos[u] + 1, out[u] - 1) : I());   
         return tree.Query(pos[u], out[u] - 1);
-    }
-};
-
-template <typename I, typename T, template<typename, typename> typename S>
-class EdgeHeavyLight : public HeavyLight<I, T, S> 
-{
-public:
-    using HeavyLight<I, T, S>::HeavyLight;
-
-    template <typename O>
-    void ProcessPath(int u, int v, O op)
-    {
-        for (; root[u] != root[v]; v = par[root[v]])
-        {
-            if (dep[root[u]] > dep[root[v]])
-                swap(u, v);
-            op(pos[root[v]], pos[v]);
-        }
-        if (dep[u] > dep[v])
-            swap(u, v);
-        if(u != v)
-            op(pos[u] + 1, pos[v]);
-    }
-    
-    void ModifySubtree(int u, const T& tag)
-    {
-        if(pos[u] + 1 <= out[u] - 1)
-            tree.Modify(pos[u] + 1, out[u] - 1, tag);
-    }
-
-    I QuerySubtree(int u)
-    {
-        if(pos[u] + 1 <= out[u] - 1)
-            return tree.Query(pos[u] + 1, out[u] - 1);
-        return I();
     }
 };
