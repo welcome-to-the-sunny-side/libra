@@ -7,10 +7,10 @@ public:
 
     SuffixTree(int n, vector<int> sa, vector<int> lcp) : n(n), m(n - 1), dep(2 * n), adj(2 * n) 
     {
-        vector<int> l(n), r(n), p(n);
+        vector<int> l(n), r(n);
         for(int i = 0; i < n; i ++) 
-            l[i] = r[i] = i, p[i] = sa[i], dep[i] = n - i;
-
+            l[i] = r[i] = i, dep[i] = n - i;
+        
         vector<vector<int>> q(n);
         for(int i = 0; i < n - 1; i ++)
             q[lcp[i]].push_back(i);
@@ -19,9 +19,9 @@ public:
             for(auto i : q[d])
             {
                 int u = ++ m;
-                dep[u] = d, adj[u] = {p[i], p[i + 1]};
+                dep[u] = d, adj[u] = {sa[i], sa[i + 1]};
                 l[r[i + 1]] = l[i], r[l[i]] = r[i + 1];
-                p[l[i]] = p[r[i + 1]] = u;
+                sa[l[i]] = sa[r[i + 1]] = u;
             }
     };
 
