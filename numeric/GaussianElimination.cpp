@@ -1,14 +1,10 @@
-struct GaussianElimination
+class GaussianElimination
 {
+public:
     int d, sz;
     vector<int> basis;
 
-    void init(int d)
-    {
-        this->d = d;
-        sz = 0;
-        basis.assign(d, 0);
-    }
+    GaussianElimination (int d) : d(d), sz(0), basis(d) {};
 
     void insert(int mask)
     {

@@ -1,12 +1,11 @@
 template<typename T>
-struct Combinatorics
+class Combinatorics
 {
+public:
     int n;
     vector<T> inv, fac, ifac;
-    Combinatorics (int n)
+    Combinatorics (int n) : n(n)
     {
-        this->n = n;
-
         inv.assign(n + 1, 0);
         fac.assign(n + 1, 0);
         ifac.assign(n + 1, 0); 
@@ -24,5 +23,3 @@ struct Combinatorics
         return fac[n] * ifac[r] * ifac[n - r];
     }
 };
-const int NC = 3e5+5;
-Combinatorics<mint> comb(NC);

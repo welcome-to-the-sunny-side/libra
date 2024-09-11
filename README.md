@@ -9,4 +9,5 @@
 - https://github.com/programming-team-code/programming_team_code/
 - https://github.com/ahsoltan/acmlib
 - users on https://judge.yosupo.jp/:
+    - nor
     - kal013
