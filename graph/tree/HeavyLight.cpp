@@ -17,13 +17,12 @@ class HeavyLight
     */
 public:
     int n, r;
-    bool on_edge;
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;
 
     template<typename... Args>
-    HeavyLight(int n, int r, bool on_edge, vector<vector<int>> adj, Args&&... args) :
-    n(n), r(r), on_edge(on_edge), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
+    HeavyLight(int n, int r, vector<vector<int>> adj, Args&&... args) :
+    n(n), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
     tree(forward<Args>(args)...)
     {
         auto dfs_sz = [&](int u, auto &&dfs) -> int
@@ -72,29 +71,23 @@ public:
         }
         if (dep[u] > dep[v])
             swap(u, v);
-        if(on_edge)
-        {
-            if(u != v)
-                op(pos[u], pos[v] - 1);
-        }
-        else
-            op(pos[u], pos[v]);
+        op(pos[u], pos[v]);
     }
     
-    void SetVertex(int v, const I &info)
+    void Set(int v, const I &info)
     {
         tree.Set(pos[v], info);
     }
     void ModifyPath(int u, int v, const T &tag)
     {
-        ProcessPath(u, v, [this, &tag](int l, int r)  {tree.Modify(l, r, tag); });
+        ProcessPath(u, v, [this, &tag](int l, int r)  {tree.Modify(l, r, tag);});
     }
-    void ModifySubtree(int u, const T&tag)
+    void ModifySubtree(int u, const T &tag)
     {
         tree.Modify(pos[u], out[u] - 1, tag);
     }
 
-    I GetVertex(int v)
+    I Get(int v)
     {
         return tree.Get(pos[v]);
     }
@@ -107,5 +100,39 @@ public:
     I QuerySubtree(int u)
     {
         return tree.Query(pos[u], out[u] - 1);
+    }
+};
+
+template <typename I, typename T, template<typename, typename> typename S>
+class EdgeHeavyLight : public HeavyLight<I, T, S> 
+{
+    using HeavyLight<I, T, S>::HeavyLight;
+
+    template <typename O>
+    void ProcessPath(int u, int v, O op)
+    {
+        for (; root[u] != root[v]; v = par[root[v]])
+        {
+            if (dep[root[u]] > dep[root[v]])
+                swap(u, v);
+            op(pos[root[v]], pos[v]);
+        }
+        if (dep[u] > dep[v])
+            swap(u, v);
+        if(u != v)
+            op(pos[u] + 1, pos[v]);
+    }
+    
+    void ModifySubtree(int u, const T& tag)
+    {
+        if(pos[u] + 1 <= out[u] - 1)
+            tree.Modify(pos[u] + 1, out[u] - 1, tag);
+    }
+
+    I QuerySubtree(int u)
+    {
+        if(pos[u] + 1 <= out[u] - 1)
+            return tree.Query(pos[u] + 1, out[u] - 1);
+        return I();
     }
 };
