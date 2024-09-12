@@ -36,7 +36,7 @@ def main():
     home_dir = os.path.expanduser("~")
     
     # Update directory paths using the current user's home directory
-    directory = os.path.join(home_dir, "Study/Programming/Programs/algo/")
+    directory = os.path.join(home_dir, "Study/Algorithm/sport/algo/")
     snippets_file_path = os.path.join(home_dir, ".config/Code/User/snippets/cpp_snippets.code-snippets")
     
     snippets = {}
