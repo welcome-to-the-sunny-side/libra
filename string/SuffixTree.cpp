@@ -23,10 +23,24 @@ public:
                 l[r[i + 1]] = l[i], r[l[i]] = r[i + 1];
                 sa[l[i]] = sa[r[i + 1]] = u;
             }
-    };
 
-    void Populate()
-    {
-        
-    }
+        vector<bool> rem(m + 1, false);
+        for(int u = m; u >= n; u --)
+            if(!rem[u])
+            {
+                vector<int> c = {u};
+                auto dfs = [&](int u, auto &&dfs) -> void
+                {
+                    for(auto v : adj[u])
+                        if(!rem[v] and dep[u] == dep[v])
+                            rem[v] = true, c.push_back(v), dfs(v, dfs);
+                };
+                dfs(u, dfs);
+                adj[u].clear();
+                for(auto x : c)
+                    for(auto v : adj[x])
+                        if(!rem[v])
+                            adj[u].push_back(v);
+            }
+    };
 };

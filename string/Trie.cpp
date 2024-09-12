@@ -1,17 +1,9 @@
-template<int C>
-class TrieNodeC
-{
-public:
-    int leaf;
-    vector<int> next;
-    TrieNodeC() : leaf(0), next(C, 0) {}; 
-};
-class TrieNodeM
+class TrieNode
 {
 public: 
     int leaf;
     map<int, int> next;
-    TrieNodeM() : leaf(0) {};
+    TrieNode() : leaf(0) {};
 };
 template<typename S, typename T>
 class Trie
@@ -24,7 +16,7 @@ public:
 
     Trie(int n, S base) : t(n), base(base) {};
 
-    void insert(const vector<S> &s)
+    void Insert(const vector<S> &s)
     {
         int v = r;
         for(auto x : s)
