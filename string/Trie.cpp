@@ -1,12 +1,21 @@
 template<int C>
-class TrieNode
+class TrieNodeC
 {
 public:
     int leaf;
     vector<int> next;
-
-    TrieNode() : leaf(0), next(C, -1) {}; 
+    TrieNodeC() : leaf(0), next(C, 0) {}; 
 };
+
+template<typename S>
+class TrieNodeM
+{
+public: 
+    int leaf;
+    map<S, int> next;
+    TrieNodeM() : leaf(0) {};
+};
+
 template<typename S, typename T>
 class Trie
 {
@@ -24,7 +33,7 @@ public:
         for(auto x : s)
         {
             int f = x - base;
-            if(t[v].next[f] == -1)
+            if(t[v].next[f] == 0)
                 t[v].next[f] = ++ p;
             v = t[v].next[f];
         }
