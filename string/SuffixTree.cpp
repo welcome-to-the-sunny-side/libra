@@ -6,7 +6,7 @@ public:
     vector<vector<int>> adj;
 
     SuffixTree(int n, vector<int> sa, vector<int> lcp) : 
-    n(n), m(n - 1), dep(2 * n), adj(2 * n) 
+    n(n), m(n - 1), dep(2 * n + 1), adj(2 * n + 1) 
     {
         vector<int> l(n), r(n);
         for(int i = 0; i < n; i ++) 
@@ -24,7 +24,8 @@ public:
                 l[r[i + 1]] = l[i], r[l[i]] = r[i + 1];
                 sa[l[i]] = sa[r[i + 1]] = u;
             }
-
+        dep[++ m] = 0, adj[m] = {m - 1};
+        
         vector<bool> rem(m + 1, false);
         for(int u = m; u >= n; u --)
             if(!rem[u])
