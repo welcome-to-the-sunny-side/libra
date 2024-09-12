@@ -22,10 +22,9 @@ public:
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;
 
-    template<typename... Args>
-    HeavyLight(int n, bool on_edge, int r, vector<vector<int>> adj, Args&&... args) :
+    HeavyLight(int n, bool on_edge, int r, vector<vector<int>> adj) :
     n(n), on_edge(on_edge), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
-    tree(forward<Args>(args)...)
+    tree(n + 1)
     {
         auto dfs_sz = [&](int u, auto &&dfs) -> int
         {

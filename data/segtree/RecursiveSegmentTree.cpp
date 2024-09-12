@@ -42,10 +42,10 @@ public:
         rec(1, 0, n - 1, rec);
     };
 
-    SegmentTree() : SegmentTree(false) {};
-    SegmentTree(bool lazy) : SegmentTree(lazy, 0) {};
-    SegmentTree(bool lazy, int n) : SegmentTree(lazy, vector<Info> (n)) {};
-    SegmentTree(bool lazy, const vector<Info> &a) : 
+    SegmentTree() : SegmentTree(0) {};
+    SegmentTree(int n) : SegmentTree(n, true) {};
+    SegmentTree(int n, bool lazy) : SegmentTree(vector<Info> (n), lazy) {};
+    SegmentTree(const vector<Info> &a, bool lazy) : 
     n((int)a.size()), lazy(lazy), infos(4 * n + 5), tags(lazy ? 4 * n + 5 : 0)
     {
         auto build = [&](int v, int l, int r, auto &&build) -> void
