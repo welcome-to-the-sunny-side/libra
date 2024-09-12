@@ -6,16 +6,13 @@ public:
     vector<int> next;
     TrieNodeC() : leaf(0), next(C, 0) {}; 
 };
-
-template<typename S>
 class TrieNodeM
 {
 public: 
     int leaf;
-    map<S, int> next;
+    map<int, int> next;
     TrieNodeM() : leaf(0) {};
 };
-
 template<typename S, typename T>
 class Trie
 {
