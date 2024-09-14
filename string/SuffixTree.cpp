@@ -16,9 +16,10 @@ public:
         for(int i = 0; i < n - 1; i ++)
             q[lcp[i]].push_back(i);
         
-        for(int d = n - 1, u; d >= 0; d --)
+        for(int d = n - 1; d >= 0; d --)
             for(auto i : q[d])
             {
+                int u;
                 if(dep[sa[i]] == d)
                     u = sa[i], adj[u].push_back(sa[i + 1]);
                 else if(dep[sa[i + 1]] == d)
