@@ -16,18 +16,15 @@ public:
         for(int i = 0; i < n - 1; i ++)
             q[lcp[i]].push_back(i);
         
-        for(int d = n - 1; d >= 0; d --)
+        for(int d = n - 1, u; d >= 0; d --)
             for(auto i : q[d])
             {
-                // assert(!(dep[sa[i]] == d and dep[sa[i + 1]] == d));
-                int u;
                 if(dep[sa[i]] == d)
                     u = sa[i], adj[u].push_back(sa[i + 1]);
                 else if(dep[sa[i + 1]] == d)
                     u = sa[i + 1], adj[u].push_back(sa[i]);
                 else
                     u = ++ m, adj[u] = {sa[i], sa[i + 1]};
-
                 dep[u] = d;
                 l[r[i + 1]] = l[i], r[l[i]] = r[i + 1];
                 sa[l[i]] = sa[r[i + 1]] = u;
@@ -35,9 +32,6 @@ public:
 
         root = sa[0];
         if(dep[root] != 0)
-        {
-            root = ++ m;
-            dep[root] = 0, adj[root] = {sa[0]};
-        }
+            root = ++ m, dep[root] = 0, adj[root] = {sa[0]};
     };
 };
