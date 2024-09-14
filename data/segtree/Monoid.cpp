@@ -11,10 +11,6 @@ public:
         Info res(sum + b.sum);
         return res;
     }
-    void Join(Info b)
-    {
-        sum += b.sum;
-    }
     static Info GetDefault([[maybe_unused]] int l, [[maybe_unused]] int r)
     {
         return Info();
@@ -33,7 +29,6 @@ public:
         a.sum += add * (r - l + 1);
         return true;
     }
-
     void ApplyTo(Tag &t) const
     {
         t.add += add;

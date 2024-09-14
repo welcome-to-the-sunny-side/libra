@@ -94,11 +94,11 @@ public:
             infos[v] = info;
         });
     }
-    void Add(int p, const Tag &tag)
+    void Add(int p, const Info &info)
     {
         Recurse(p, p, true, [&](int v, int l, int r)
         {
-            tag.ApplyTo(tags[v]);
+            infos[v] = infos[v].Unite(info);
             Propagate(v, l, r);
         });
     }
