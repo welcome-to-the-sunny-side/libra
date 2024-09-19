@@ -11,13 +11,13 @@ public:
         return Info(min(val, b.val));
     };
 };
-template <typename I>
+template <typename T>
 class SparseTable
 {
 public:
     int n;
-    vector<vector<I>> mat;
-    SparseTable(const vector<I> &a)
+    vector<vector<T>> mat;
+    SparseTable(const vector<T> &a)
     {
         n = static_cast<int>(a.size());
         int max_log = 32 - __builtin_clz(n);
@@ -30,7 +30,7 @@ public:
                 mat[j][i] = mat[j - 1][i].Unite(mat[j - 1][i + (1 << (j - 1))]);
         }
     }
-    I Query(int from, int to) const
+    T Query(int from, int to) const
     {
         assert(0 <= from && from <= to && to <= n - 1);
         int lg = 32 - __builtin_clz(to - from + 1) - 1;
