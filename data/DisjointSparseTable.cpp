@@ -2,7 +2,6 @@ class Info
 {
 public:
     static constexpr int neutral = 0;
-    
     int val;
     Info() : val(neutral) {};
     Info(int x) : val(x) {};
