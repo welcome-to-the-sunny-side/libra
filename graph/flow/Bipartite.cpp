@@ -75,6 +75,7 @@ public:
     pair<vector<int>, vector<int>> MinVertexCover()
     {
         vector<bool> lv(n + 1, false), rv(m + 1, false);
+        
         auto dfs = [&](int u, auto &&dfs) -> void
         {
             lv[u] = true;
@@ -97,6 +98,7 @@ public:
         for(int u = 1; u <= m; u ++)
             if(rv[u])
                 rc.push_back(u);
+        
         assert(matching == (int)lc.size() + (int)rc.size());
         return {lc, rc};
     }
