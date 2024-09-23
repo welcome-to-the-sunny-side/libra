@@ -12,26 +12,33 @@ public:
     int n, root;
     vector<int> dep;
     vector<int> nid;
+    vector<int> rep;
     vector<vector<int>> adj;
     vector<vector<int>> grp;    
 
     RandomSuffixTree(int n, C compare, L length, G get) : 
-    n(n), dep(2 * n + 5), nid(2 * n + 5), adj(2 * n + 5), grp(2 * n + 5)
+    n(n), dep(2 * n + 5), nid(2 * n + 5), rep(2 * n + 5, -1), adj(2 * n + 5), grp(2 * n + 5)
     {
         vector<int> alive(n);
         iota(alive.begin(), alive.end(), 0);
 
         Random rng;
-
         int timer = n - 1;
+        vector<int> dis(2 * n + 5);
 
         auto construct = [&](vector<int> a, auto &&construct) -> int
         {
             assert(!a.empty());
 
             if(a.size() == 1)
+            {
+                int u = a[0];
+                nid[u] = u;
+                rep[u] = u;
+                grp[u].push_back(u);
                 return a[0];
-            
+            }
+
             int l = a[rng(a.size())];
             a.erase(find(a.begin(), a.end(), l));
             dis[l] = length(l);
@@ -77,6 +84,7 @@ public:
                 else
                 {
                     node = common.back();
+                    rep[node] = node;
                     grp[node] = common;
                     for(auto x : grp[node])
                         nid[x] = node;
@@ -96,7 +104,9 @@ public:
                         hsplit.push_back(split[k]);
                     
                     int child = construct(hsplit, construct);
+
                     adj[node].push_back(child);
+                    rep[node] = max(rep[node], rep[child]);
 
                     i = j;
                 }
@@ -107,18 +117,26 @@ public:
             for(int i = 0; i < nodes.size() - 1; i ++)
             {
                 adj[nodes[i]].push_back(nodes[i + 1]);
-                //push it in while maintaining sorted ordere
+                rep[nodes[i]] = max(rep[nodes[i]], rep[nodes[i + 1]]);
             }
 
             return nodes.front();
         };
-        int root = construct(alive, construct);
+        root = construct(alive, construct);
 
         if(dep[root] != 0)
         {
             int new_root = ++ timer;
             adj[new_root].push_back(root);
+            dep[new_root] = 0;
+            rep[new_root] = rep[root];
             root = new_root;
+        }
+
+        for(int u = 0; u < adj.size(); u ++)
+        {
+            sort(adj[u].begin(), adj[u].end(), 
+            [&](int i, int j) {return get(rep[i], dep[u] + 1) < get(rep[j], dep[u] + 1);});
         }
     };
 };
