@@ -7,6 +7,9 @@ class RandomSuffixTree
         - bool compare(int i, int j, int x) returns true if x-length prefix of strings i and j is equal, and false otherwise
         - int length(int i) returns length of ith string
         - auto get(int i, int x) returns the xth character of string i (1 based indexing)
+    
+    warning:
+        - hasn't been stress tested (or tested at all)
     */
 public:
     int n, root;
