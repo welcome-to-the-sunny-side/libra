@@ -6,7 +6,7 @@ class RandomSuffixTree
         - Generates suffix tree using the leader split technique for a set of strings numbered from 0 to n - 1
         - bool compare(int i, int j, int x) returns true if x-length prefix of strings i and j is equal, and false otherwise
         - int length(int i) returns length of ith string
-        - auto get(int i, int x) returns the xth character of string i (1 based indexing)
+        - int get(int i, int x) returns the xth integer of string i (1 based indexing)
         - rng just needs to have rng(x) generating random integer in [0, x)
     warning:
         - has been stress tested but its pretty slow and not optimized at all: https://judge.yosupo.jp/submission/237569
@@ -27,6 +27,7 @@ public:
 
         int timer = n - 1;
         vector<int> dis(2 * n + 5);
+        vector<int> brk(2 * n + 5);
 
         auto construct = [&](vector<int> a, auto &&construct) -> int
         {
@@ -94,11 +95,15 @@ public:
 
                 dep[node] = len;
 
-                sort(split.begin(), split.end(), [&](int i, int j) {return get(i, len + 1) < get(j, len + 1);});
+                for(auto u : split)
+                    brk[u] = get(u, len + 1);
+                
+                sort(split.begin(), split.end(), [&](int i, int j) {return brk[i] < brk[j];});
+                
                 for(int i = 0; i < split.size();)
                 {
                     int j = i;
-                    while(j < split.size() and get(split[i], len + 1) == get(split[j], len + 1))
+                    while(j < split.size() and brk[split[i]] == brk[split[j]])
                         ++ j;
                     
                     vector<int> hsplit;
