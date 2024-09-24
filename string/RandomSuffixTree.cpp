@@ -17,10 +17,9 @@ public:
     vector<int> nid;
     vector<int> rep;
     vector<vector<int>> adj;
-    vector<vector<int>> grp;    
 
     RandomSuffixTree(int n, C compare, L length, G get, R rng) : 
-    n(n), dep(2 * n + 5), nid(2 * n + 5), rep(2 * n + 5, -1), adj(2 * n + 5), grp(2 * n + 5)
+    n(n), dep(2 * n + 5), nid(2 * n + 5), rep(2 * n + 5, -1), adj(2 * n + 5)
     {
         vector<int> alive(n);
         iota(alive.begin(), alive.end(), 0);
@@ -38,7 +37,6 @@ public:
                 int u = a[0];
                 nid[u] = u;
                 rep[u] = u;
-                grp[u].push_back(u);
                 return a[0];
             }
 
@@ -69,29 +67,24 @@ public:
             {
                 int len = dis[a.back()];
                 vector<int> split;
-                vector<int> common;
+
+                int node = -1;
 
                 while(!a.empty() and dis[a.back()] == len)
                 {
                     if(length(a.back()) == len)
-                        common.push_back(a.back());
+                    {
+                        if(node == -1)
+                            node = a.back(), rep[node] = node;
+                        nid[a.back()] = node;
+                    }
                     else
                         split.push_back(a.back());
                     a.pop_back();
                 }
 
-                int node = -1;
-
-                if(common.empty())
+                if(node == -1)
                     node = ++ timer;
-                else
-                {
-                    node = common.back();
-                    rep[node] = node;
-                    grp[node] = common;
-                    for(auto x : grp[node])
-                        nid[x] = node;
-                }
 
                 dep[node] = len;
 
@@ -142,8 +135,11 @@ public:
 
         for(int u = 0; u < adj.size(); u ++)
         {
+            for(auto v : adj[u])
+                brk[v] = get(rep[v], dep[u] + 1);
+                
             sort(adj[u].begin(), adj[u].end(), 
-            [&](int i, int j) {return get(rep[i], dep[u] + 1) < get(rep[j], dep[u] + 1);});
+            [&](int i, int j) {return brk[i] < brk[j];});
         }
     };
 };
