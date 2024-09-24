@@ -9,7 +9,7 @@ class RandomSuffixTree
         - int get(int i, int x) returns the xth integer of string i (1 based indexing)
         - rng just needs to have rng(x) generating random integer in [0, x)
     warning:
-        - has been stress tested but its pretty slow and not optimized at all: https://judge.yosupo.jp/submission/237569
+        - has been stress tested but its pretty slow and not optimized at all: https://judge.yosupo.jp/submission/237581
     */
 public:
     int n, root;
@@ -137,7 +137,7 @@ public:
         {
             for(auto v : adj[u])
                 brk[v] = get(rep[v], dep[u] + 1);
-                
+
             sort(adj[u].begin(), adj[u].end(), 
             [&](int i, int j) {return brk[i] < brk[j];});
         }
