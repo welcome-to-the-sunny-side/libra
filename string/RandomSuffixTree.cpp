@@ -1,4 +1,4 @@
-template<typename C, typename L, typename G>
+template<typename C, typename L, typename G, typename R>
 class RandomSuffixTree
 {
     /*
@@ -7,9 +7,9 @@ class RandomSuffixTree
         - bool compare(int i, int j, int x) returns true if x-length prefix of strings i and j is equal, and false otherwise
         - int length(int i) returns length of ith string
         - auto get(int i, int x) returns the xth character of string i (1 based indexing)
-    
+        - rng just needs to have rng(x) generating random integer in [0, x)
     warning:
-        - hasn't been stress tested (or tested at all)
+        - has been stress tested but its pretty slow and not optimized at all: https://judge.yosupo.jp/submission/237569
     */
 public:
     int n, root;
@@ -19,13 +19,12 @@ public:
     vector<vector<int>> adj;
     vector<vector<int>> grp;    
 
-    RandomSuffixTree(int n, C compare, L length, G get) : 
+    RandomSuffixTree(int n, C compare, L length, G get, R rng) : 
     n(n), dep(2 * n + 5), nid(2 * n + 5), rep(2 * n + 5, -1), adj(2 * n + 5), grp(2 * n + 5)
     {
         vector<int> alive(n);
         iota(alive.begin(), alive.end(), 0);
 
-        Random rng;
         int timer = n - 1;
         vector<int> dis(2 * n + 5);
 
