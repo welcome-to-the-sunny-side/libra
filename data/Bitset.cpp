@@ -1,4 +1,4 @@
-template<typename T, int B>
+template<typename T, const int B>
 class Bitset
 {
 public:
@@ -6,7 +6,16 @@ public:
     vector<T> b;
 
     Bitset(int n) : Bitset(n, false) {};
-    Bitset(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) {};
+    Bitset(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
+    {
+        if(init)
+        {
+            int ls = n % B;
+            // for(int i = B - 1; i >= B - ls; i --)
+                // b[m - 1][i] &= ~(T(1) << i);
+        }
+    };
+
 
     void Set(int i, bool val)
     {
@@ -36,7 +45,7 @@ public:
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] &= other.b[i];
         if(m > other.m)
-            fill(b + other.m, b + m, T(0));
+            fill(b.begin() + other.m, b.begin() + m, T(0));
     }
 
     Bitset operator | (const Bitset &other)
@@ -54,10 +63,10 @@ public:
             b[i] |= other.b[i];
     }
 
-
-    Bitset operator >> (int x)
+    Bitset operator << (int x)
     {
-        assert(x > 0);
+        if(x == 0)
+            return Bitset(*this);
 
         Bitset result(n);
 
@@ -70,25 +79,26 @@ public:
         {
             for(int i = m - 1; i >= s; i --)
                 b[i] = b[i - s];
-            for(int i = s - 1; i >= 0; i --)
-                b[i] = T(0);
+            if(s != 0)
+                fill(b.begin(), b.begin() + s, T(0));
         }
         if(d > 0)
         {
-            b[m - 1] >>= d;
+            b[m - 1] <<= d;
             for(int i = m - 2; i >= 0; i --)
             {
-                b[i + 1] |= (b[i] << (B - d));
-                b[i] >>= d;
+                b[i + 1] |= (b[i] >> (B - d));
+                b[i] <<= d;
             }
         }
 
         return result;
     }
 
-    Bitset operator << (int x)
+    Bitset operator >> (int x)
     {
-        assert(x > 0);
+        if(x == 0)
+            return Bitset(*this);
 
         Bitset result(n);
 
@@ -101,19 +111,32 @@ public:
         {
             for(int i = 0; i < m - s; i ++)
                 b[i] = b[i + s];
-            for(int i = m - s; i < m; i ++)
-                b[i]  = T(0);
+            if(s != 0)
+                fill(b.begin() + m - s, b.end(), T(0));
         }
         if(d > 0)
         {
-            b[0] <<= d;
+            b[0] >>= d;
             for(int i = 1; i < m; i ++)
             {
-                b[i - 1] |= (b[i] >> (B - d));
-                b[i] <<= d;
+                b[i - 1] |= (b[i] << (B - d));
+                b[i] >>= d;
             }
         }
-
         return result;
     }
+
+    void Show()
+    {
+        for(auto x : b)
+        {
+            string s = (bitset<B>(x).to_string());
+            reverse(s.begin(), s.end());
+            cerr << s;
+        }
+        cerr << endl;
+    }
 };
+
+using Bitset32 = Bitset<uint32_t, 32>;
+using Bitset64 = Bitset<uint64_t, 64>;
