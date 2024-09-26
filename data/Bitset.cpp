@@ -16,7 +16,6 @@ public:
         }
     };
 
-
     void Set(int i, bool val)
     {
         assert(0 <= i and i < n);
@@ -75,20 +74,15 @@ public:
 
         int s = x/B, d = x % B;
 
-        if(s > 0)
-        {
-            for(int i = m - 1; i >= s; i --)
-                b[i] = b[i - s];
-            if(s != 0)
-                fill(b.begin(), b.begin() + s, T(0));
-        }
+        copy(b.begin(), b.begin() + m - s, result.b.begin() + s);
+
         if(d > 0)
         {
-            b[m - 1] <<= d;
+            result.b[m - 1] <<= d;
             for(int i = m - 2; i >= 0; i --)
             {
-                b[i + 1] |= (b[i] >> (B - d));
-                b[i] <<= d;
+                result.b[i + 1] |= (result.b[i] >> (B - d));
+                result.b[i] <<= d;
             }
         }
 
@@ -107,20 +101,15 @@ public:
 
         int s = x/B, d = x % B;
 
-        if(s > 0)
-        {
-            for(int i = 0; i < m - s; i ++)
-                b[i] = b[i + s];
-            if(s != 0)
-                fill(b.begin() + m - s, b.end(), T(0));
-        }
+        copy(b.begin() + s, b.end(), result.b.begin());
+
         if(d > 0)
         {
-            b[0] >>= d;
+            result.b[0] >>= d;
             for(int i = 1; i < m; i ++)
             {
-                b[i - 1] |= (b[i] << (B - d));
-                b[i] >>= d;
+                result.b[i - 1] |= (result.b[i] << (B - d));
+                result.b[i] >>= d;
             }
         }
         return result;
@@ -128,12 +117,8 @@ public:
 
     void Show()
     {
-        for(auto x : b)
-        {
-            string s = (bitset<B>(x).to_string());
-            reverse(s.begin(), s.end());
-            cerr << s;
-        }
+        for(int i = m - 1; i >= 0; i --)
+            cerr << bitset<B> (b[i]);
         cerr << endl;
     }
 };
