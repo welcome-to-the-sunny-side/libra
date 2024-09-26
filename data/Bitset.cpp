@@ -8,12 +8,8 @@ public:
     Bitset(int n) : Bitset(n, false) {};
     Bitset(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
-        if(init)
-        {
-            int ls = n % B;
-            // for(int i = B - 1; i >= B - ls; i --)
-                // b[m - 1][i] &= ~(T(1) << i);
-        }
+        if(init and n % B)
+            b.back() &= ((T(1) << (n % B)) - T(1));
     };
 
     void Set(int i, bool val)
