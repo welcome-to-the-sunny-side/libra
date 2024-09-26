@@ -16,7 +16,7 @@ public:
     vector<int> dep, tin, tout;
     vector<vector<int>> up;
 
-    BinaryLifter(int m, int r, vector<vector<int>> &adj) : 
+    BinaryLifter(int m, int r, const vector<vector<int>> &adj) : 
     n(m), L(ceil(log2(n)) + 1), timer(0),
     dep(n + 1), tin(n + 1), tout(n + 1), up(n + 1, vector<int> (L))
     {
@@ -26,7 +26,7 @@ public:
         Dfs(r, r, adj);
     }
 
-    void Dfs(int u, int p, vector<vector<int>> &adj)
+    void Dfs(int u, int p, const vector<vector<int>> &adj)
     {
         tin[u] = ++ timer;
         up[u][0] = p;
@@ -41,7 +41,7 @@ public:
         tout[u] = ++ timer;
     }
 
-    int GetKth(int v, int k)
+    int GetKthSlow(int v, int k)
     {
         if(k != 0)
             for(int i = L - 1; i >= 0 and v > 0; i --)
@@ -65,5 +65,16 @@ public:
             if (!IsAnc(up[u][i], v))
                 u = up[u][i];
         return up[u][0];
+    }
+
+    void KthO1()
+    {
+        
+    };
+
+    //O(1) time
+    int GetKthFast
+    {
+        using 
     }
 };
