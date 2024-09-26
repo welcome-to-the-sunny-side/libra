@@ -138,5 +138,6 @@ public:
     }
 };
 
+using Bitset8 = Bitset<uint8_t, 8>;
 using Bitset32 = Bitset<uint32_t, 32>;
 using Bitset64 = Bitset<uint64_t, 64>;
