@@ -2,7 +2,8 @@ template<typename C, typename L, typename G, typename R>
 class RandomSuffixTree
 {
     /*
-    info: 
+    info:
+        - Based on  https://welcome-to-the-sunny-side.github.io/2024/08/16/Funny-Way-To-Construct-Suffix-Tree.html 
         - Generates suffix tree using the leader split technique for a set of strings numbered from 0 to n - 1
         - bool compare(int i, int j, int x) returns true if x-length prefix of strings i and j is equal, and false otherwise
         - int length(int i) returns length of ith string
