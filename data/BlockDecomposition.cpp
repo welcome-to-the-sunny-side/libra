@@ -1,9 +1,11 @@
 class Element
 {
+public:
 
 };
 class Block
 {
+public:
 
 };
 
