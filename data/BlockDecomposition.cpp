@@ -1,12 +1,10 @@
 class Element
 {
 public:
-
 };
 class Block
 {
 public:
-
 };
 
 template<typename E, typename T, const int N, const int B>

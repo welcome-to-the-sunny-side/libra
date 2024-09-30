@@ -9,6 +9,7 @@
 - https://github.com/atcoder/ac-library/
 - https://github.com/programming-team-code/programming_team_code/
 - https://github.com/ahsoltan/acmlib
+- https://github.com/ecnerwala/cp-book
 - users on https://judge.yosupo.jp/:
     - nor
     - kal013
