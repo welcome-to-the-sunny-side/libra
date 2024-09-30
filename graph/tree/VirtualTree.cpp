@@ -6,7 +6,7 @@ vector<pair<int, int>> VirtualTree(vector<int> key, const vector<int> &tin, cons
 
     vector<int> l;
     for (int i = 0; i < key.size() - 1; i++)
-        l.push_back(lca.lca(key[i], key[i + 1]));
+        l.push_back(lca.LCA(key[i], key[i + 1]));
     
     for (auto p : l)
         key.push_back(p);
