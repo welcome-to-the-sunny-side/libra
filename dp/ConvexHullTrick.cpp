@@ -1,4 +1,4 @@
-class ConvexHullDynamic
+class CHTChan
 {
 public:
     /*
@@ -78,7 +78,7 @@ public:
 		return it;
 	}
 
-	explicit ConvexHullDynamic(bool isMax): isMax(isMax) {}
+	explicit CHTChan(bool isMax): isMax(isMax) {}
 
 	void addLine(int64_t a, int64_t b) //Add ax + b in logN time
 	{

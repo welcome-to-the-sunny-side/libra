@@ -1,4 +1,4 @@
-class Condenser
+class CondenserChan
 {
     /*
     tc: O(n + m)
@@ -24,7 +24,7 @@ public:
     vector<int> stak, comp;
     vector<vector<int>> adj, rdj, scc, grp;
 
-    Condenser(int n, const vector<vector<int>> &_adj) :  n(n), c(0), 
+    CondenserChan(int n, const vector<vector<int>> &_adj) :  n(n), c(0), 
                         vis(n + 1, false), 
                         adj(n + 1), rdj(n + 1), scc(n + 1), grp(n + 1),
                         comp(n + 1, -1) 

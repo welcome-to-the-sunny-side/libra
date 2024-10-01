@@ -12,12 +12,12 @@ public:
     };
 };
 template <typename T>
-class SparseTable
+class SparseTableChan
 {
 public:
     int n;
     vector<vector<T>> mat;
-    SparseTable(const vector<T> &a)
+    SparseTableChan(const vector<T> &a)
     {
         n = static_cast<int>(a.size());
         int max_log = 32 - __builtin_clz(n);

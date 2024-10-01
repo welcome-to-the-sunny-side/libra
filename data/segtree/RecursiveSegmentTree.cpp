@@ -1,5 +1,5 @@
 template <typename Info, typename Tag>
-class SegmentTree
+class SegTreeChan
 {
 public:
     int n;
@@ -42,10 +42,10 @@ public:
         rec(1, 0, n - 1, rec);
     };
 
-    SegmentTree() : SegmentTree(0) {};
-    SegmentTree(int n) : SegmentTree(n, true) {};
-    SegmentTree(int n, bool lazy) : SegmentTree(vector<Info> (n), lazy) {};
-    SegmentTree(const vector<Info> &a, bool lazy) : 
+    SegTreeChan() : SegTreeChan(0) {};
+    SegTreeChan(int n) : SegTreeChan(n, true) {};
+    SegTreeChan(int n, bool lazy) : SegTreeChan(vector<Info> (n), lazy) {};
+    SegTreeChan(const vector<Info> &a, bool lazy) : 
     n((int)a.size()), lazy(lazy), infos(4 * n + 5), tags(lazy ? 4 * n + 5 : 0)
     {
         auto build = [&](int v, int l, int r, auto &&build) -> void

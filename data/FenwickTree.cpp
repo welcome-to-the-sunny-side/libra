@@ -1,27 +1,27 @@
-class FenwickTreeNode
+class FenwickChanNode
 {
 public:
     int v = 0;
 
-    inline void operator+=(FenwickTreeNode &other)
+    inline void operator+=(FenwickChanNode &other)
     {
         v += other.v;
     }
-    inline bool operator<(FenwickTreeNode &other)
+    inline bool operator<(FenwickChanNode &other)
     {
         return v < other.v;
     }
 };
 template <typename T>
-class FenwickTree
+class FenwickChan
 {
 public:
     vector<T> fenw;
     int n;
     int pw;
 
-    FenwickTree() : n(0) {}
-    FenwickTree(int n_) : n(n_)
+    FenwickChan() : n(0) {}
+    FenwickChan(int n_) : n(n_)
     {
         fenw.resize(n);
         pw = (n == 0 ? 0 : 1ULL << (63 - __builtin_clzll(unsigned(n))));

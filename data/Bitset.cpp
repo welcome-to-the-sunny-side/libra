@@ -2,14 +2,14 @@
 //warning: not completely stress tested
 
 template<typename T, const int B>
-class Bitset
+class BitsetChan
 {
 public:
     int n, m;
     vector<T> b;
 
-    Bitset(int n) : Bitset(n, false) {};
-    Bitset(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
+    BitsetChan(int n) : BitsetChan(n, false) {};
+    BitsetChan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
         if(init and n % B)
             b.back() &= ((T(1) << (n % B)) - T(1));
@@ -30,15 +30,15 @@ public:
         return b[i/B] & (T(1) << (i % B));
     }
 
-    Bitset operator & (const Bitset &other)
+    BitsetChan operator & (const BitsetChan &other)
     {
-        Bitset result(max(n, other.n), false);
+        BitsetChan result(max(n, other.n), false);
         for(int i = 0; i < min(m, other.m); i ++)
             result.b[i] = b[i] & other.b[i];
         return result;
     }
 
-    void operator &= (const Bitset &other)
+    void operator &= (const BitsetChan &other)
     {
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] &= other.b[i];
@@ -46,27 +46,27 @@ public:
             fill(b.begin() + other.m, b.begin() + m, T(0));
     }
 
-    Bitset operator | (const Bitset &other)
+    BitsetChan operator | (const BitsetChan &other)
     {
-        Bitset result((n > other.n ? *this : other));
-        const Bitset* overlap = (m > other.m ? &other : this);
+        BitsetChan result((n > other.n ? *this : other));
+        const BitsetChan* overlap = (m > other.m ? &other : this);
         for(int i = 0; i < min(m, other.m); i ++)
             result.b[i] |= overlap->b[i];
         return result;
     }
 
-    void operator |= (const Bitset &other)
+    void operator |= (const BitsetChan &other)
     {
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] |= other.b[i];
     }
 
-    Bitset operator << (int x)
+    BitsetChan operator << (int x)
     {
         if(x == 0)
-            return Bitset(*this);
+            return BitsetChan(*this);
 
-        Bitset result(n);
+        BitsetChan result(n);
 
         if(x >= n)
             return result;
@@ -117,12 +117,12 @@ public:
         return result;
     }
 
-    Bitset operator >> (int x)
+    BitsetChan operator >> (int x)
     {
         if(x == 0)
-            return Bitset(*this);
+            return BitsetChan(*this);
 
-        Bitset result(n);
+        BitsetChan result(n);
 
         if(x >= n)
             return result;
@@ -178,6 +178,6 @@ public:
     }
 };
 
-using Bitset8 = Bitset<uint8_t, 8>;
-using Bitset32 = Bitset<uint32_t, 32>;
-using Bitset64 = Bitset<uint64_t, 64>;
+using Bitset8 = BitsetChan<uint8_t, 8>;
+using Bitset32 = BitsetChan<uint32_t, 32>;
+using Bitset64 = BitsetChan<uint64_t, 64>;

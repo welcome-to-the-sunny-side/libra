@@ -11,7 +11,7 @@ public:
     }
 };
 template<typename T>
-class MonoQ
+class MonoQChan
 {
 public:
     T neutral;
@@ -19,7 +19,7 @@ public:
     deque<pair<T, int>> q;
     int l, r;
 
-    MonoQ() : l(0), r(0) {};
+    MonoQChan() : l(0), r(0) {};
 
     int Size()
     {

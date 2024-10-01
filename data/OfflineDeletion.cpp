@@ -1,5 +1,5 @@
 template<typename T, typename Q, typename D>
-class OfflineDetection
+class OfflineDeletionChan
 {
 public:
     int n;
@@ -7,7 +7,8 @@ public:
     vector<vector<T>> store;
     D ds;
 
-    OfflineDetection(int n) : n(n), ans(4 * n + 5), store(4 * n + 5) {};
+    OfflineDeletionChan(int n) : 
+    n(n), ans(4 * n + 5), store(4 * n + 5) {};
 
     //Put(L, R, life) puts element "life" into segment [L, R]
     void Put(int L, int R, T life)

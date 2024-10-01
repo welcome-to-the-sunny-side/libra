@@ -1,5 +1,5 @@
 template <typename I, typename T, template<typename, typename> typename S>
-class HeavyLight
+class HeavyLightChan
 {
     /*
         info:
@@ -22,7 +22,7 @@ public:
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;
 
-    HeavyLight(int n, bool on_edge, int r, vector<vector<int>> adj) :
+    HeavyLightChan(int n, bool on_edge, int r, vector<vector<int>> adj) :
     n(n), on_edge(on_edge), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
     tree(n + 2)
     {

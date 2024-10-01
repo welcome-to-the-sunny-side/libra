@@ -1,5 +1,5 @@
 template <typename Info>
-class SimpleSegmentTree
+class SegTreeChan
 {
 public:
     int n;
@@ -11,9 +11,9 @@ public:
         infos[a] = infos[a.c(0)].Unite(infos[a.c(1)]);
     }
 
-    SimpleSegmentTree(int n_) : SimpleSegmentTree(vector<Info>(n_)) {}
+    SegTreeChan(int n_) : SegTreeChan(vector<Info>(n_)) {}
 
-    SimpleSegmentTree(const vector<Info> &a) : n(int(a.size()))
+    SegTreeChan(const vector<Info> &a) : n(int(a.size()))
     {
         assert(n > 0);
         infos.resize(2 * n);

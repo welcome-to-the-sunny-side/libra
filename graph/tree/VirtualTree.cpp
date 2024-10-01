@@ -1,5 +1,5 @@
 template <typename L>
-vector<pair<int, int>> VirtualTree(vector<int> key, const vector<int> &tin, const vector<int> &tout, const L &lca)
+vector<pair<int, int>> VirtualTreeChan(vector<int> key, const vector<int> &tin, const vector<int> &tout, const L &lca)
 {
     assert(!key.empty());
     sort(key.begin(), key.end(), [&](int a, int b)  { return tin[a] < tin[b]; });

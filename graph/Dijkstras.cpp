@@ -1,5 +1,5 @@
 template<typename T>
-vector<T> Dijkstras(int source, const vector<vector<pair<int, T>>> &adj, T zer, T inf)
+vector<T> DijkstrasChan(int source, const vector<vector<pair<int, T>>> &adj, T zer, T inf)
 {
     int n = adj.size() - 1;
     vector<T> dis(n + 1, inf);

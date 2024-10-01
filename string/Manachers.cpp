@@ -1,5 +1,5 @@
 template <typename T>
-vector<int> Manachers(const T &s)
+vector<int> ManachersChan(const T &s)
 {
     /*
         tc: O(|s|)

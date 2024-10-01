@@ -1,4 +1,4 @@
-vector<int> OfflineLCA(int n, int r, const vector<vector<int>> &adj, vector<pair<int, int>> query)
+vector<int> OfflineLCAChan(int n, int r, const vector<vector<int>> &adj, vector<pair<int, int>> query)
 {
     //dsu
     vector<int> par(n + 1), siz(n + 1);

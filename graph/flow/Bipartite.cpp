@@ -1,4 +1,4 @@
-class Bipartite
+class BipartiteChan
 {
     /*
         tc: O(E sqrt(V))
@@ -24,7 +24,7 @@ public:
     int matching = 0;
     vector<vector<int>> adj;
     vector<int> l, r, lvl;
-    Bipartite(int _n, int _m, const vector<vector<int>> &_adj) : 
+    BipartiteChan(int _n, int _m, const vector<vector<int>> &_adj) : 
         n(_n), m(_m), l(n + 1, -1), r(m + 1, -1), adj(_adj) {};
 
     // void Add(int u, int v)  { adj[u].push_back(v); }

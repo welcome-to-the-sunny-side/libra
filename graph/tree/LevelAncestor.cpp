@@ -1,4 +1,4 @@
-class LevelAncestor
+class LevelAncestorChan
 {
 public:
     int n;
@@ -6,7 +6,7 @@ public:
     vector<int> tout;
     vector<int> heavy;
 
-    LevelAncestor(int n, int r, const vector<vector<int>> &tree) : 
+    LevelAncestorChan(int n, int r, const vector<vector<int>> &tree) : 
     n(n), heavy(n + 1), tin(n + 1), tout(n + 1)
     {
         auto adj = tree;

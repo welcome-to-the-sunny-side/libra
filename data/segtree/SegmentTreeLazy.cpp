@@ -1,5 +1,5 @@
 template <typename Info, typename Tag>
-class LazySegmentTree
+class LazySegTreeChan
 {
 public:
     int n;
@@ -40,9 +40,9 @@ public:
         infos[a] = infos[a.c(0)].Unite(infos[a.c(1)]);
     }
 
-    LazySegmentTree() : LazySegmentTree(0) {}
-    LazySegmentTree(int n_) : LazySegmentTree(vector<Info>(n_)) {}
-    LazySegmentTree(const vector<Info> &a) : n(int(a.size()))
+    LazySegTreeChan() : LazySegTreeChan(0) {}
+    LazySegTreeChan(int n_) : LazySegTreeChan(vector<Info>(n_)) {}
+    LazySegTreeChan(const vector<Info> &a) : n(int(a.size()))
     {
         infos.resize(2 * n);
         tags.resize(n);

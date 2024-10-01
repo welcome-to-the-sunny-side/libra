@@ -1,10 +1,10 @@
-class GaussianElimination
+class GaussChan
 {
 public:
     int d, sz;
     vector<int> basis;
 
-    GaussianElimination (int d) : d(d), sz(0), basis(d) {};
+    GaussChan (int d) : d(d), sz(0), basis(d) {};
 
     void insert(int mask)
     {

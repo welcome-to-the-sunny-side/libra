@@ -6,14 +6,14 @@ public:
     TrieNode() : leaf(0) {};
 };
 template<typename S, typename T, typename C>
-class Trie
+class TrieChan
 {
 public:
     int r = 0, p = 0;
     vector<T> t;
     C c;
 
-    Trie(int n, C c) : t(n), c(c) {};
+    TrieChan(int n, C c) : t(n), c(c) {};
 
     void Insert(const vector<S> &s)
     {

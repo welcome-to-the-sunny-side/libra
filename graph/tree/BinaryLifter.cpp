@@ -1,4 +1,4 @@
-class BinaryLifter
+class BinaryLifterChan
 {
     /*
     tc: O(n logn) preprocessing, O(logn) query
@@ -16,7 +16,7 @@ public:
     vector<int> dep, tin, tout;
     vector<vector<int>> up;
 
-    BinaryLifter(int m, int r, const vector<vector<int>> &adj) : 
+    BinaryLifterChan(int m, int r, const vector<vector<int>> &adj) : 
     n(m), L(ceil(log2(n)) + 1), timer(0),
     dep(n + 1), tin(n + 1), tout(n + 1), up(n + 1, vector<int> (L))
     {

@@ -1,4 +1,4 @@
-class DSU
+class DSUChan
 {
     /*
         tc: 
@@ -16,7 +16,7 @@ class DSU
 public:
     int n;
     vector<int> par, siz;
-    DSU(int m) : n(m), par(n + 1, 0), siz(n + 1, 1)
+    DSUChan(int m) : n(m), par(n + 1, 0), siz(n + 1, 1)
     {
         iota(par.begin(), par.end(), 0);
     };

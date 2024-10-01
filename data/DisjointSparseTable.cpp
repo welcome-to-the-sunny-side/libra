@@ -11,13 +11,13 @@ public:
     };
 };
 template <typename T>
-class DisjointSparseTable
+class DisjointSparseTableChan
 {
 public:
     int n;
     vector<vector<T>> mat;
 
-    DisjointSparseTable(const vector<T> &a)
+    DisjointSparseTableChan(const vector<T> &a)
     {
         n = static_cast<int>(a.size());
         mat.push_back(a);
