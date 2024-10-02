@@ -1,11 +1,8 @@
-//DO NOT USE
-//slightly slower than std::bitset, but dynamic
-//warning: not completely stress tested
-
 template<typename T, const int B>
 class BitsetChan
 {
 public:
+    using T_T = T;
     static T prefix(int i)
     {
         return (i <= 0 ? T(0) : ((T(1) << i) - T(1)));  
@@ -20,7 +17,7 @@ public:
     }
     static bool on(int i, T x)
     {
-        return ((T(1) << i) & x)
+        return ((T(1) << i) & x);
     }
     
 public:
@@ -85,6 +82,13 @@ public:
     {
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] |= other.b[i];
+        Trim();
+    }
+
+    void operator ^= (const BitsetChan &other)
+    {
+        for(int i = 0; i < min(m, other.m); i ++)
+            b[i] ^= other.b[i];
         Trim();
     }
 
