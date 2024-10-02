@@ -1,4 +1,5 @@
-template<typename T = uint64_t, const int B = 64>
+#include<immintrin.h>
+template<typename T, const int B>
 class BitsetChan
 {
 //helper
@@ -325,3 +326,4 @@ public:
         cerr << endl;
     }
 };
+using BitsetChan64 = BitsetChan<uint64_t, 64>;
