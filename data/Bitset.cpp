@@ -6,19 +6,19 @@ template<typename T, const int B>
 class BitsetChan
 {
 public:
-    T prefix(int i)
+    static T prefix(int i)
     {
         return (i <= 0 ? T(0) : ((T(1) << i) - T(1)));  
     }
-    T suffix(int i)
+    static T suffix(int i)
     {
         return ~(prefix(B - i));
     }
-    int block_id(int i)
+    static int block_id(int i)
     {
         return i/B;
     }
-    bool on(int i, int x)
+    static bool on(int i, T x)
     {
         return ((T(1) << i) & x)
     }
