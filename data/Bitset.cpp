@@ -1,30 +1,47 @@
-//slightly slower than std::bitset, but dynamic
-//warning: not completely stress tested
-//suggestion: use avx2 for significant boost
 template<typename T, const int B>
 class BitsetChan
 {
+//helper functions
 public:
     using T_T = T;
-    static T prefix(int i)
+
+    static inline bool on(int i, T x)
+    {
+        return ((T(1) << i) & x);
+    }
+    
+    static constexpr int popcnt(T x)
+    {
+        return __builtin_popcountll(x);
+    }
+    
+    static inline T prefix(int i)
     {
         if(i >= B)
             return ~T(0);
         return (i <= 0 ? T(0) : ((T(1) << i) - T(1)));  
     }
-    static T suffix(int i)
+    static inline T suffix(int i)
     {
         return ~(prefix(B - i));
     }
-    static int block_id(int i)
+    static inline T range(int l, int r)
+    {
+        return prefix(r) ^ prefix(l - 1);
+    }
+
+    static inline int block_id(int i)
     {
         return i/B;
     }
-    static bool on(int i, T x)
+
+    T submask(int l, int r)
     {
-        return ((T(1) << i) & x);
+        int bx = block_id(l);
+        assert(bx == block_id(r));
+        return (b[bx] & range(l - bx * B + 1, r - bx * B + 1)); 
     }
-    
+
 public:
     int n, m;
     vector<T> b;
@@ -32,6 +49,8 @@ public:
     BitsetChan(int n) : BitsetChan(n, false) {};
     BitsetChan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
+        static_assert(sizeof(T) * 8 == B, "check block width");
+        static_assert(is_same<T, uint64_t>::value, "modify popcnt()");
         Trim();
     };
 
@@ -88,6 +107,16 @@ public:
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] |= other.b[i];
         Trim();
+    }
+
+    BitsetChan operator ^ (const BitsetChan &other)
+    {
+        BitsetChan result((n > other.n ? *this : other));
+        const BitsetChan* overlap = (m > other.m ? &other : this);
+        for(int i = 0; i < min(m, other.m); i ++)
+            result.b[i] ^= overlap->b[i];
+        Trim();
+        return result;
     }
 
     void operator ^= (const BitsetChan &other)
@@ -214,7 +243,56 @@ public:
     {
         int cnt = 0;
         for(const auto &v : b)
-            cnt += __builtin_popcountll(v);
+            cnt += popcnt(v);
+        return cnt;
+    }
+
+    void RangeProcess(int l, int r, auto block_brute, auto block_quick)
+    {
+        assert(0 <= l and l <= r and r < n);
+
+        int bl = block_id(l), br = block_id(r);
+
+        if(bl == br)
+            block_brute(l, r);
+        else
+        {
+            block_brute(l, (bl + 1) * B);
+            for(int bi = bl + 1; bi < br; bi ++)
+                block_quick(bi);
+        }
+    }
+
+    void RangeSet(int l, int r, bool val)
+    {
+        auto block_brute = [&](int l, int r) -> void
+        {
+            int bi = block_id(l);
+            T mask = range(l - bi * B + 1, r - bi * B + 1);
+            if(val)
+                b[bi] |= mask;
+            else
+                b[bi] &= ~mask;
+        };
+        auto block_quick = [&](int bi) -> void
+        {
+            b[bi] = (val ? ~T(0) : T(0));
+        };
+        RangeProcess(l, r, block_brute, block_quick);
+    }
+
+    int RangeCount(int l, int r)
+    {
+        int cnt = 0;
+        auto block_brute = [&](int l, int r) -> void
+        {
+            cnt += popcnt(submask(l, r));
+        };
+        auto block_quick = [&](int bi) -> void
+        {
+            cnt += popcnt(b[bi]);
+        };
+        RangeProcess(l, r, block_brute, block_quick);
         return cnt;
     }
 
@@ -225,4 +303,4 @@ public:
         cerr << endl;
     }
 };
-using Bitset64 = BitsetChan<uint64_t, 64>;
+using BitsetChan64 = BitsetChan<uint64_t, 64>;
