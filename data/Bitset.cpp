@@ -5,6 +5,8 @@ public:
     using T_T = T;
     static T prefix(int i)
     {
+        if(i == B)
+            return ~T(0);
         return (i <= 0 ? T(0) : ((T(1) << i) - T(1)));  
     }
     static T suffix(int i)
