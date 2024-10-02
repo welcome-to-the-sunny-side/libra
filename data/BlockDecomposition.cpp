@@ -7,7 +7,7 @@ class Block
 public:
 };
 
-template<typename E, typename T, const int N, const int B>
+template<typename E, typename T, const int B>
 class BlockChan
 {
 public:
@@ -30,11 +30,10 @@ public:
 
 public:
     int n;
-    const int X;
     vector<E> element;
     vector<T> block;
 
-    BlockChan(int n, vector<E> a, vector<T> b) : n(n), element(a), block(b), X(N/B+5) 
+    BlockChan(int n, vector<E> a, vector<T> b) : n(n), element(a), block(b)
     {
 
     };
