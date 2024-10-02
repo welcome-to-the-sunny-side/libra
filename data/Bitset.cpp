@@ -54,12 +54,13 @@ public:
         Trim();
     };
 
-    inline void Trim()
+    inline void Trim() noexcept
     {
-        b.back() &= prefix(n % B == 0 ? B : n % B);
+        if(!b.empty())
+            b.back() &= prefix(n % B == 0 ? B : n % B);
     }
 
-    void Set(int i, bool val)
+    inline void Set(int i, bool val) noexcept
     {
         assert(0 <= i and i < n);
         if(val)
@@ -68,13 +69,13 @@ public:
             b[i/B] &= ~(T(1) << (i % B));
     }
 
-    bool Get(int i)
+    inline bool Get(int i) const noexcept
     {
         assert(0 <= i and i < n);
-        return b[i/B] & (T(1) << (i % B));
+        return (b[i/B] & (T(1) << (i % B))) != 0;
     }
 
-    void Reset()
+    void Reset() noexcept
     {
         fill(b.begin(), b.end(), T(0));
     }
@@ -253,12 +254,9 @@ public:
         return result;
     }
 
-    int Count()
+    int Count() const noexcept
     {
-        int cnt = 0;
-        for(const auto &v : b)
-            cnt += popcnt(v);
-        return cnt;
+        return accumulate(b.begin(), b.end(), 0, [](int sum, T value) { return sum + popcnt(value); });
     }
 
     void RangeProcess(int l, int r, auto block_brute, auto block_quick)
