@@ -85,6 +85,7 @@ public:
             }
         }
 
+        //clear useless bits here
         return result;
     }
 
@@ -109,12 +110,12 @@ public:
             b[m - 1] <<= d;
             for(int i = m - 2; i >= 0; i --)
             {
-                b[i + 1] |= (result.b[i] >> (B - d));
+                b[i + 1] |= (b[i] >> (B - d));
                 b[i] <<= d;
             }
         }
 
-        return result;
+        //clear useless bits here
     }
 
     BitsetChan operator >> (int x)
