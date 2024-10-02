@@ -5,43 +5,40 @@ class BitsetChan
 public:
     using T_T = T;
 
-    static inline bool on(int i, T x)
+    static inline constexpr bool on(int i, T x) noexcept
     {
-        return ((T(1) << i) & x);
+        return ((T(1) << i) & x) != 0;
     }
     
-    static constexpr int popcnt(T x)
+    static constexpr int popcnt(T x) noexcept
     {
         return __builtin_popcountll(x);
     }
     
-    static inline T prefix(int i)
+    static inline constexpr T prefix(int i) noexcept
     {
-        if(i >= B)
-            return ~T(0);
-        return (i <= 0 ? T(0) : ((T(1) << i) - T(1)));  
+        return (i >= B) ? ~T(0) : ((T(1) << i) - T(1));
     }
-    static inline T suffix(int i)
+    static inline constexpr T suffix(int i) noexcept
     {
-        return ~(prefix(B - i));
+        return ~prefix(B - i);
     }
-    static inline T range(int l, int r)
+    static inline constexpr T range(int l, int r) noexcept
     {
         return prefix(r) ^ prefix(l - 1);
     }
 
-    static inline int block_id(int i)
+    static inline constexpr int block_id(int i) noexcept
     {
-        return i/B;
+        return i / B;
     }
 
-    T submask(int l, int r)
+    inline T submask(int l, int r) const noexcept
     {
         int bx = block_id(l);
         assert(bx == block_id(r));
         return (b[bx] & range(l - bx * B + 1, r - bx * B + 1)); 
     }
-
 public:
     int n, m;
     vector<T> b;
