@@ -1,3 +1,4 @@
+#include <immintrin.h>
 template<typename T = uint64_t, const int B = 64>
 class BitsetChan
 {
@@ -12,8 +13,7 @@ public:
     
     static constexpr int popcnt(T x) noexcept
     {
-        // return __builtin_popcountll(x);
-        return _mm_popcnt_u64(x);
+        return __builtin_popcountll(x);
     }
     
     static inline constexpr T prefix(int i) noexcept
@@ -89,8 +89,20 @@ public:
 
     void operator &= (const BitsetChan &other)
     {
-        for(int i = 0; i < min(m, other.m); i ++)
+        const int simd_width = 4;
+
+        int i = 0;
+        for(; i + simd_width <= min(m, other.m); i += simd_width)
+        {
+            __m256i a = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(&b[i]));
+            __m256i b_other = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(&other.b[i]));
+            __m256i result = _mm256_and_si256(a, b_other);
+            _mm256_storeu_si256(reinterpret_cast<__m256i*>(&b[i]), result);
+        }
+
+        for(;i < min(m, other.m); i ++)
             b[i] &= other.b[i];
+        
         if(m > other.m)
             fill(b.begin() + other.m, b.begin() + m, T(0));
         Trim();
@@ -221,12 +233,14 @@ public:
      
         if(x >= n)
         {
-            fill(b.begin(), b.end(), T(0));
+            Reset();
             return;
         }
 
         int s = x/B, d = x % B;
 
+        int i = 0;
+        
         for(int i = 0; i < m - s; i ++)
             b[i] = b[i + s];
 
@@ -313,4 +327,3 @@ public:
         cerr << endl;
     }
 };
-using BitsetChan64 = BitsetChan<uint64_t, 64>;
