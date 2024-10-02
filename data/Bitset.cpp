@@ -1,7 +1,7 @@
 template<typename T, const int B>
 class BitsetChan
 {
-//helper functions
+//helper
 public:
     using T_T = T;
 
@@ -237,6 +237,15 @@ public:
         }
 
         Trim();
+    }
+
+    BitsetChan operator ~()
+    {
+        BitsetChan result(*this);
+        for(auto &v : result)
+            v = ~v;
+        result.Trim();
+        return result;
     }
 
     int Count()
