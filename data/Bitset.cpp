@@ -1,3 +1,6 @@
+//slightly slower than std::bitset, but dynamic
+//warning: not completely stress tested
+//suggestion: use avx2 for significant boost
 template<typename T, const int B>
 class BitsetChan
 {
@@ -5,7 +8,7 @@ public:
     using T_T = T;
     static T prefix(int i)
     {
-        if(i == B)
+        if(i >= B)
             return ~T(0);
         return (i <= 0 ? T(0) : ((T(1) << i) - T(1)));  
     }
