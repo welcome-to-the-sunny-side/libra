@@ -74,6 +74,11 @@ public:
         return b[i/B] & (T(1) << (i % B));
     }
 
+    void Reset()
+    {
+        fill(b.begin(), b.end(), T(0));
+    }
+
     BitsetChan operator & (const BitsetChan &other)
     {
         BitsetChan result(max(n, other.n), false);
@@ -161,7 +166,7 @@ public:
 
         if(x >= n)
         {
-            fill(b, b + m, T(0));
+            fill(b.begin(), b.end(), T(0));
             return;
         }
 
@@ -214,7 +219,7 @@ public:
     {
         if(x == 0)
             return;
-
+     
         if(x >= n)
         {
             fill(b.begin(), b.end(), T(0));
