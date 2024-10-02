@@ -1,3 +1,4 @@
+//DO NOT USE
 //slightly slower than std::bitset, but dynamic
 //warning: not completely stress tested
 
@@ -5,15 +6,37 @@ template<typename T, const int B>
 class BitsetChan
 {
 public:
+    T prefix(int i)
+    {
+        return (i <= 0 ? T(0) : ((T(1) << i) - T(1)));  
+    }
+    T suffix(int i)
+    {
+        return ~(prefix(B - i));
+    }
+    int block_id(int i)
+    {
+        return i/B;
+    }
+    bool on(int i, int x)
+    {
+        return ((T(1) << i) & x)
+    }
+    
+public:
     int n, m;
     vector<T> b;
 
     BitsetChan(int n) : BitsetChan(n, false) {};
     BitsetChan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
-        if(init and n % B)
-            b.back() &= ((T(1) << (n % B)) - T(1));
+        Trim();
     };
+
+    inline void Trim()
+    {
+        b.back() &= prefix(n % B == 0 ? B : n % B);
+    }
 
     void Set(int i, bool val)
     {
@@ -35,6 +58,7 @@ public:
         BitsetChan result(max(n, other.n), false);
         for(int i = 0; i < min(m, other.m); i ++)
             result.b[i] = b[i] & other.b[i];
+        Trim();
         return result;
     }
 
@@ -44,6 +68,7 @@ public:
             b[i] &= other.b[i];
         if(m > other.m)
             fill(b.begin() + other.m, b.begin() + m, T(0));
+        Trim();
     }
 
     BitsetChan operator | (const BitsetChan &other)
@@ -52,6 +77,7 @@ public:
         const BitsetChan* overlap = (m > other.m ? &other : this);
         for(int i = 0; i < min(m, other.m); i ++)
             result.b[i] |= overlap->b[i];
+        Trim();
         return result;
     }
 
@@ -59,6 +85,7 @@ public:
     {
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] |= other.b[i];
+        Trim();
     }
 
     BitsetChan operator << (int x)
@@ -85,7 +112,7 @@ public:
             }
         }
 
-        //clear useless bits here
+        Trim();
         return result;
     }
 
@@ -115,7 +142,7 @@ public:
             }
         }
 
-        //clear useless bits here
+        Trim();
     }
 
     BitsetChan operator >> (int x)
@@ -141,6 +168,7 @@ public:
                 result.b[i] >>= d;
             }
         }
+        Trim();
         return result;
     }
 
@@ -169,6 +197,16 @@ public:
                 b[i] >>= d;
             }
         }
+
+        Trim();
+    }
+
+    int Count()
+    {
+        int cnt = 0;
+        for(const auto &v : b)
+            cnt += __builtin_popcountll(v);
+        return cnt;
     }
 
     void Show()
@@ -178,7 +216,4 @@ public:
         cerr << endl;
     }
 };
-
-using Bitset8 = BitsetChan<uint8_t, 8>;
-using Bitset32 = BitsetChan<uint32_t, 32>;
 using Bitset64 = BitsetChan<uint64_t, 64>;
