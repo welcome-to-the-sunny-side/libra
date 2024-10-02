@@ -313,4 +313,3 @@ public:
         cerr << endl;
     }
 };
-using BitsetChan64 = BitsetChan<uint64_t, 64>;

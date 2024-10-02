@@ -1,4 +1,3 @@
-#include <immintrin.h>
 template<typename T = uint64_t, const int B = 64>
 class BitsetChan
 {
@@ -13,7 +12,8 @@ public:
     
     static constexpr int popcnt(T x) noexcept
     {
-        return __builtin_popcountll(x);
+        // return __builtin_popcountll(x);
+        return _mm_popcnt_u64(x);
     }
     
     static inline constexpr T prefix(int i) noexcept
@@ -233,14 +233,12 @@ public:
      
         if(x >= n)
         {
-            Reset();
+            fill(b.begin(), b.end(), T(0));
             return;
         }
 
         int s = x/B, d = x % B;
 
-        int i = 0;
-        
         for(int i = 0; i < m - s; i ++)
             b[i] = b[i + s];
 
