@@ -224,7 +224,39 @@ public:
     {
         return std::accumulate(b.begin(), b.end(), 0, [](int sum, T value) { return sum + popcnt(value); });
     }
- 
+     
+    int FindFirst()
+    {
+        int pos = -1;
+
+        for(int bi = 0; bi < m; bi ++)
+        {
+            if(b[bi] == T(0))
+                continue;
+            
+            pos = __builtin_ctzll(b[bi]) + bi * B;
+            break;
+        }
+
+        return pos;
+    }
+
+    int FindLast()
+    {
+        int pos = -1;
+
+        for(int bi = m - 1; bi >= 0; bi --)
+        {
+            if(b[bi] == T(0))
+                continue;
+            
+            pos = B - __builtin_clzll(b[bi]) - 1 + bi * B;
+            break;
+        }
+
+        return pos;
+    }
+
     void RangeProcess(int l, int r, auto block_brute, auto block_quick)
     {
         assert(0 <= l and l <= r and r < n);
@@ -260,7 +292,7 @@ public:
         RangeProcess(l, r, block_brute, block_quick);
     }
  
-    int RangeCount(int l, int r)
+    int Count(int l, int r)
     {
         int cnt = 0;
         auto block_brute = [&](int l, int r) -> void
