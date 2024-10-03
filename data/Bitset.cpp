@@ -48,13 +48,13 @@ public:
 
 public:
     int n, m;
-    std::vector<T> b;
+    vector<T> b;
 
     BitsetChan(int n) : BitsetChan(n, false) {};
     BitsetChan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
         static_assert(sizeof(T) * 8 == B, "check block width");
-        static_assert(std::is_same<T, uint64_t>::value, "modify popcnt()");
+        static_assert(is_same<T, uint64_t>::value, "modify popcnt()");
         trim();
     };
 
@@ -75,29 +75,29 @@ public:
 
     void Reset() noexcept
     {
-        std::fill(b.begin(), b.end(), T(0));
+        fill(b.begin(), b.end(), T(0));
     }
 
     //bitwise operations
     void operator &= (const BitsetChan &other)
     {
-        for(int i = 0; i < std::min(m, other.m); i ++)
+        for(int i = 0; i < min(m, other.m); i ++)
             b[i] &= other.b[i];
         if(m > other.m)
-            std::fill(b.begin() + other.m, b.begin() + m, T(0));
+            fill(b.begin() + other.m, b.begin() + m, T(0));
         // trim();
     }
 
     void operator |= (const BitsetChan &other)
     {
-        for(int i = 0; i < std::min(m, other.m); i ++)
+        for(int i = 0; i < min(m, other.m); i ++)
             b[i] |= other.b[i];
         trim();
     }
 
     void operator ^= (const BitsetChan &other)
     {
-        for(int i = 0; i < std::min(m, other.m); i ++)
+        for(int i = 0; i < min(m, other.m); i ++)
             b[i] ^= other.b[i];
         trim();
     }
@@ -128,7 +128,7 @@ public:
             b[s] = b[0];
         }
 
-        std::fill(b.begin(), b.begin() + s, T(0));
+        fill(b.begin(), b.begin() + s, T(0));
 
         trim();
     }
@@ -156,7 +156,7 @@ public:
             for(int i = s; i < m; i ++)
                 b[i - s] = b[i];
 
-        std::fill(b.begin() + m - s, b.end(), T(0));        
+        fill(b.begin() + m - s, b.end(), T(0));        
 
         // trim();
     }
@@ -219,7 +219,7 @@ public:
     //custom operations
     int Count() const noexcept
     {
-        return std::accumulate(b.begin(), b.end(), 0, [](int sum, T value) { return sum + popcnt(value); });
+        return accumulate(b.begin(), b.end(), 0, [](int sum, T value) { return sum + popcnt(value); });
     }
 
     void RangeProcess(int l, int r, auto block_brute, auto block_quick)
@@ -232,9 +232,10 @@ public:
             block_brute(l, r);
         else
         {
-            block_brute(l, (bl + 1) * B);
+            block_brute(l, (bl + 1) * B - 1);
             for(int bi = bl + 1; bi < br; bi ++)
                 block_quick(bi);
+            block_brute(br * B, r);
         }
     }
 
@@ -271,11 +272,11 @@ public:
         return cnt;
     }
 
-    void Show()
+    std::ostream& operator<<(std::ostream& os) const
     {
-        for(int i = m - 1; i >= 0; i --)
-            std::cerr << bitset<B> (b[i]);
-        std::cerr << endl;
+        for (int i = m - 1; i >= 0; --i) 
+            os << std::bitset<B>(b[i]);
+        return os;
     }
 };
 using BitsetChan64 = BitsetChan<uint64_t, 64>;
