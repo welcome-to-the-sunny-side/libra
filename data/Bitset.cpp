@@ -282,15 +282,16 @@ public:
                 if(Get(i))
                     pos = i;    
         };
-        auto block_quick = [&](bi) -> void
+        auto block_quick = [&](int bi) -> void
         {
             if(b[bi] == T(0) or pos != -1)
                 return;
 
-            pos = __builtin_ctzll(b[i]) + bi * B;
+            pos = __builtin_ctzll(b[bi]) + bi * B;
         };
 
         RangeProcess(l, r, block_brute, block_quick);
+        return pos;
     }
     
     int FindLast(int l, int r)
@@ -298,19 +299,20 @@ public:
         int pos = -1;
         auto block_brute = [&](int l, int r) -> void
         {
-            for(int i = r; i >= l and pos == -1; i --)
+            for(int i = l; i <= r; i ++)
                 if(Get(i))
                     pos = i;    
         };
-        auto block_quick = [&](bi) -> void
+        auto block_quick = [&](int bi) -> void
         {
-            if(b[bi] == T(0) or pos != -1)
+            if(b[bi] == T(0))
                 return;
 
-            pos = __builtin_clzll(b[i]) + bi * B;
+            pos = B - __builtin_clzll(b[bi]) - 1 + bi * B;
         };
 
         RangeProcess(l, r, block_brute, block_quick);
+        return pos;
     }
 };
 template <typename T, const int B>
