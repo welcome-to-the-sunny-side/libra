@@ -273,6 +273,45 @@ public:
         return cnt;
     }
 
+    int FindFirst (int l, int r)
+    {
+        int pos = -1;
+        auto block_brute = [&](int l, int r) -> void
+        {
+            for(int i = l; i <= r and pos == -1; i ++)
+                if(Get(i))
+                    pos = i;    
+        };
+        auto block_quick = [&](bi) -> void
+        {
+            if(b[bi] == T(0) or pos != -1)
+                return;
+
+            pos = __builtin_ctzll(b[i]) + bi * B;
+        };
+
+        RangeProcess(l, r, block_brute, block_quick);
+    }
+    
+    int FindLast(int l, int r)
+    {
+        int pos = -1;
+        auto block_brute = [&](int l, int r) -> void
+        {
+            for(int i = r; i >= l and pos == -1; i --)
+                if(Get(i))
+                    pos = i;    
+        };
+        auto block_quick = [&](bi) -> void
+        {
+            if(b[bi] == T(0) or pos != -1)
+                return;
+
+            pos = __builtin_clzll(b[i]) + bi * B;
+        };
+
+        RangeProcess(l, r, block_brute, block_quick);
+    }
 };
 template <typename T, const int B>
 std::ostream &operator<<(std::ostream &os, const BitsetChan<T, B> &bitset)
