@@ -4,7 +4,7 @@ class BitsetChan
 public:
     using T_T = T;
     static_assert(sizeof(T) * 8 == B, "check block width");
-    static_assert(std::is_same<T, uint64_t>::value, "modify popcnt(), ctz, clz");
+    static_assert(std::is_same<T, uint64_t>::value, "modify popcnt(), ctz(), clz()");
 
 //static helper
 public:
@@ -18,7 +18,15 @@ public:
         // return _mm_popcnt_u64(x);
         return __builtin_popcountll(x);
     }
-    
+    static constexpr int clz(T x) noexcept
+    {
+        return __builtin_clzll(x);
+    }
+    static constexpr int ctz(T x) noexcept
+    {
+        return __builtin_ctzll(x);
+    }
+
     static inline constexpr T prefix(int i) noexcept
     {
         return (i >= B) ? ~T(0) : ((T(1) << i) - T(1));
@@ -234,7 +242,7 @@ public:
             if(b[bi] == T(0))
                 continue;
             
-            pos = __builtin_ctzll(b[bi]) + bi * B;
+            pos = ctz(b[bi]) + bi * B;
             break;
         }
 
@@ -250,7 +258,7 @@ public:
             if(b[bi] == T(0))
                 continue;
             
-            pos = B - __builtin_clzll(b[bi]) - 1 + bi * B;
+            pos = B - clz(b[bi]) - 1 + bi * B;
             break;
         }
 
@@ -321,7 +329,7 @@ public:
             if(b[bi] == T(0) or pos != -1)
                 return;
  
-            pos = __builtin_ctzll(b[bi]) + bi * B;
+            pos = ctz(b[bi]) + bi * B;
         };
  
         RangeProcess(l, r, block_brute, block_quick);
@@ -342,7 +350,7 @@ public:
             if(b[bi] == T(0))
                 return;
  
-            pos = B - __builtin_clzll(b[bi]) - 1 + bi * B;
+            pos = B - clz(b[bi]) - 1 + bi * B;
         };
  
         RangeProcess(l, r, block_brute, block_quick);
