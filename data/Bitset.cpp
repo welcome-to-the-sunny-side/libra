@@ -1,10 +1,9 @@
 template<typename T, const int B>
 class BitsetChan
 {
-    using T_T = T;
-
 //static helper
 public:
+    using T_T = T;
     static inline constexpr bool on(int i, T x) noexcept
     {
         return ((T(1) << i) & x) != 0;
