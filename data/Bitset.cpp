@@ -119,7 +119,7 @@ public:
         {
             for(int i = m - 1 - s; i > 0; i --)
                 b[i + s] = (b[i] << d) | (b[i - 1] >> r);
-            b[s] = b[0] << r;
+            b[s] = b[0] << d;
         }
         else
         {
