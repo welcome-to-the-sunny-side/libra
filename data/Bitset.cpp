@@ -46,6 +46,7 @@ public:
         b.back() &= prefix(n % B == 0 ? B : n % B);
     }
 
+//main
 public:
     int n, m;
     std::vector<T> b;
