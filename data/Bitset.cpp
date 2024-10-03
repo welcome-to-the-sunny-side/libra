@@ -1,9 +1,13 @@
 template<typename T, const int B>
 class BitsetChan
 {
-//static helper
 public:
     using T_T = T;
+    static_assert(sizeof(T) * 8 == B, "check block width");
+    static_assert(std::is_same<T, uint64_t>::value, "modify popcnt(), ctz, clz");
+
+//static helper
+public:
     static inline constexpr bool on(int i, T x) noexcept
     {
         return ((T(1) << i) & x) != 0;
@@ -54,8 +58,6 @@ public:
     BitsetChan(int n) : BitsetChan(n, false) {};
     BitsetChan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
-        static_assert(sizeof(T) * 8 == B, "check block width");
-        static_assert(std::is_same<T, uint64_t>::value, "modify popcnt()");
         trim();
     };
  
