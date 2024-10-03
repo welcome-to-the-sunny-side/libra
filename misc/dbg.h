@@ -51,7 +51,7 @@ void _print(T t, V... v) {
 }
 
 // #ifndef ONLINE_JUDGE
-// #define debug(x...) { std::cerr << "[" << #x << "] = ["; _print(x); }
+#define debug(x...) { std::cerr << "[" << #x << "] = ["; _print(x); }
 // #else
 // #define debug(x...)
 // #endif
