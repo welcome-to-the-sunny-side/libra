@@ -1,10 +1,10 @@
 template<typename T, const int B>
 class BitsetChan
 {
-//helper
-public:
     using T_T = T;
 
+//static helper
+public:
     static inline constexpr bool on(int i, T x) noexcept
     {
         return ((T(1) << i) & x) != 0;
@@ -34,12 +34,19 @@ public:
         return i / B;
     }
 
+//helper
+public:
     inline T submask(int l, int r) const noexcept
     {
         int bx = block_id(l);
         assert(bx == block_id(r));
         return (b[bx] & range(l - bx * B + 1, r - bx * B + 1)); 
     }
+    inline void trim() noexcept
+    {
+        b.back() &= prefix(n % B == 0 ? B : n % B);
+    }
+
 public:
     int n, m;
     vector<T> b;
@@ -49,14 +56,8 @@ public:
     {
         static_assert(sizeof(T) * 8 == B, "check block width");
         static_assert(is_same<T, uint64_t>::value, "modify popcnt()");
-        Trim();
+        trim();
     };
-
-    inline void Trim() noexcept
-    {
-        if(!b.empty())
-            b.back() &= prefix(n % B == 0 ? B : n % B);
-    }
 
     inline void Set(int i, bool val) noexcept
     {
@@ -78,84 +79,28 @@ public:
         fill(b.begin(), b.end(), T(0));
     }
 
-    BitsetChan operator & (const BitsetChan &other)
-    {
-        BitsetChan result(max(n, other.n), false);
-        for(int i = 0; i < min(m, other.m); i ++)
-            result.b[i] = b[i] & other.b[i];
-        Trim();
-        return result;
-    }
-
+    //bitwise operations
     void operator &= (const BitsetChan &other)
     {
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] &= other.b[i];
         if(m > other.m)
             fill(b.begin() + other.m, b.begin() + m, T(0));
-        Trim();
-    }
-
-    BitsetChan operator | (const BitsetChan &other)
-    {
-        BitsetChan result((n > other.n ? *this : other));
-        const BitsetChan* overlap = (m > other.m ? &other : this);
-        for(int i = 0; i < min(m, other.m); i ++)
-            result.b[i] |= overlap->b[i];
-        Trim();
-        return result;
+        // trim();
     }
 
     void operator |= (const BitsetChan &other)
     {
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] |= other.b[i];
-        Trim();
-    }
-
-    BitsetChan operator ^ (const BitsetChan &other)
-    {
-        BitsetChan result((n > other.n ? *this : other));
-        const BitsetChan* overlap = (m > other.m ? &other : this);
-        for(int i = 0; i < min(m, other.m); i ++)
-            result.b[i] ^= overlap->b[i];
-        Trim();
-        return result;
+        trim();
     }
 
     void operator ^= (const BitsetChan &other)
     {
         for(int i = 0; i < min(m, other.m); i ++)
             b[i] ^= other.b[i];
-        Trim();
-    }
-
-    BitsetChan operator << (int x)
-    {
-        if(x == 0)
-            return BitsetChan(*this);
-
-        BitsetChan result(n);
-
-        if(x >= n)
-            return result;
-
-        int s = x/B, d = x % B;
-
-        copy(b.begin(), b.begin() + m - s, result.b.begin() + s);
-
-        if(d > 0)
-        {
-            result.b[m - 1] <<= d;
-            for(int i = m - 2; i >= 0; i --)
-            {
-                result.b[i + 1] |= (result.b[i] >> (B - d));
-                result.b[i] <<= d;
-            }
-        }
-
-        Trim();
-        return result;
+        trim();
     }
 
     void operator <<= (int x)
@@ -165,53 +110,28 @@ public:
 
         if(x >= n)
         {
-            fill(b.begin(), b.end(), T(0));
+            Reset();
             return;
         }
 
-        int s = x/B, d = x % B;
-        
-        for(int i = m - 1; i >= s; i --)
-            b[i] = b[i - s];
+        const int s = x/B, d = x % B, r = B - d;
 
         if(d > 0)
         {
-            b[m - 1] <<= d;
-            for(int i = m - 2; i >= 0; i --)
-            {
-                b[i + 1] |= (b[i] >> (B - d));
-                b[i] <<= d;
-            }
+            for(int i = m - 1 - s; i > 0; i --)
+                b[i + s] = (b[i] << d) | (b[i - 1] >> r);
+            b[s] = b[0] << r;
         }
-
-        Trim();
-    }
-
-    BitsetChan operator >> (int x)
-    {
-        if(x == 0)
-            return BitsetChan(*this);
-
-        BitsetChan result(n);
-
-        if(x >= n)
-            return result;
-
-        int s = x/B, d = x % B;
-
-        copy(b.begin() + s, b.end(), result.b.begin());
-
-        if(d > 0)
+        else
         {
-            result.b[0] >>= d;
-            for(int i = 1; i < m; i ++)
-            {
-                result.b[i - 1] |= (result.b[i] << (B - d));
-                result.b[i] >>= d;
-            }
+            for(int i = m - 1 - s; i > 0; i --)
+                b[i + s] = b[i];
+            b[s] = b[0];
         }
-        Trim();
-        return result;
+
+        fill(b.begin(), b.begin() + s, T(0));
+
+        trim();
     }
 
     void operator >>= (int x)
@@ -221,26 +141,61 @@ public:
      
         if(x >= n)
         {
-            fill(b.begin(), b.end(), T(0));
+            Reset();
             return;
         }
 
-        int s = x/B, d = x % B;
-
-        for(int i = 0; i < m - s; i ++)
-            b[i] = b[i + s];
+        const int s = x/B, d = x % B, l = B - d;
 
         if(d > 0)
         {
-            b[0] >>= d;
-            for(int i = 1; i < m; i ++)
-            {
-                b[i - 1] |= (b[i] << (B - d));
-                b[i] >>= d;
-            }
+            for(int i = s; i < m - 1; i ++)
+                b[i - s] = (b[i] >> d) | (b[i + 1] << l); 
+            b[m - 1 - s] = b[m - 1] >> d;
         }
+        else
+            for(int i = s; i < m; i ++)
+                b[i - s] = b[i];
 
-        Trim();
+        fill(b.begin() + m - s, b.end(), T(0));        
+
+        // trim();
+    }
+
+    //extended
+    BitsetChan operator & (const BitsetChan &other)
+    {
+        BitsetChan result(*this);
+        result &= other;
+        return result;
+    }
+
+    BitsetChan operator | (const BitsetChan &other)
+    {
+        BitsetChan result(*this);
+        result |= other;
+        return result;
+    }
+
+    BitsetChan operator ^ (const BitsetChan &other)
+    {
+        BitsetChan result(*this);
+        result ^= other;
+        return result;
+    }
+
+    BitsetChan operator >> (int x)
+    {
+        BitsetChan result(*this);
+        result >>= x;
+        return result;
+    }
+
+    BitsetChan operator << (int x)
+    {
+        BitsetChan result(*this);
+        result <<= x;
+        return result;
     }
 
     BitsetChan operator ~()
@@ -248,10 +203,11 @@ public:
         BitsetChan result(*this);
         for(auto &v : result)
             v = ~v;
-        result.Trim();
+        result.trim();
         return result;
     }
 
+    //custom operations
     int Count() const noexcept
     {
         return accumulate(b.begin(), b.end(), 0, [](int sum, T value) { return sum + popcnt(value); });
