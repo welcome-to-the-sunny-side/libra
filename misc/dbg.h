@@ -5,59 +5,55 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
-void __print(int x) { cerr << x; }
-void __print(long x) { cerr << x; }
-void __print(long long x) { cerr << x; }
-void __print(unsigned x) { cerr << x; }
-void __print(unsigned long x) { cerr << x; }
-void __print(unsigned long long x) { cerr << x; }
-void __print(float x) { cerr << x; }
-void __print(double x) { cerr << x; }
-void __print(long double x) { cerr << x; }
-void __print(char x) { cerr << '\'' << x << '\''; }
-void __print(const char *x) { cerr << '\"' << x << '\"'; }
-void __print(const string &x) { cerr << '\"' << x << '\"'; }
-void __print(bool x) { cerr << (x ? "true" : "false"); }
+void __print(int x) { std::cerr << x; }
+void __print(long x) { std::cerr << x; }
+void __print(long long x) { std::cerr << x; }
+void __print(unsigned x) { std::cerr << x; }
+void __print(unsigned long x) { std::cerr << x; }
+void __print(unsigned long long x) { std::cerr << x; }
+void __print(float x) { std::cerr << x; }
+void __print(double x) { std::cerr << x; }
+void __print(long double x) { std::cerr << x; }
+void __print(char x) { std::cerr << '\'' << x << '\''; }
+void __print(const char *x) { std::cerr << '\"' << x << '\"'; }
+void __print(const std::string &x) { std::cerr << '\"' << x << '\"'; }
+void __print(bool x) { std::cerr << (x ? "true" : "false"); }
 
 template<typename T, typename V>
-void __print(const pair<T, V> &x) {
-    cerr << '{';
+void __print(const std::pair<T, V> &x) {
+    std::cerr << '{';
     __print(x.first);
-    cerr << ',';
+    std::cerr << ',';
     __print(x.second);
-    cerr << '}';
+    std::cerr << '}';
 }
 
 template<typename T>
 void __print(const T &x) {
     int f = 0;
-    cerr << '{';
+    std::cerr << '{';
     for (auto &i : x) {
-        cerr << (f++ ? "," : "");
+        std::cerr << (f++ ? "," : "");
         __print(i);
     }
-    cerr << "}";
+    std::cerr << "}";
 }
 
 void _print() {
-    cerr << "]\n";
+    std::cerr << "]\n";
 }
 
 template <typename T, typename... V>
 void _print(T t, V... v) {
     __print(t);
-    if (sizeof...(v)) cerr << ", ";
+    if (sizeof...(v)) std::cerr << ", ";
     _print(v...);
 }
 
-#ifndef ONLINE_JUDGE
-#define debug(x...) { cerr << "[" << #x << "] = ["; _print(x); }
-#define reach cerr << "reached" << endl
-#else
-#define debug(x...)
-#define reach
-#endif
+// #ifndef ONLINE_JUDGE
+// #define debug(x...) { std::cerr << "[" << #x << "] = ["; _print(x); }
+// #else
+// #define debug(x...)
+// #endif
 
 #endif // DEBUG_H

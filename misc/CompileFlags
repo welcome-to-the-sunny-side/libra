@@ -1,0 +1,1 @@
+-std=c++20 -fsanitize=undefined -Dnatural_selection -march=native
