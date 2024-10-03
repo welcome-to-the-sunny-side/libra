@@ -2,7 +2,7 @@
 using namespace std;
 
 #ifdef natural_selection
-#include "/dbg.h"
+#include "../libra/misc/dbg.h"
 #else
 #define endl "\n"
 #define debug(...)

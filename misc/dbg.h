@@ -39,6 +39,16 @@ void __print(const T &x) {
     std::cerr << "}";
 }
 
+void __print(const std::vector<bool> &x) {
+    int f = 0;
+    std::cerr << '{';
+    for (size_t i = 0; i < x.size(); ++i) {
+        std::cerr << (f++ ? "," : "");
+        __print(x[i]);
+    }
+    std::cerr << "}";
+}
+
 void _print() {
     std::cerr << "]\n";
 }
