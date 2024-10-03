@@ -17,7 +17,9 @@
 
 ### To-Do:
 
+- add convolution
 - add directed path support for hld
+- add level ancestor
 - add centroid decomposition 
 - add splay tree
 - add wavelet tree/matrix

@@ -66,15 +66,4 @@ public:
                 u = up[u][i];
         return up[u][0];
     }
-
-    void KthO1()
-    {
-        
-    };
-
-    //O(1) time
-    int GetKthFast
-    {
-        using 
-    }
 };
