@@ -1,9 +1,13 @@
 template<typename T, const int B>
 class BitsetChan
 {
-//static helper
 public:
     using T_T = T;
+    static_assert(sizeof(T) * 8 == B, "check block width");
+    static_assert(std::is_same<T, uint64_t>::value, "modify popcnt(), msb, lsb");
+
+//static helper
+public:
     static inline constexpr bool on(int i, T x) noexcept
     {
         return ((T(1) << i) & x) != 0;
@@ -54,8 +58,6 @@ public:
     BitsetChan(int n) : BitsetChan(n, false) {};
     BitsetChan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
-        static_assert(sizeof(T) * 8 == B, "check block width");
-        static_assert(std::is_same<T, uint64_t>::value, "modify popcnt()");
         trim();
     };
 
@@ -82,7 +84,7 @@ public:
     //bitwise operations
     void operator &= (const BitsetChan &other)
     {
-        for(int i = 0; i < std::min(m, other.m); i ++)
+        for(int i = 0; i < std::min(m, other.m); ++ i)
             b[i] &= other.b[i];
         if(m > other.m)
             std::fill(b.begin() + other.m, b.begin() + m, T(0));
@@ -91,14 +93,14 @@ public:
 
     void operator |= (const BitsetChan &other)
     {
-        for(int i = 0; i < std::min(m, other.m); i ++)
+        for(int i = 0; i < std::min(m, other.m); ++ i)
             b[i] |= other.b[i];
         trim();
     }
 
     void operator ^= (const BitsetChan &other)
     {
-        for(int i = 0; i < std::min(m, other.m); i ++)
+        for(int i = 0; i < std::min(m, other.m); ++ i)
             b[i] ^= other.b[i];
         trim();
     }
@@ -118,13 +120,13 @@ public:
 
         if(d > 0)
         {
-            for(int i = m - 1 - s; i > 0; i --)
+            for(int i = m - 1 - s; i > 0; -- i)
                 b[i + s] = (b[i] << d) | (b[i - 1] >> r);
             b[s] = b[0] << d;
         }
         else
         {
-            for(int i = m - 1 - s; i > 0; i --)
+            for(int i = m - 1 - s; i > 0; -- i)
                 b[i + s] = b[i];
             b[s] = b[0];
         }
@@ -149,12 +151,12 @@ public:
 
         if(d > 0)
         {
-            for(int i = s; i < m - 1; i ++)
+            for(int i = s; i < m - 1; ++ i)
                 b[i - s] = (b[i] >> d) | (b[i + 1] << l); 
             b[m - 1 - s] = b[m - 1] >> d;
         }
         else
-            for(int i = s; i < m; i ++)
+            for(int i = s; i < m; ++ i)
                 b[i - s] = b[i];
 
         std::fill(b.begin() + m - s, b.end(), T(0));        
@@ -234,7 +236,7 @@ public:
         else
         {
             block_brute(l, (bl + 1) * B - 1);
-            for(int bi = bl + 1; bi < br; bi ++)
+            for(int bi = bl + 1; bi < br; ++ bi)
                 block_quick(bi);
             block_brute(br * B, r);
         }
