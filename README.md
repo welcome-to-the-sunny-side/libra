@@ -1,6 +1,6 @@
 ### Information:
-- Sequential range based data structures (segtree, sparse table, strings) are all 0-indexed.
-- Element based data structures (graphs, dsu) are all 1-indexed (I will probably change everything to 0-indexed later).
+
+- Everything is 0-indexed
 
 ### Sources:
 
