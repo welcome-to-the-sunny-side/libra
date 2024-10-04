@@ -5,10 +5,10 @@ class CondenserChan
     ml: O(n + m)
 
     info:
+        0-indexed    
         SCC u occurs before SCC v (u < v) in some topological ordering of SCCs 
 
     warning: 
-        1-indexed i/o    
         there may be multiple edges between different SCCs
 
     var:
@@ -21,17 +21,15 @@ class CondenserChan
 public:
     int n, c;
     vector<bool> vis;
-    vector<int> stak, comp;
-    vector<vector<int>> adj, rdj, scc, grp;
+    vector<int> stak;
+    vector<vector<int>> adj, rdj, scc, comp, grp;
 
-    CondenserChan(int n, const vector<vector<int>> &_adj) :  n(n), c(0), 
-                        vis(n + 1, false), 
-                        adj(n + 1), rdj(n + 1), scc(n + 1), grp(n + 1),
-                        comp(n + 1, -1) 
+    CondenserChan(int n, const vector<vector<int>> &adj) :
+    n(n), c(0), vis(n), adj(adj), rdj(n), scc(n), grp(n), comp(n, -1) 
     {
-        for(int u = 1; u <= n; u ++)
-            for(auto v : _adj[u])
-                adj[u].push_back(v), rdj[v].push_back(u);
+        for(int u = 0; u < n; u ++)
+            for(auto v : adj[u])
+                rdj[v].push_back(u);
     };
 
     void Condense()
@@ -44,7 +42,7 @@ public:
                     dfs1(v, dfs1);
             stak.push_back(u);
         };
-        for(int u = 1; u <= n; u ++)
+        for(int u = 0; u < n; u ++)
             if(!vis[u])
                 dfs1(u, dfs1);
 
@@ -61,12 +59,12 @@ public:
             if(comp[u] == -1)
                 ++ c, dfs2(u, dfs2);
 
-        for(int u = 1; u <= n; u ++)
+        for(int u = 0; u < n; u ++)
             for(auto v : adj[u])
                 if(comp[u] != comp[v])
                     scc[comp[u]].push_back(comp[v]);
-            
-        for(int u = 1; u <= n; u ++)
+
+        for(int u = 0; u < n; u ++)
             grp[comp[u]].push_back(u);
     }
 
