@@ -39,10 +39,10 @@ public:
                 return;
 
             for(auto point : store[v])
-                ds.Insert(point);           //insert segment into data structure
+                ds.Insert(point);
 
             if(l == r)
-                ans[l] = ds.Query();        //query the data structure
+                ans[l] = ds.Query();
             else
             {
                 int mid = (l + r)/2;
@@ -51,7 +51,7 @@ public:
             }
             
             for(auto point : store[v])
-                ds.Rollback();              //rollback the change
+                ds.Rollback();
         };
         dfs(1, 1, n, dfs);
     }
