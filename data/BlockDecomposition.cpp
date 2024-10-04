@@ -17,15 +17,15 @@ public:
     }
     int block_id(int i)
     {
-        return ceil_div(i, B);
+        return i/B;
     }
-    int lb(int block_id)
+    int lb(int bid)
     {
-        return (block_id - 1) * B + 1;
+        return bid * B;
     }
-    int rb(int block_id)
+    int rb(int bid)
     {
-        return min(n, block_id * B);
+        return min(n, (bid + 1) * B - 1);
     }
 
 public:
