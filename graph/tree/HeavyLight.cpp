@@ -1,4 +1,4 @@
-template <typename I, typename T, template<typename, typename> typename S>
+template <typename I, typename T, template<typename, typename> typename S, const bool on_edge>
 class HeavyLightChan
 {
     /*
@@ -18,12 +18,11 @@ class HeavyLightChan
     */
 public:
     int n, r;
-    bool on_edge;
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;
 
-    HeavyLightChan(int n, bool on_edge, int r, vector<vector<int>> adj) :
-    n(n), on_edge(on_edge), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
+    HeavyLightChan(int n, int r, vector<vector<int>> adj) :
+    n(n), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
     tree(n + 2)
     {
         auto dfs_sz = [&](int u, auto &&dfs) -> int
