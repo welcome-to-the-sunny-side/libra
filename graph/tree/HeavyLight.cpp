@@ -3,7 +3,7 @@ class HeavyLightChan
 {
     /*
         info:
-            - 1 indexed
+            - 0 indexed
             - range [pos[u], out[u]) represents subtree of u
         vars:
             - I: Info struct of segment tree
@@ -22,7 +22,7 @@ public:
     S<I, T> tree;
 
     HeavyLightChan(int n, int r, vector<vector<int>> adj) :
-    n(n), r(r), par(n), heavy(n, -1), dep(n), root(n), pos(n), out(n),
+    n(n), r(r), par(n, -1), heavy(n, -1), dep(n), root(n), pos(n), out(n),
     tree(n + 1)
     {
         assert(r < n);
