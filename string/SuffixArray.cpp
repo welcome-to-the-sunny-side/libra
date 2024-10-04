@@ -48,11 +48,3 @@ array<vector<int>, 3> SuffixArrayChan(const T &s, int max_num)
     }
     return {sa, sa_inv, lcp};
 }
-
-vector<int> Convert(string s, char base)
-{
-    vector<int> a(s.length());
-    for(int i = 0; i < s.length(); i ++)
-        a[i] = s[i] - base;
-    return a;
-}
