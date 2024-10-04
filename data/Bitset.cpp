@@ -362,5 +362,4 @@ public:
         return os;
     }
 };
- 
 using BitsetChan64 = BitsetChan<uint64_t, 64>;
