@@ -2,14 +2,14 @@ template<const int C>
 class StaticNodeChan
 {
 public:
-    // int sub = 0;
+    int sub = 0;
     int leaf = 0;
     array<int, C> next;
 };
 class DynamicNodeChan
 {
 public: 
-    // int sub = 0;
+    int sub = 0;
     int leaf = 0;
     map<int, int> next;
 };
@@ -28,14 +28,14 @@ public:
         int v = r;
         for(auto x : s)
         {
-            // ++ t[v].sub;
+            ++ t[v].sub;
 
             int f = ind(x);
+         
             if(t[v].next[f] == 0)
                 t[v].next[f] = ++ p;
             v = t[v].next[f];
         }
-        // ++ t[v].sub;
-        ++ t[v].leaf;
+        ++ t[v].sub, ++ t[v].leaf;
     }
 };
