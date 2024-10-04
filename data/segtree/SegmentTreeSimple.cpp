@@ -52,9 +52,9 @@ public:
         return infos[pt];
     }
 
-    //returns max point r such that f(sum[l, r]) = true given that f is monotonic as r increases 
-    //if (r > n), then f(sum[l, n]) = true 
-    //if (r < l), then f(sum[l, l]) = false
+    //returns max `r` such that `f(sum[l, r]) = true` given that `f` is monotonic as `r` increases 
+    //if `(r > n)`, then `f(sum[l, n]) = true` 
+    //if `(r < l)`, then `f(sum[l, l]) = false`
     template <typename F>
     int MaxRight(int l, F f)
     {

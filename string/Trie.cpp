@@ -13,6 +13,7 @@ public:
     int leaf = 0;
     map<int, int> next;
 };
+
 template<typename S, typename T, typename I>
 class TrieChan
 {
