@@ -22,6 +22,6 @@ public:
 
     void query()
     {
-        
+        //
     }
 };

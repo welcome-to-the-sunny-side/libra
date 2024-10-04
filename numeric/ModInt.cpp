@@ -1,9 +1,9 @@
 template <const int &MOD>
-struct _m_int
+struct Mint
 {
     int val;
 
-    _m_int(int64_t v = 0)
+    Mint(int64_t v = 0)
     {
         if (v < 0)
             v = v % MOD + MOD;
@@ -12,15 +12,15 @@ struct _m_int
         val = int(v);
     }
 
-    _m_int(uint64_t v)
+    Mint(uint64_t v)
     {
         if (v >= MOD)
             v %= MOD;
         val = int(v);
     }
 
-    _m_int(int v) : _m_int(int64_t(v)) {}
-    _m_int(unsigned v) : _m_int(uint64_t(v)) {}
+    Mint(int v) : Mint(int64_t(v)) {}
+    Mint(unsigned v) : Mint(uint64_t(v)) {}
 
     explicit operator int() const { return val; }
     explicit operator unsigned() const { return val; }
@@ -29,7 +29,7 @@ struct _m_int
     explicit operator double() const { return val; }
     explicit operator long double() const { return val; }
 
-    _m_int &operator+=(const _m_int &other)
+    Mint &operator+=(const Mint &other)
     {
         val -= MOD - other.val;
         if (val < 0)
@@ -37,7 +37,7 @@ struct _m_int
         return *this;
     }
 
-    _m_int &operator-=(const _m_int &other)
+    Mint &operator-=(const Mint &other)
     {
         val -= other.val;
         if (val < 0)
@@ -60,61 +60,61 @@ struct _m_int
         return rem;
     }
 
-    _m_int &operator*=(const _m_int &other)
+    Mint &operator*=(const Mint &other)
     {
         val = fast_mod(uint64_t(val) * other.val);
         return *this;
     }
 
-    _m_int &operator/=(const _m_int &other)
+    Mint &operator/=(const Mint &other)
     {
         return *this *= other.inv();
     }
 
-    friend _m_int operator+(const _m_int &a, const _m_int &b) { return _m_int(a) += b; }
-    friend _m_int operator-(const _m_int &a, const _m_int &b) { return _m_int(a) -= b; }
-    friend _m_int operator*(const _m_int &a, const _m_int &b) { return _m_int(a) *= b; }
-    friend _m_int operator/(const _m_int &a, const _m_int &b) { return _m_int(a) /= b; }
+    friend Mint operator+(const Mint &a, const Mint &b) { return Mint(a) += b; }
+    friend Mint operator-(const Mint &a, const Mint &b) { return Mint(a) -= b; }
+    friend Mint operator*(const Mint &a, const Mint &b) { return Mint(a) *= b; }
+    friend Mint operator/(const Mint &a, const Mint &b) { return Mint(a) /= b; }
 
-    _m_int &operator++()
+    Mint &operator++()
     {
         val = val == MOD - 1 ? 0 : val + 1;
         return *this;
     }
 
-    _m_int &operator--()
+    Mint &operator--()
     {
         val = val == 0 ? MOD - 1 : val - 1;
         return *this;
     }
 
-    _m_int operator++(int)
+    Mint operator++(int)
     {
-        _m_int before = *this;
+        Mint before = *this;
         ++*this;
         return before;
     }
-    _m_int operator--(int)
+    Mint operator--(int)
     {
-        _m_int before = *this;
+        Mint before = *this;
         --*this;
         return before;
     }
 
-    _m_int operator-() const
+    Mint operator-() const
     {
         return val == 0 ? 0 : MOD - val;
     }
 
-    friend bool operator==(const _m_int &a, const _m_int &b) { return a.val == b.val; }
-    friend bool operator!=(const _m_int &a, const _m_int &b) { return a.val != b.val; }
-    friend bool operator<(const _m_int &a, const _m_int &b) { return a.val < b.val; }
-    friend bool operator>(const _m_int &a, const _m_int &b) { return a.val > b.val; }
-    friend bool operator<=(const _m_int &a, const _m_int &b) { return a.val <= b.val; }
-    friend bool operator>=(const _m_int &a, const _m_int &b) { return a.val >= b.val; }
+    friend bool operator==(const Mint &a, const Mint &b) { return a.val == b.val; }
+    friend bool operator!=(const Mint &a, const Mint &b) { return a.val != b.val; }
+    friend bool operator<(const Mint &a, const Mint &b) { return a.val < b.val; }
+    friend bool operator>(const Mint &a, const Mint &b) { return a.val > b.val; }
+    friend bool operator<=(const Mint &a, const Mint &b) { return a.val <= b.val; }
+    friend bool operator>=(const Mint &a, const Mint &b) { return a.val >= b.val; }
 
     static const int SAVE_INV = int(1e6) + 5;
-    static _m_int save_inv[SAVE_INV];
+    static Mint save_inv[SAVE_INV];
 
     static void prepare_inv()
     {
@@ -129,7 +129,7 @@ struct _m_int
             save_inv[i] = save_inv[MOD % i] * (MOD - MOD / i);
     }
 
-    _m_int inv() const
+    Mint inv() const
     {
         if (save_inv[1] == 0)
             prepare_inv();
@@ -137,7 +137,7 @@ struct _m_int
         if (val < SAVE_INV)
             return save_inv[val];
 
-        _m_int product = 1;
+        Mint product = 1;
         int v = val;
 
         do
@@ -149,12 +149,12 @@ struct _m_int
         return product * save_inv[v];
     }
 
-    _m_int pow(int64_t p) const
+    Mint pow(int64_t p) const
     {
         if (p < 0)
             return inv().pow(-p);
 
-        _m_int a = *this, result = 1;
+        Mint a = *this, result = 1;
 
         while (p > 0)
         {
@@ -170,13 +170,13 @@ struct _m_int
         return result;
     }
 
-    friend ostream &operator<<(ostream &os, const _m_int &m)
+    friend ostream &operator<<(ostream &os, const Mint &m)
     {
         return os << m.val;
     }
 };
 template <const int &MOD>
-_m_int<MOD> _m_int<MOD>::save_inv[_m_int<MOD>::SAVE_INV];
+Mint<MOD> Mint<MOD>::save_inv[Mint<MOD>::SAVE_INV];
 const int MOD = 998244353;
-using mint = _m_int<MOD>;
+using mint = Mint<MOD>;
 void __print(mint x) { cerr << x; }
