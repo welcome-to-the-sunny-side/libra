@@ -16,7 +16,7 @@ class DSUChan
 public:
     int n;
     vector<int> par, siz;
-    DSUChan(int m) : n(m), par(n + 1, 0), siz(n + 1, 1)
+    DSUChan(int n) : n(n), par(n), siz(n, 1)
     {
         iota(par.begin(), par.end(), 0);
     };
@@ -37,8 +37,8 @@ public:
 
     vector<vector<int>> Groups()
     {
-        vector<vector<int>> g(n + 1);
-        for(int u = 1; u <= n; u ++)
+        vector<vector<int>> g(n);
+        for(int u = 0; u < n; u ++)
             g[Get(u)].push_back(u);
         return g;
     }
