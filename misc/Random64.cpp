@@ -1,5 +1,3 @@
-
-
 struct Random64 : std::mt19937_64
 {
     using std::mt19937_64::mt19937_64;
