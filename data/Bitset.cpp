@@ -356,14 +356,14 @@ public:
         RangeProcess(l, r, block_brute, block_quick);
         return pos;
     }
+
+    friend std::ostream &operator<<(std::ostream &os, const BitsetChan &bitset)
+    {
+        for (int i = bitset.m - 1; i >= 0; --i)
+            os << std::bitset<B>(bitset.b[i]);
+        os << '\n';
+        return os;
+    }
 };
-template <typename T, const int B>
-std::ostream &operator<<(std::ostream &os, const BitsetChan<T, B> &bitset)
-{
-    for (int i = bitset.m - 1; i >= 0; --i)
-        os << std::bitset<B>(bitset.b[i]);
-    os << '\n';
-    return os;
-}
  
 using BitsetChan64 = BitsetChan<uint64_t, 64>;
