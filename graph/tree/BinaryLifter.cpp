@@ -16,13 +16,11 @@ public:
     vector<int> dep, tin, tout;
     vector<vector<int>> up;
 
-    BinaryLifterChan(int m, int r, const vector<vector<int>> &adj) : 
-    n(m), L(ceil(log2(n)) + 1), timer(0),
-    dep(n + 1), tin(n + 1), tout(n + 1), up(n + 1, vector<int> (L))
+    BinaryLifterChan(int n, int r, const vector<vector<int>> &adj) : 
+    n(n), L(ceil(log2(n)) + 1), timer(0), dep(n), tin(n), tout(n), up(n, vector<int> (L, r))
     {
-        tin[0] = 0, tout[0] = 1e9;
         timer = 0;
-        dep[r] = 1;
+        dep[r] = 0;
         Dfs(r, r, adj);
     }
 
@@ -41,12 +39,12 @@ public:
         tout[u] = ++ timer;
     }
 
-    int GetKthSlow(int v, int k)
+    int GetKth(int v, int k)
     {
         if(k != 0)
             for(int i = L - 1; i >= 0 and v > 0; i --)
-                if((1LL << i) <= k)
-                    k -= (1LL << i), v = up[v][i];
+                if((1 << i) <= k)
+                    k -= (1 << i), v = up[v][i];
         return v;
     }
 
