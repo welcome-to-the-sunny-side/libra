@@ -1,9 +1,8 @@
 vector<int> OfflineLCAChan(int n, int r, const vector<vector<int>> &adj, vector<pair<int, int>> query)
 {
     //dsu
-    vector<int> par(n + 1), siz(n + 1);
+    vector<int> par(n), siz(n, 1);
     iota(par.begin(), par.end(), 0);
-    fill(siz.begin(), siz.end(), 1);
     auto get = [&](int u, auto &&get) -> int
     {
         return (par[u] == u ? u : par[u] = get(par[u], get));
@@ -23,7 +22,7 @@ vector<int> OfflineLCAChan(int n, int r, const vector<vector<int>> &adj, vector<
     
     vector<int> ans(m);
     vector<bool> see(m);
-    vector<vector<int>> store(n + 1);
+    vector<vector<int>> store(n);
 
     for(int i = 0; i < m; i ++)
     {

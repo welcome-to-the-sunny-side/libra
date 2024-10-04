@@ -24,8 +24,8 @@ public:
     int matching = 0;
     vector<vector<int>> adj;
     vector<int> l, r, lvl;
-    BipartiteChan(int _n, int _m, const vector<vector<int>> &_adj) : 
-        n(_n), m(_m), l(n + 1, -1), r(m + 1, -1), adj(_adj) {};
+    BipartiteChan(int n, int m, const vector<vector<int>> &adj) : 
+        n(n), m(m), l(n, -1), r(m, -1), adj(adj) {};
 
     // void Add(int u, int v)  { adj[u].push_back(v); }
     bool Dfs(int u)
@@ -39,11 +39,15 @@ public:
 
     int MaxMatching()
     {
-        matching = 0;   vector<int> q(n + 1);
+        matching = 0;   
+        vector<int> q(n);
         for (int s = 0, t = 0;; s = t = 0)
         {
-            lvl = vector<int>(n + 1);   bool f = 0;
-            for(int i = 1; i <= n; i ++) if (l[i] == -1) lvl[i] = 1, q[t ++] = i;
+            lvl = vector<int>(n);   bool f = 0;
+            for(int i = 0; i < n; i ++) 
+                if (l[i] == -1) 
+                    lvl[i] = 1, q[t ++] = i;
+            
             while (s < t)
             {
                 int u = q[ s++];
@@ -56,9 +60,13 @@ public:
                         lvl[x] = lvl[u] + 1, q[t++] = x;
                 }
             }
+
             if (!f)
                 break;
-            for(int i = 1; i <= n; i ++) if (l[i] == -1) matching += Dfs(i);
+            
+            for(int i = 0; i < n; i ++) 
+                if (l[i] == -1) 
+                    matching += Dfs(i);
         }
         return matching;
     }
@@ -66,7 +74,7 @@ public:
     vector<pair<int, int>> MaxMatchingEdges()
     {
         vector<pair<int, int>> mme;
-        for(int u = 1; u <= n; u ++)
+        for(int u = 0; u < n; u ++)
             if(l[u] != -1)
                 mme.push_back(make_pair(u, l[u]));
         return mme;
@@ -74,7 +82,7 @@ public:
     
     pair<vector<int>, vector<int>> MinVertexCover()
     {
-        vector<bool> lv(n + 1, false), rv(m + 1, false);
+        vector<bool> lv(n, false), rv(m, false);
         
         auto dfs = [&](int u, auto &&dfs) -> void
         {
@@ -87,15 +95,15 @@ public:
                         dfs(r[v], dfs);
                 }
         };
-        for(int u = 1; u <= n; u ++)
+        for(int u = 0; u < n; u ++)
             if(l[u] == -1 and !lv[u])
                 dfs(u, dfs);
 
         vector<int> lc, rc;
-        for(int u = 1; u <= n; u ++)
+        for(int u = 0; u < n; u ++)
             if(!lv[u])
                 lc.push_back(u);
-        for(int u = 1; u <= m; u ++)
+        for(int u = 0; u < m; u ++)
             if(rv[u])
                 rc.push_back(u);
         
