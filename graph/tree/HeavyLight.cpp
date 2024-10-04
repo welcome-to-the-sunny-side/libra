@@ -22,9 +22,11 @@ public:
     S<I, T> tree;
 
     HeavyLightChan(int n, int r, vector<vector<int>> adj) :
-    n(n), r(r), par(n + 1), heavy(n + 1, -1), dep(n + 1), root(n + 1), pos(n + 1), out(n + 1),
-    tree(n + 2)
+    n(n), r(r), par(n), heavy(n, -1), dep(n), root(n), pos(n), out(n),
+    tree(n + 1)
     {
+        assert(r < n);
+
         auto dfs_sz = [&](int u, auto &&dfs) -> int
         {
             int ss = 1, m = 0;
@@ -39,7 +41,7 @@ public:
                 }
             return ss;
         };
-        int timer = 1;
+        int timer = 0;
         auto dfs_hld = [&](int u, auto &&dfs) -> void
         {
             pos[u] = timer ++;
