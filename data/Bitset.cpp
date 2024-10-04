@@ -12,7 +12,18 @@ public:
     {
         return ((T(1) << i) & x) != 0;
     }
-    
+    static inline constexpr T prefix(int i) noexcept
+    {
+        return (i >= B) ? ~T(0) : ((T(1) << i) - T(1));
+    }
+    static inline constexpr T suffix(int i) noexcept
+    {
+        return ~prefix(B - i);
+    }
+    static inline constexpr T range(int l, int r) noexcept
+    {
+        return prefix(r) ^ prefix(l - 1);
+    }
     static constexpr int popcnt(T x) noexcept
     {
         // return _mm_popcnt_u64(x);
@@ -26,20 +37,6 @@ public:
     {
         return __builtin_ctzll(x);
     }
-
-    static inline constexpr T prefix(int i) noexcept
-    {
-        return (i >= B) ? ~T(0) : ((T(1) << i) - T(1));
-    }
-    static inline constexpr T suffix(int i) noexcept
-    {
-        return ~prefix(B - i);
-    }
-    static inline constexpr T range(int l, int r) noexcept
-    {
-        return prefix(r) ^ prefix(l - 1);
-    }
- 
     static inline constexpr int block_id(int i) noexcept
     {
         return i / B;
