@@ -1,14 +1,14 @@
-class Info
+class SparseTableNodeChan
 {
 public:
     static constexpr int neutral = inf;
     
     int val;
-    Info() : val(neutral) {};
-    Info(int x) : val(x) {};
-    Info Unite(const Info &b) const
+    SparseTableNodeChan() : val(neutral) {};
+    SparseTableNodeChan(int x) : val(x) {};
+    SparseTableNodeChan Unite(const SparseTableNodeChan &b) const
     {
-        return Info(min(val, b.val));
+        return SparseTableNodeChan(min(val, b.val));
     };
 };
 template <typename T>
