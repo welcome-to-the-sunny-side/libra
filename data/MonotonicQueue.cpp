@@ -1,11 +1,11 @@
-class Info
+class ElementChan
 {
 public:
     int x;
-    Info() : x(0) {};
-    Info(int v) : x(v) {};
+    ElementChan() : x(0) {};
+    ElementChan(int v) : x(v) {};
 
-    bool opt(const Info &o) const
+    bool opt(const ElementChan &o) const
     {
         return x > o.x;
     }

@@ -1,35 +1,35 @@
-class Info
+class InfoChan
 {
 public:
     int sum = 0;
 
-    Info() : sum(0) {};
-    Info(int x) : sum(x) {};
+    InfoChan() : sum(0) {};
+    InfoChan(int x) : sum(x) {};
 
-    Info Unite(Info b) const 
+    InfoChan Unite(InfoChan b) const 
     {
-        Info res(sum + b.sum);
+        InfoChan res(sum + b.sum);
         return res;
     }
-    static Info GetDefault([[maybe_unused]] int l, [[maybe_unused]] int r)
+    static InfoChan GetDefault([[maybe_unused]] int l, [[maybe_unused]] int r)
     {
-        return Info();
+        return InfoChan();
     }
 };
-class Tag
+class TagChan
 {
 public:
     int add = 0;
 
-    Tag() : add(0) {};
-    Tag(int x) : add(x) {};
+    TagChan() : add(0) {};
+    TagChan(int x) : add(x) {};
 
-    bool ApplyTo(Info &a, [[maybe_unused]] int l, [[maybe_unused]] int r) const
+    bool ApplyTo(InfoChan &a, [[maybe_unused]] int l, [[maybe_unused]] int r) const
     {
         a.sum += add * (r - l + 1);
         return true;
     }
-    void ApplyTo(Tag &t) const
+    void ApplyTo(TagChan &t) const
     {
         t.add += add;
     }

@@ -1,14 +1,14 @@
-class Element
+class ElementChan
 {
 public:
 };
-class Block
+class BlockChan
 {
 public:
 };
 
 template<typename E, typename T, const int B>
-class BlockChan
+class BlockDecompositionChan
 {
 public:
     int ceil_div(int x, int y)
@@ -33,7 +33,7 @@ public:
     vector<E> element;
     vector<T> block;
 
-    BlockChan(int n, vector<E> a, vector<T> b) : n(n), element(a), block(b)
+    BlockDecompositionChan(int n, vector<E> a, vector<T> b) : n(n), element(a), block(b)
     {
 
     };

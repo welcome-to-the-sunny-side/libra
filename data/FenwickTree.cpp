@@ -1,13 +1,13 @@
-class FenwickChanNode
+class NodeChan
 {
 public:
     int v = 0;
 
-    inline void operator+=(FenwickChanNode &other)
+    inline void operator+=(NodeChan &other)
     {
         v += other.v;
     }
-    inline bool operator<(FenwickChanNode &other)
+    inline bool operator<(NodeChan &other)
     {
         return v < other.v;
     }

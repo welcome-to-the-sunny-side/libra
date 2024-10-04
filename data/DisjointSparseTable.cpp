@@ -1,13 +1,13 @@
-class Info
+class ElementChan
 {
 public:
     static constexpr int neutral = 0;
     int val;
-    Info() : val(neutral) {};
-    Info(int x) : val(x) {};
-    Info Unite(const Info &b) const
+    ElementChan() : val(neutral) {};
+    ElementChan(int x) : val(x) {};
+    ElementChan Unite(const ElementChan &b) const
     {
-        return Info(val + b.val);
+        return ElementChan(val + b.val);
     };
 };
 template <typename T>

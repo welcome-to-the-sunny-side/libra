@@ -1,14 +1,14 @@
-class SparseTableNodeChan
+class ElementChan
 {
 public:
     static constexpr int neutral = inf;
     
     int val;
-    SparseTableNodeChan() : val(neutral) {};
-    SparseTableNodeChan(int x) : val(x) {};
-    SparseTableNodeChan Unite(const SparseTableNodeChan &b) const
+    ElementChan() : val(neutral) {};
+    ElementChan(int x) : val(x) {};
+    ElementChan Unite(const ElementChan &b) const
     {
-        return SparseTableNodeChan(min(val, b.val));
+        return ElementChan(min(val, b.val));
     };
 };
 template <typename T>
