@@ -1,14 +1,13 @@
-template<typename T>
-vector<T> DijkstrasChan(int source, const vector<vector<pair<int, T>>> &adj, T zer, T inf)
+template<typename T, T zero, T inf>
+vector<T> DijkstrasChan(int source, const vector<vector<pair<int, T>>> &adj)
 {
-    int n = adj.size() - 1;
-    vector<T> dis(n + 1, inf);
-    dis[source] = zer;
+    int n = adj.size();
+    vector<T> dis(n, inf);
+    dis[source] = zero;
 
     priority_queue<pair<T, int>, vector<pair<T, int>>, greater<pair<T, int>>> q;
-    for(int u = 1; u <= n; u ++)
-        q.emplace(dis[u], u);
-    
+    q.emplace(dis[source], source);
+
     while(!q.empty())
     {
         auto [d, u] = q.top();
