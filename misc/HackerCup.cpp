@@ -15,6 +15,9 @@ void main_()
     cin >> t;
     while(t --)
     {
+        ifstream fin("inp.txt");
+        ofstream fout("out.txt");
+
         {{CURSOR}}
     }
 }
