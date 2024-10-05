@@ -8,6 +8,8 @@ def create_snippet(file_path):
     # Special case for "Template.cpp"
     if filename == "Template":
         tab_trigger = "sport"
+    elif filename == "HackerCup":
+        tab_trigger = "sport_hacker"
     else:
         tab_trigger = f"Template{filename}"
     
