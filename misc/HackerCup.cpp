@@ -13,7 +13,7 @@ void main_()
     ios_base::sync_with_stdio(false), cin.tie(NULL);
     int t = 1;
     cin >> t;
-    while(t --)
+    for(int tt = 1; tt <= t; tt ++)
     {
         ifstream fin("inp.txt");
         ofstream fout("out.txt");
