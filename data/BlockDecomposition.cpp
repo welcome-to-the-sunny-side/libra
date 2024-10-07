@@ -11,19 +11,19 @@ template<typename E, typename T, const int B>
 class BlockDecompositionChan
 {
 public:
-    int ceil_div(int x, int y)
+    static int ceil_div(int x, int y)
     {
         return (x + y - 1)/y;
     }
-    int block_id(int i)
+    static int block_id(int i)
     {
         return i/B;
     }
-    int lb(int bid)
+    static int lb(int bid)
     {
         return bid * B;
     }
-    int rb(int bid)
+    static int rb(int bid)
     {
         return min(n, (bid + 1) * B - 1);
     }
