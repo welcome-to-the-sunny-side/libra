@@ -21,8 +21,8 @@ class CondenserChan
 public:
     int n, c;
     vector<bool> vis;
-    vector<int> stak;
-    vector<vector<int>> adj, rdj, scc, comp, grp;
+    vector<int> stak, comp;
+    vector<vector<int>> adj, rdj, scc, grp;
 
     CondenserChan(int n, const vector<vector<int>> &adj) :
     n(n), c(0), vis(n), adj(adj), rdj(n), scc(n), grp(n), comp(n, -1) 
