@@ -57,7 +57,7 @@ public:
         reverse(stak.begin(), stak.end());
         for(auto u : stak)
             if(comp[u] == -1)
-                ++ c, dfs2(u, dfs2);
+                dfs2(u, dfs2), ++ c;
 
         for(int u = 0; u < n; u ++)
             for(auto v : adj[u])
