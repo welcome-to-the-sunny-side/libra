@@ -3,7 +3,6 @@ class SegTreeChan
 {
 public:
     int n;
-    bool lazy = false;
     vector<Info> infos;
     vector<Tag> tags;
 
@@ -12,8 +11,7 @@ public:
     {
         auto rec = [&](int v, int l, int r, auto &&rec) -> void
         {
-            if(lazy)
-                Propagate(v, l, r);
+            Propagate(v, l, r);
 
             if(l > r)
                 return;
@@ -28,12 +26,12 @@ public:
             
             if(m >= lb)
                 rec(2 * v, l, m, rec);
-            else if(lazy and update)
+            else if(update)
                 Propagate(2 * v, l, m);
 
             if(m + 1 <= rb)
                 rec(2 * v + 1, m + 1, r, rec);
-            else if(lazy and update)
+            else if(update)
                 Propagate(2 * v + 1, m + 1, r);
             
             if(update)
@@ -43,10 +41,9 @@ public:
     };
 
     SegTreeChan() : SegTreeChan(0) {};
-    SegTreeChan(int n) : SegTreeChan(n, true) {};
-    SegTreeChan(int n, bool lazy) : SegTreeChan(vector<Info> (n), lazy) {};
-    SegTreeChan(const vector<Info> &a, bool lazy) : 
-    n((int)a.size()), lazy(lazy), infos(4 * n + 5), tags(lazy ? 4 * n + 5 : 0)
+    SegTreeChan(int n) : SegTreeChan(vector<Info> (n)) {};
+    SegTreeChan(const vector<Info> &a) : 
+    n((int)a.size()), infos(4 * n + 5), tags(4 * n + 5)
     {
         auto build = [&](int v, int l, int r, auto &&build) -> void
         {
@@ -80,7 +77,6 @@ public:
 
     void Modify(int lb, int rb, const Tag &tag)
     {
-        assert(lazy);
         Recurse(lb, rb, true, [&](int v, int l, int r)
         {
             tag.ApplyTo(tags[v]);
