@@ -1,6 +1,7 @@
 class InfoChan
 {
 public:
+    InfoChan *left, *right;
     int sum = 0;
 
     InfoChan() : sum(0) {};
@@ -15,7 +16,17 @@ public:
     {
         return InfoChan();
     }
+
+    InfoChan Grow()
+    {
+        if(left == nullptr)
+        {
+            left = new InfoChan();
+            right = new InfoChan();
+        }
+    }
 };
+
 class TagChan
 {
 public:

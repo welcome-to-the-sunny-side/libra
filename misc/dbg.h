@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include<bitset>
 
 void __print(int x) { std::cerr << x; }
 void __print(long x) { std::cerr << x; }
@@ -48,6 +49,9 @@ void __print(const std::vector<bool> &x) {
     }
     std::cerr << "}";
 }
+
+template<size_t N>
+void __print(const std::bitset<N>& x) { std::cerr << x; }
 
 void _print() {
     std::cerr << "]\n";
