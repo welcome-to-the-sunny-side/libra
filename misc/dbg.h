@@ -18,7 +18,8 @@ void __print(long double x) { std::cerr << x; }
 void __print(char x) { std::cerr << '\'' << x << '\''; }
 void __print(const char *x) { std::cerr << '\"' << x << '\"'; }
 void __print(const std::string &x) { std::cerr << '\"' << x << '\"'; }
-void __print(bool x) { std::cerr << (x ? "true" : "false"); }
+// void __print(bool x) { std::cerr << (x ? "true" : "false"); }
+void __print(const bool& x) { std::cerr << (x ? "true" : "false"); }
 
 template<typename T, typename V>
 void __print(const std::pair<T, V> &x) {
