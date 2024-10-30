@@ -1,127 +1,122 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#ifdef natural_selection
-#include "../misc/dbg.h"
-#else
-#define debug(...)
-#define endl "\n"
-#endif
-
-vector<int> ArticulationChan(const vector<vector<int>> &adj)
+class ConnectivityChan
 {
-    int n = adj.size();
+public:
+    int n;
+    vector<vector<int>> adj;
+    int timer;
+    vector<int> tin, low;
 
-    int timer = 0;
-    vector<int> tin(n, -1), low(n, -1);
-    vector<int> a;
+    vector<pair<int, int>> bridge;
 
-    auto dfs = [&](int u, int p, auto &&dfs) -> void
-    {
-        tin[u] = low[u] = ++ timer;
+    int a;
+    vector<bool> cut;
 
-        int c = 0;
-        bool cut = false;
-
-        for(int v : adj[u])
-        {
-            if(v == p)
-                continue;
-            if(tin[v] != -1)
-                low[u] = min(low[u], tin[v]);
-            else
-            {
-                dfs(v, u, dfs);
-                low[u] = min(low[u], low[v]);
-                if(low[v] >= tin[u] and p != -1)
-                    cut = true;
-                ++ c;
-            }
-        }
-        if(p == -1 and c > 1)
-            cut = true;
-        
-        if(cut)
-            a.push_back(u);
-    };
-    for(int u = 0; u < n; u ++)
-        if(tin[u] == -1)
-            dfs(u, -1, dfs);
-        
-    return a;
-}
-
-vector<vector<int>> BiconChan(const vector<vector<int>> &adj)
-{
-    int n = adj.size();
-
-    auto articulation = ArticulationChan(adj);
-
-    vector<bool> is_articulation(n, false);
-    for(auto u : articulation)
-        is_articulation[u] = true;
-    
-    vector<bool> vis(n, false);
-    auto dfs = [&](int u, vector<int> &comp, auto &&dfs) -> void
-    {
-        vis[u] = true;
-        comp.push_back(u);
-        
-        if(!is_articulation[u])
-            for(auto v : adj[u])
-                if(!vis[v] or is_articulation[v])
-                    dfs(v, comp, dfs);
-    };
-
+    int m;
     vector<vector<int>> bcc;
-    for(int u = 0; u < n; u ++)
+
+    int b;
+    vector<int> block_node_id;
+    vector<int> cut_node_id;
+    vector<vector<int>> bct_comp;    
+    vector<vector<int>> bct;
+
+    ConnectivityChan(const vector<vector<int>> &adj) : n(adj.size()), m(n), adj(adj), timer(0), tin(n, -1), low(n, -1), cut(n), bcc(n) 
     {
-        if(is_articulation[u])
+        ComputeConnectivity();
+        MakeBlockCutTree();
+    };
+
+    void ComputeConnectivity()
+    {
+        vector<bool> vis(n);
+        vector<int> stk;
+
+        auto dfs = [&](int u, int p, auto &&dfs) -> void
         {
+            tin[u] = low[u] = timer ++;
+            vis[u] = true;
+            stk.push_back(u);
+
+            int ptimes = 0;
+            int children = 0;
             for(auto v : adj[u])
-                if(is_articulation[v] and u < v)
-                    bcc.push_back({u, v});
-        }
-        else if(!vis[u])
-        {
-            vector<int> comp;
-            dfs(u, comp, dfs);
-            sort(comp.begin(), comp.end());
-            comp.erase(unique(comp.begin(), comp.end()), comp.end());
-        }
-    }
-    
-    return bcc;
-}
+            {
+                if(v == p)
+                {
+                    ++ ptimes;
+                    continue;
+                }
 
-int32_t main()
-{
-    ios_base::sync_with_stdio(false), cin.tie(NULL);
-    int t = 1;
-    // cin >> t;
-    while(t --)
+                if(vis[v])
+                    low[u] = min(low[u], tin[v]);
+                else
+                {
+                    ++ children;
+                    int s = stk.size();
+                    dfs(v, u, dfs);
+                    low[u] = min(low[u], low[v]);
+
+                    if((p == -1 and children > 1) or (p != -1 and tin[u] <= low[v]))
+                    {
+                        cut[u] = true;
+                        bcc.push_back(vector<int> ());
+                        bcc[m].push_back(u);
+                        while(stk.size() > s)
+                        {
+                            bcc[m].push_back(stk.back());
+                            stk.pop_back();
+                        }
+                        ++ m;
+                    }
+                }
+            
+            }
+
+            if(p != -1 and ptimes <= 1 and low[u] > tin[p])
+                bridge.emplace_back(min(u, p), max(u, p));
+        };
+        for(int u = 0; u < n; u ++)
+            if(!vis[u])
+            {
+                dfs(u, -1, dfs);
+                bcc.push_back(vector<int> ());
+                while(!stk.empty())
+                {
+                    bcc[m].push_back(stk.back());
+                    stk.pop_back();
+                }
+                ++ m;
+            }
+        a = count(cut.begin(), cut.end(), true);
+    }
+
+    void MakeBlockCutTree()
     {
-        int n, m;
-        cin >> n >> m;
+        b = (m - n) + a;
+        bct_comp.assign(b, vector<int>());
 
-        vector<vector<int>> adj(n);
-        for(int i = 0; i < m; i ++)
+        for(int i = n; i < m; i ++)
         {
-            int u, v;
-            cin >> u >> v;
-            adj[u].push_back(v), adj[v].push_back(u);
+            bct_comp[i - n] = bcc[i];
+            for(auto u : bct_comp[i - n])
+                block_node_id[u] = i - n;
         }
 
-        auto bicon = BiconChan(adj);
-
-        cout << bicon.size() << endl;
-        for(auto b : bicon)
+        vector<int> cut_list;
+        for(int i = 0; i < n; i ++)
+            if(cut[i])
+                cut_list.push_back(i);
+            
+        for(int i = m - n; i < m - n + a; i ++)
         {
-            cout << b.size() << " ";
-            for(auto u : b)
-                cout << u << " ";
-            cout << endl;
+            bct_comp[i] = {cut_list[i - (m - n)]};
+            for(auto u : bct_comp[i])
+                cut_node_id[u] = i;
         }
-        cout << endl;
+
+        for(int i = 0; i < m - n; i ++)
+            for(auto u : bct_comp[i - n])
+                if(cut[u])
+                    bct[i].push_back(cut_node_id[u]), bct[cut_node_id[u]].push_back(i);
     }
-}
+};
