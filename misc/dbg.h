@@ -18,7 +18,6 @@ void __print(long double x) { std::cerr << x; }
 void __print(char x) { std::cerr << '\'' << x << '\''; }
 void __print(const char *x) { std::cerr << '\"' << x << '\"'; }
 void __print(const std::string &x) { std::cerr << '\"' << x << '\"'; }
-// void __print(bool x) { std::cerr << (x ? "true" : "false"); }
 void __print(const bool& x) { std::cerr << (x ? "true" : "false"); }
 
 template<typename T, typename V>
@@ -65,10 +64,6 @@ void _print(T t, V... v) {
     _print(v...);
 }
 
-// #ifndef ONLINE_JUDGE
 #define debug(x...) { std::cerr << "[" << #x << "] = ["; _print(x); }
-// #else
-// #define debug(x...)
-// #endif
 
 #endif // DEBUG_H

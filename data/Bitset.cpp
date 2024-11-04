@@ -363,4 +363,4 @@ public:
     }
 };
 
-using BitsetChan64 = BitsetChan<uint64_t, 64>;
+using BitsetChan64 = BitsetChan<uint64_t, bit_width(uint64_t())>;
