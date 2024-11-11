@@ -46,7 +46,7 @@ def main():
         os.makedirs(vscode_folder)
 
     snippets = {}
-
+    
     # Get the current directory (F/libra) and process .cpp files
     current_directory = os.getcwd()
 
