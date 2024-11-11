@@ -65,4 +65,4 @@ def main():
     print(f"Snippets successfully saved to {snippets_file_path}")
 
 if __name__ == "__main__":
-    main()
+    main()  
