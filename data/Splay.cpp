@@ -219,9 +219,68 @@ namespace SplayChan
         u->Pull();
         return u;
     }
+
+    Node *Insert(Node *r, Node *v, const function<bool(Node *)> &go_left)
+    {
+        pair<Node *, Node *> p = Split(r, go_left);
+        return Merge(p.first, Merge(v, p.second));
+    }
+
+    Node *Remove(Node *v)
+    { 
+        // returns the new root
+        Splay(v);
+        v->Push();
+        Node *x = v->l;
+        Node *y = v->r;
+        v->l = v->r = nullptr;
+        Node *z = Merge(x, y);
+        if (z != nullptr)
+            z->p = v->p;
+        v->p = nullptr;
+        v->Push();
+        v->Pull(); // now v might be reusable...
+        return z;
+    }
+
+    Node *Next(Node *v)
+    {
+        Splay(v);
+        v->Push();
+        //find leftmost node in subtree of right child of node v
+        if (v->r == nullptr)
+            return nullptr;
+        v = v->r;
+        while (v->l != nullptr)
+        {
+            v->Push();
+            v = v->l;
+        }
+        Splay(v);
+        return v;
+    }
+
+    Node *Prev(Node *v)
+    {
+        Splay(v);
+        v->Push();
+        //find rightmost node in subtree of left child of v
+        if (v->l == nullptr)
+            return nullptr;
+        v = v->l;
+        while (v->r != nullptr)
+        {
+            v->Push();
+            v = v->r;
+        }
+        Splay(v);
+        return v;
+    }
 };
 using namespace SplayChan;
 
 int32_t main()
 {
+    int n;
+     
 }

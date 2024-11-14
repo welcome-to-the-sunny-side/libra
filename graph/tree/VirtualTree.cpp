@@ -35,4 +35,4 @@ vector<pair<int, int>> VirtualTreeChan(vector<int> key, const vector<int> &tin, 
     }
 
     return edge;
-};
+}
