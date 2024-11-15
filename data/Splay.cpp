@@ -1,50 +1,44 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#ifdef natural_selection
-#include "../libra/misc/dbg.h"
-#else
-#define debug(...)
-#define endl "\n"
-#endif
-
 class Node
 {
 public:
     Node *l, *r, *p;
 
-    int key, val;
+    int key;
+    int64_t val;
 
     //subtree aggregates
-    int siz, sum;
+    int siz;
+    int64_t sum;
 
     //lazy propagation
-    int add;
+    int64_t add;
 
     Node() : p(nullptr), l(nullptr), r(nullptr), key(0), val(0), sum(0), add(0) {};
 
     void Push()
     {
+        val += add;
         if(l != nullptr)
-            l->sum += add;
+            l->sum += add * l->siz, l->add += add;
         if(r != nullptr)
-            r->sum += add;
+            r->sum += add * r->siz, r->add += r->add;
         add = 0;
     }
     void Pull()
     {
         siz = sum = 0;
         if(l != nullptr)
-            siz += l->siz, sum += r->sum;
+            siz += l->siz, sum += l->sum;
         siz += 1, sum += val;
         if(r != nullptr)
             siz += r->siz, sum += r->sum;
     }
 };
 
-// template<typename Node>
 namespace SplayChan
 {
+    //common: push, splay, pull
+
     bool IsRoot(Node* u)
     {
         if(u == nullptr)
@@ -59,24 +53,30 @@ namespace SplayChan
 
         p->Push();
         u->Push();
-        p->p = u->p;
+
+        u->p = p->p;
+        p->p = u;
 
         if(u->p != nullptr)
         {
-            if(p->p->l == u)
-                p->p->l = u;
-            else if(p->p->r == u)
-                p->p->r = u;
+            if(u->p->l == p)
+                u->p->l = u;
+            if(u->p->r == p)
+                u->p->r = u;
         }
 
         if(u == p->l)
         {
             p->l = u->r;
+            if(u->r != nullptr)
+                u->r->p = p;
             u->r = p;
         }
         else
         {
             p->r = u->l;
+            if(u->l != nullptr)
+                u->l->p = p;
             u->l = p;
         }
 
@@ -107,7 +107,7 @@ namespace SplayChan
         if(u == nullptr)
             return {u, 0};
         Splay(u);
-        int d;
+        int d = 0;
 
         while(1)
         {
@@ -118,8 +118,9 @@ namespace SplayChan
             Node *v = (d == -1 ? u->l : u->r);
             if(v == nullptr)
                 break;
-            u = v;
+            u = v;      
         }
+
         Splay(u);
         return {u, d};
     }
@@ -128,6 +129,7 @@ namespace SplayChan
     {
         return Access(u, [&](Node*) {return -1;}).first;
     }
+
     Node* GetRightmost(Node* u)
     {
         return Access(u, [&](Node*) {return 1;}).first;
@@ -149,7 +151,11 @@ namespace SplayChan
             return 1;
         });
 
-        return (p.second == 0 ? p.first : nullptr); 
+        auto v = p.first;
+        v->Push();
+        Splay(v);
+
+        return (p.second == 0 ? v : nullptr); 
     }
 
     int GetPosition(Node *u)        // 0 -indexed
@@ -173,10 +179,11 @@ namespace SplayChan
         
         //if p.second == 1, we have found the greatest node which should be in the left subtree
         //if p.second == -1, we have found the smallest node which should be in the right subtree
-        //then, we splayed this node and its now the root
+        //then in both cases, we splayed this node and its now the root
 
         u = p.first;
         u->Push();
+        Splay(u);
 
         if(p.second == -1)
         {
@@ -184,9 +191,7 @@ namespace SplayChan
             if(v == nullptr)
                 return {nullptr, u};
             u->l = nullptr;
-            v->p = u->p;
-            v = GetRightmost(v);
-            u->p = v;
+            v->p = nullptr;
             u->Pull();
             return {v, u};
         }
@@ -196,6 +201,7 @@ namespace SplayChan
             if(v == nullptr)
                 return {u, nullptr};
             u->r = nullptr;
+            v->p = nullptr;
             u->Pull();
             return {u, v};
         }
@@ -206,43 +212,52 @@ namespace SplayChan
     Node* Merge(Node* u, Node* v)       //all in u <= all in v
     {
         if(u == nullptr)
-            return u;
-        if(v == nullptr)
             return v;
+        if(v == nullptr)
+            return u;
         
         u = GetRightmost(u);
-        assert(v->r == nullptr);
-
-        Splay(v);
         u->Push();
+        
+        Splay(u);
+
+        assert(u->r == nullptr);
         u->r = v;
+        v->p = u;
         u->Pull();
+
         return u;
     }
 
     Node *Insert(Node *r, Node *v, const function<bool(Node *)> &go_left)
     {
+        //returns new root
         pair<Node *, Node *> p = Split(r, go_left);
         return Merge(p.first, Merge(v, p.second));
     }
 
-    Node *Remove(Node *v)
+    Node *Remove(Node *u)
     { 
         // returns the new root
-        Splay(v);
-        v->Push();
-        Node *x = v->l;
-        Node *y = v->r;
-        v->l = v->r = nullptr;
+        Splay(u);
+        u->Push();
+        Node *x = u->l;
+        Node *y = u->r;
+        u->l = u->r = nullptr;
+        if(x != nullptr)
+            x->p = nullptr;
+        if(y != nullptr) 
+            y->p = nullptr;
         Node *z = Merge(x, y);
-        if (z != nullptr)
-            z->p = v->p;
-        v->p = nullptr;
-        v->Push();
-        v->Pull(); // now v might be reusable...
+        
+        u->p = nullptr;
+        u->Push();
+        u->Pull(); // now u might be reusable...
+        
         return z;
     }
 
+    //untested
     Node *Next(Node *v)
     {
         Splay(v);
@@ -260,6 +275,7 @@ namespace SplayChan
         return v;
     }
 
+    //untested
     Node *Prev(Node *v)
     {
         Splay(v);
@@ -278,9 +294,3 @@ namespace SplayChan
     }
 };
 using namespace SplayChan;
-
-int32_t main()
-{
-    int n;
-     
-}
