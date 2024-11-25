@@ -10,7 +10,7 @@ public:
 
     void Push(T x)
     {
-        stk.push_back({x, x.Unite(stk.empty() ? T() : stk.back().second)});
+        stk.push_back({x, x.Unite(Sum())});
     }
 
     void Pop()
@@ -29,7 +29,8 @@ public:
     {
         if(i == -1) 
             i = Size() - 1;
-        assert(0 <= i and i <= Size() - 1);
+        if(i == -1)
+            return T();
         return stk[i].second;
     }
 
