@@ -8,6 +8,11 @@ public:
         return stk.size();
     }
 
+    bool Empty()
+    {
+        return stk.empty();
+    }
+
     void Push(T x)
     {
         stk.push_back({x, x.Unite(Sum())});
