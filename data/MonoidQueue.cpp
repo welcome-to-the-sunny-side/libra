@@ -1,79 +1,24 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#ifdef natural_selection
-#include "../misc/dbg.h"
-#else
-#define debug(...)
-#define endl "\n"
-#endif
-
-class MonoidChan
-{
-public:
-    int sum = 0;
-
-    MonoidChan() : sum(0) {};
-    MonoidChan(int x) : sum(x) {};
-
-    MonoidChan Unite(MonoidChan b) const 
-    {
-        MonoidChan res(sum + b.sum);
-        return res;
-    }
-    static MonoidChan GetDefault([[maybe_unused]] int l, [[maybe_unused]] int r)
-    {
-        return MonoidChan();
-    }
-};
-
-template<typename T>
-class MonoidStackChan
-{
-public:
-    vector<pair<T, T>> stk;
-    int Size()
-    {
-        return stk.size();
-    }
-
-    void Push(T x)
-    {
-        stk.push_back({x, x.Unite(Sum())});
-    }
-
-    void Pop()
-    {
-        assert(!stk.empty());
-        stk.pop_back();
-    }
-
-    T Top()
-    {
-        assert(!stk.empty());
-        return stk.back().first;
-    }
-
-    T Sum(int i = -1)
-    {
-        if(i == -1) 
-            i = Size() - 1;
-        if(i == -1)
-            return T();
-        return stk[i].second;
-    }
-
-    void Swap(MonoidStackChan &other)
-    {
-        swap(stk, other.stk);
-    }
-};
-
-template<template<typename T> typename S>
+template<template<typename> typename S, typename T>
 class MonoidQueueChan
 {
 public:
     S<T> l, r;
+
+    int Size()
+    {
+        return l.Size() + r.Size();
+    }
+
+    bool Empty()
+    {
+        return (l.Empty() and r.Empty());
+    }
+
+    void Rebalance()
+    {
+        while(!r.Empty())
+            l.Push(r.Top()), r.Pop();
+    }
 
     void Push(T x)
     {
@@ -82,16 +27,28 @@ public:
 
     void Pop()
     {
+        assert(!Empty());
+        if(l.Empty())   Rebalance();
+        l.Pop();
+    }
+
+    T Sum()
+    {
+        return l.Sum().Unite(r.Sum());
+    }
+
+    T Front()
+    {
+        assert(!Empty());
+        if(l.Empty())   Rebalance();
+        return l.Top();
+    }
+    
+    T Back()
+    {
+        assert(!Empty());
+        if(r.Empty())
+            return l.Top(0);
+        return r.Top();
     }
 };
-
-signed main()
-{
-    ios_base::sync_with_stdio(false), cin.tie(NULL);
-    int t = 1;
-    cin >> t;
-    while(t --)
-    {
-        
-    }
-}
