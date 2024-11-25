@@ -1,9 +1,8 @@
 //wip
-
 template<typename T>
 class MonoidDequeChan
 {
-    stack<T> a, b;
+    stack<pair<T, T>> a, b;
 
     void Push(T a)
     {
@@ -15,5 +14,8 @@ class MonoidDequeChan
 
     }
 
-    void Compute
+    T Compute()
+    {
+
+    }
 };

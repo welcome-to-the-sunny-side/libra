@@ -18,16 +18,19 @@ public:
     //lazy propagation
     int64_t add;
 
-    Node() : p(nullptr), l(nullptr), r(nullptr), key(0), siz(0),
-             val(0), sum(0), add(0) {};
-    
+    Node()
+    {
+        p = l = r = nullptr;
+        key = siz = val = sum = add = 0;
+    }
+
+    //current attributes are already updated, update child attributes so that a pull would result in the correct aggregate
     void Push()
     {
-        val += add;
         if(l != nullptr)
-            l->sum += add * l->siz, l->add += add;
+            l->sum += add * l->siz, l->val += add, l->add += add;
         if(r != nullptr)
-            r->sum += add * r->siz, r->add += add;
+            r->sum += add * r->siz, r->val += add, r->add += add;
         add = 0;
     }
     void Pull()

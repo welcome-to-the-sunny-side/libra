@@ -1,7 +1,13 @@
+/*
+general ideas:
+- Can do a dfs to an arbitrary node in O(log(n)) time, if you always splay it afterwards
+- For single node modifications, we generally splay the node first and then do what we want
+- BST property is maintained throughout (key can be redundant a lot of times)
+*/
+
 namespace SplayChan
 {
     //common: push, splay, pull
-
     bool IsRoot(Node* u)
     {
         if(u == nullptr)
@@ -254,6 +260,131 @@ namespace SplayChan
         }
         Splay(v);
         return v;
+    }
+
+    //0-indexed
+    //`operate(0, Node*)` is to operate with single node
+    //`operate(1, Node*)` is to operate on subtree of node
+    template<typename O>
+    Node* Query(Node* u, int l, int r, O operate)
+    {
+        u = GetKth(u, l);
+        assert(u != nullptr);
+        assert(l <= r and r < u->siz);
+
+        int remaining = (r - l + 1);
+        
+        -- remaining;
+        operate(0, u);
+        u->Push();
+
+        if(u->r != nullptr)
+            u = u->r;
+
+        while(remaining > 0)
+        {
+            u->Push();
+
+            if(u->l != nullptr)
+            {
+                if(u->l->siz >= remaining)
+                {
+                    u = u->l;
+                    continue;
+                }
+                remaining -= u->l->siz;
+                operate(1, u->l);
+            }
+
+            if(remaining > 0)
+            {
+                -- remaining;
+                operate(0, u);
+            }
+
+            if(u->r == nullptr)
+                break;
+            u = u->r;
+        }
+
+        u->Push();
+        Splay(u);
+        u->Pull();
+
+        return u;
+    }
+
+    //0-indexed
+    //`operate(0, Node*)` is to operate with single node
+    //`operate(1, Node*)` is to operate on subtree of node
+    template<typename O>
+    Node* Modify(Node* u, int l, int r, O operate)
+    {
+        u = GetKth(u, l);
+        assert(u != nullptr);
+        assert(l <= r and r < u->siz);
+
+        int remaining = (r - l + 1);
+        
+        -- remaining;
+        operate(0, u);
+        u->Push();
+
+        auto dfs = [&](auto &&dfs) -> void
+        {
+            if(remaining == 0)
+                return;
+            
+            Node* cur = u;
+            u->Push();
+
+            if(u->l != nullptr)
+            {
+                if(u->l->siz >= remaining)
+                {
+                    u = u->l;
+                    dfs(dfs);
+
+                    cur->Pull();
+                    return;
+                }
+                
+                remaining -= u->l->siz;
+                operate(1, u->l);
+                u->Pull();          //left child might have been updated
+            }
+
+            if(remaining > 0)
+            {
+                -- remaining;
+                operate(0, u);
+            }
+
+            if(u->r == nullptr)
+            {
+                cur->Pull();
+                return;
+            }
+
+            u = u->r;
+            dfs(dfs);
+
+            cur->Pull();
+            return;
+        };
+
+        if(u->r != nullptr)
+            u = u->r;
+        
+        Node* cur = u;
+        dfs(dfs);
+        cur->Pull();
+
+        u->Push();
+        Splay(u);
+        u->Pull();
+
+        return u;
     }
 };
 using namespace SplayChan;
