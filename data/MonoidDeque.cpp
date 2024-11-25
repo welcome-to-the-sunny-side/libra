@@ -1,5 +1,5 @@
 template<template<typename> typename S, typename T>
-class MonoidDequeueChan
+class MonoidDequeChan
 {
 public:
     S<T> l, r;
