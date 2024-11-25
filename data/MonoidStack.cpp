@@ -1,33 +1,40 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#ifdef natural_selection
-#include "../libra/misc/dbg.h"
-#else
-#define debug(...)
-#define endl "\n"
-#endif
-
-
-
 template<typename T>
 class MonoidStackChan
 {
-    stack<pair<T, T>> stk;
-
-    void Push()
+public:
+    vector<pair<T, T>> stk;
+    int Size()
     {
+        return stk.size();
+    }
 
+    void Push(T x)
+    {
+        stk.push_back({x, x.Unite(stk.empty() ? T() : stk.back().second)});
+    }
+
+    void Pop()
+    {
+        assert(!stk.empty());
+        stk.pop_back();
+    }
+
+    T Top()
+    {
+        assert(!stk.empty());
+        return stk.back().first;
+    }
+
+    T Sum(int i = -1)
+    {
+        if(i == -1) 
+            i = Size() - 1;
+        assert(0 <= i and i <= Size() - 1);
+        return stk[i].second;
+    }
+
+    void Swap(MonoidStackChan &other)
+    {
+        swap(stk, other.stk);
     }
 };
-
-signed main()
-{
-    ios_base::sync_with_stdio(false), cin.tie(NULL);
-    int t = 1;
-    cin >> t;
-    while(t --)
-    {
-        
-    }
-}
