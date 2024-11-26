@@ -1,19 +1,19 @@
-template <typename Info>
-class SegTreeChan
+template <typename info>
+class segment_tree_chan
 {
 public:
     int n;
-    vector<Info> infos;
+    vector<info> infos;
     seg_tree::in_order_layout layout;
 
-    void UpdateNode(seg_tree::point a)
+    void update_node(seg_tree::point a)
     {
-        infos[a] = infos[a.c(0)].Unite(infos[a.c(1)]);
+        infos[a] = infos[a.c(0)].unite(infos[a.c(1)]);
     }
 
-    SegTreeChan(int n_) : SegTreeChan(vector<Info>(n_)) {}
+    segment_tree_chan(int n_) : segment_tree_chan(vector<info>(n_)) {}
 
-    SegTreeChan(const vector<Info> &a) : n(int(a.size()))
+    segment_tree_chan(const vector<info> &a) : n(int(a.size()))
     {
         assert(n > 0);
         infos.resize(2 * n);
@@ -24,29 +24,29 @@ public:
         }
         for (int i = n - 1; i >= 1; i--)
         {
-            infos[i] = infos[2 * i].Unite(infos[2 * i + 1]);
+            infos[i] = infos[2 * i].unite(infos[2 * i + 1]);
         }
     }
 
-    void Set(int p, const Info &v)
+    void set(int p, const info &v)
     {
         auto pt = layout.get_point(p);
         infos[pt] = v;
         pt.for_parents_up([&](seg_tree::point a)
-                          { UpdateNode(a); });
+                          { update_node(a); });
     }
 
-    Info Query(int l, int r)
+    info query(int l, int r)
     {
         ++ r;
         auto rng = layout.get_range(l, r);
-        Info res;
+        info res;
         rng.for_each_l_to_r([&](seg_tree::point a)
-                            { res = res.Unite(infos[a]); });
+                            { res = res.unite(infos[a]); });
         return res;
     }
 
-    Info Get(int p)
+    info get(int p)
     {
         auto pt = layout.get_point(p);
         return infos[pt];
@@ -56,18 +56,18 @@ public:
     //if `(r > n)`, then `f(sum[l, n]) = true` 
     //if `(r < l)`, then `f(sum[l, l]) = false`
     template <typename F>
-    int MaxRight(int l, F f)
+    int max_right(int l, F f)
     {
         auto rng = layout.get_range(l, n);
         int res = n;
-        Info sum;
+        info sum;
         rng.for_each_l_to_r([&](seg_tree::point a)
         {
             if (res != n) 
             {
                 return;
             }
-            auto new_sum = sum.Unite(infos[a]);
+            auto new_sum = sum.unite(infos[a]);
             if (f(new_sum))
             {
                 sum = new_sum;
@@ -75,7 +75,7 @@ public:
             }
             while (a < n) 
             {
-                new_sum = sum.Unite(infos[a.c(0)]);
+                new_sum = sum.unite(infos[a.c(0)]);
                 if (f(new_sum)) 
                 {
                     sum = new_sum;
@@ -96,12 +96,12 @@ public:
     //if (l == 0), then f(sum[0, n]) = true
     //if (l > r), then f(sum[r, r]) = false
     template <typename F>
-    int MinLeft(int r, F f)
+    int min_left(int r, F f)
     {
         ++ r;
         auto rng = layout.get_range(0, r);
         int res = 0;
-        Info sum;
+        info sum;
         rng.for_each_r_to_l([&](seg_tree::point a)
         {
             if (res != 0) 
@@ -109,7 +109,7 @@ public:
                 return;
             }
             
-            auto new_sum = infos[a].Unite(sum);
+            auto new_sum = infos[a].unite(sum);
             if (f(new_sum))
             {
                 sum = new_sum;
@@ -117,7 +117,7 @@ public:
             }
             while (a < n)
             {
-                new_sum = infos[a.c(1)].Unite(sum);
+                new_sum = infos[a.c(1)].unite(sum);
                 if (f(new_sum)) 
                 {
                     sum = new_sum;

@@ -1,12 +1,12 @@
-template <typename Info>
-class SegTreeChan
+template <typename info>
+class segment_tree_chan
 {
 public:
     int n;
-    vector<Info> infos;
+    vector<info> infos;
 
     template<typename O>
-    void Recurse(int lb, int rb, bool update, O op)
+    void recurse(int lb, int rb, bool update, O op)
     {
         auto rec = [&](int v, int l, int r, auto &&rec) -> void
         {
@@ -27,14 +27,14 @@ public:
                 rec(2 * v + 1, m + 1, r, rec);
             
             if(update)
-                infos[v] = infos[2 * v].Unite(infos[2 * v + 1]);
+                infos[v] = infos[2 * v].unite(infos[2 * v + 1]);
         };
         rec(1, 0, n - 1, rec);
     };
 
-    SegTreeChan() : SegTreeChan(0) {};
-    SegTreeChan(int n) : SegTreeChan(vector<Info> (n)) {};
-    SegTreeChan(const vector<Info> &a) : 
+    segment_tree_chan() : segment_tree_chan(0) {};
+    segment_tree_chan(int n) : segment_tree_chan(vector<info> (n)) {};
+    segment_tree_chan(const vector<info> &a) : 
     n((int)a.size()), infos(4 * n + 5)
     {
         auto build = [&](int v, int l, int r, auto &&build) -> void
@@ -43,44 +43,44 @@ public:
                 return;
             if(l == r)
             {
-                infos[v] = Info(a[l]);
+                infos[v] = info(a[l]);
                 return;
             }
             int m = (l + r)/2;
             build(v * 2, l, m, build);
             build(v * 2 + 1, m + 1, r, build);
-            infos[v] = infos[v * 2].Unite(infos[v * 2 + 1]);
+            infos[v] = infos[v * 2].unite(infos[v * 2 + 1]);
         };
         build(1, 0, n - 1, build);
     };
 
-    void Set(int p, const Info &info)
+    void set(int p, const info &info)
     {
-        Recurse(p, p, true, [&](int v, int l, int r)
+        recurse(p, p, true, [&](int v, int l, int r)
         {
             infos[v] = info;
         });
     }
-    void Add(int p, const Info &info)
+    void add(int p, const info &info)
     {
-        Recurse(p, p, true, [&](int v, int l, int r)
+        recurse(p, p, true, [&](int v, int l, int r)
         {
-            infos[v] = infos[v].Unite(info);
+            infos[v] = infos[v].unite(info);
         });
     }
-    Info Query(int lb, int rb)
+    info query(int lb, int rb)
     {
-        Info res = Info();
-        Recurse(lb, rb, false, [&](int v, int l, int r)
+        info res = info();
+        recurse(lb, rb, false, [&](int v, int l, int r)
         {
-            res = res.Unite(infos[v]);
+            res = res.unite(infos[v]);
         });
         return res;
     }
-    Info Get(int p)
+    info get(int p)
     {
-        Info res = Info();
-        Recurse(p, p, false, [&](int v, int l, int r)
+        info res = info();
+        recurse(p, p, false, [&](int v, int l, int r)
         {
             res = infos[v];
         });

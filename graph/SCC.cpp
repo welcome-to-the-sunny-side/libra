@@ -1,4 +1,4 @@
-class CondenserChan
+class condenser_chan
 {
     /*
     tc: O(n + m)
@@ -24,7 +24,7 @@ public:
     vector<int> stak, comp;
     vector<vector<int>> adj, rdj, scc, grp;
 
-    CondenserChan(int n, const vector<vector<int>> &adj) :
+    condenser_chan(int n, const vector<vector<int>> &adj) :
     n(n), c(0), vis(n), adj(adj), rdj(n), scc(n), grp(n), comp(n, -1) 
     {
         for(int u = 0; u < n; u ++)
@@ -32,7 +32,7 @@ public:
                 rdj[v].push_back(u);
     };
 
-    void Condense()
+    void condense()
     {
         auto dfs1 = [&](int u, auto &&dfs1) -> void 
         {
@@ -68,7 +68,7 @@ public:
             grp[comp[u]].push_back(u);
     }
 
-    void Fix()      //remove multiple edges [O(m log(m))]
+    void fix()      //remove multiple edges [O(m log(m))]
     {
         for(auto &v : scc)
         {

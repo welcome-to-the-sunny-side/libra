@@ -1,4 +1,4 @@
-class ConnectivityChan
+class connectivity_chan
 {
 public:
     int n;
@@ -20,13 +20,13 @@ public:
     vector<vector<int>> bct_comp;    
     vector<vector<int>> bct;
 
-    ConnectivityChan(const vector<vector<int>> &adj) : n(adj.size()), m(n), adj(adj), timer(0), tin(n, -1), low(n, -1), cut(n), bcc(n) 
+    connectivity_chan(const vector<vector<int>> &adj) : n(adj.size()), m(n), adj(adj), timer(0), tin(n, -1), low(n, -1), cut(n), bcc(n) 
     {
-        ComputeConnectivity();
-        MakeBlockCutTree();
+        compute_connectivity();
+        make_block_cut_tree();
     };
 
-    void ComputeConnectivity()
+    void compute_connectivity()
     {
         vector<bool> vis(n);
         vector<int> stk;
@@ -90,7 +90,7 @@ public:
         a = count(cut.begin(), cut.end(), true);
     }
 
-    void MakeBlockCutTree()
+    void make_block_cut_tree()
     {
         b = (m - n) + a;
         bct_comp.assign(b, vector<int>());
