@@ -1,0 +1,5 @@
+# cph
+-std=c++20 -fsanitize=undefined -Dnatural_selection -march=native
+
+# code runner executor map
+"cpp": "cd $dir && g++ -std=c++20 -fsanitize=address,undefined -Dnatural_selection -march=native -O2 $fileName -o $fileNameWithoutExt_exec && LD_PRELOAD=(gcc -print-file-name=libasan.so) $dir/$fileNameWithoutExt_exec",

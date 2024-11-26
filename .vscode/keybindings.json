@@ -1,0 +1,13 @@
+[
+    //fold/unfold active block
+    {
+        "key": "cmd+shift+[",
+        "command": "editor.fold",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+shift+]",
+        "command": "editor.unfold",
+        "when": "editorTextFocus"
+    }
+]
