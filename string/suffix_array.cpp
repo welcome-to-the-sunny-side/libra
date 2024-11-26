@@ -1,5 +1,5 @@
 template <class T>
-array<vector<int>, 3> SuffixArrayChan(const T &s, int max_num)
+array<vector<int>, 3> suffix_array_chan(const T &s, int max_num)
 {
     /*
         tc: O(|s|.log(|s|) + max_num)

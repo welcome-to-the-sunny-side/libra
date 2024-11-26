@@ -1,5 +1,5 @@
 //wip
-class LevelAncestorChan
+class level_ancestor_chan
 {
 public:
     int n;
@@ -7,7 +7,7 @@ public:
     vector<int> tout;
     vector<int> heavy;
 
-    LevelAncestorChan(int n, int r, const vector<vector<int>> &tree) : 
+    level_ancestor_chan(int n, int r, const vector<vector<int>> &tree) : 
     n(n), heavy(n + 1), tin(n + 1), tout(n + 1)
     {
         auto adj = tree;
@@ -34,17 +34,17 @@ public:
         };
     };
 
-    bool IsAnc(int a, int u)
+    bool is_anc(int a, int u)
     {
         return tin[a] <= tin[u] and tout[u] <= tout[a];
     }
 
-    int Lca(int u, int v)
+    int lca(int u, int v)
     {
 
     }
 
-    int GetAncestor(int u, int k)
+    int get_ancestor(int u, int k)
     {
 
     }

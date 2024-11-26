@@ -6,9 +6,9 @@ def create_snippet(file_path):
     filename = os.path.basename(file_path).replace('.cpp', '')
     
     # Special case for "Template.cpp"
-    if filename == "Template":
+    if filename == "template":
         tab_trigger = "sport"
-    elif filename == "HackerCup":
+    elif filename == "hacker_cup":
         tab_trigger = "sport_hacker"
     else:
         tab_trigger = f"Template{filename}"

@@ -1,4 +1,4 @@
-struct Random64 : std::mt19937_64
+struct random64 : std::mt19937_64
 {
     using std::mt19937_64::mt19937_64;
     using std::mt19937_64::operator();
@@ -8,7 +8,7 @@ struct Random64 : std::mt19937_64
         return std::chrono::steady_clock::now().time_since_epoch().count();
     }
 
-    Random64() : std::mt19937_64(gen_seed()) {}
+    random64() : std::mt19937_64(gen_seed()) {}
 
     template <class Int>
     auto operator()(Int a, Int b)

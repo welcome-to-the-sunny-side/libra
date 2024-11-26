@@ -1,4 +1,4 @@
-namespace FastIO
+namespace fast_io
 {
     /*
     warning:
@@ -55,9 +55,9 @@ namespace FastIO
 	}
 	struct Flusher_{~Flusher_(){flush();}} io_Flusher_;
 }
-using FastIO :: read;
-using FastIO :: putc;
-using FastIO :: putstr;
-using FastIO :: getc;
-using FastIO :: reads;
-using FastIO :: print;
+using fast_io :: read;
+using fast_io :: putc;
+using fast_io :: putstr;
+using fast_io :: getc;
+using fast_io :: reads;
+using fast_io :: print;

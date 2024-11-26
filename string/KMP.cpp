@@ -1,5 +1,5 @@
 template <typename T>
-vector<int> KMPTable(const T &s)
+vector<int> kmp_table(const T &s)
 {
     /*
         tc: O(|s|)
@@ -23,7 +23,7 @@ vector<int> KMPTable(const T &s)
 }
 
 template <typename T>
-vector<int> KMPSearch(const T &s, const T &w, const vector<int> &p)
+vector<int> kmp_search(const T &s, const T &w, const vector<int> &p)
 {
     /*
         tc: O(|s| + |w|)

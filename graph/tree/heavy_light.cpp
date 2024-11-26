@@ -1,5 +1,5 @@
 template <typename I, typename T, template<typename, typename> typename S, const bool on_edge>
-class HeavyLightChan
+class heavy_light_chan
 {
     /*
         info:
@@ -21,7 +21,7 @@ public:
     vector<int> par, heavy, dep, root, pos, out;
     S<I, T> tree;
 
-    HeavyLightChan(int n, int r, vector<vector<int>> adj) :
+    heavy_light_chan(int n, int r, vector<vector<int>> adj) :
     n(n), r(r), par(n, -1), heavy(n, -1), dep(n), root(n), pos(n), out(n),
     tree(n + 1)
     {
@@ -54,7 +54,7 @@ public:
         dfs_sz(r, dfs_sz), dfs_hld(r, dfs_hld);
     };
 
-    int LCA(int u, int v)
+    int lca(int u, int v)
     {
         for (; root[u] != root[v]; v = par[root[v]])
             if (dep[root[u]] > dep[root[v]])
@@ -63,7 +63,7 @@ public:
     }
 
     template <typename O>
-    void ProcessPath(int u, int v, O op)
+    void process_path(int u, int v, O op)
     {
         for (; root[u] != root[v]; v = par[root[v]])
         {
@@ -80,36 +80,36 @@ public:
             op(pos[u] + 1, pos[v]);
     }
     
-    void Set(int v, const I &info)
+    void set(int v, const I &info)
     {
-        tree.Set(pos[v], info);
+        tree.set(pos[v], info);
     }
-    void ModifyPath(int u, int v, const T &tag)
+    void modify_path(int u, int v, const T &tag)
     {
-        ProcessPath(u, v, [this, &tag](int l, int r)  {tree.Modify(l, r, tag);});
+        process_path(u, v, [this, &tag](int l, int r)  {tree.modify(l, r, tag);});
     }
-    void ModifySubtree(int u, const T &tag)
+    void modify_subtree(int u, const T &tag)
     {
         if(!on_edge)
-            tree.Modify(pos[u], out[u] - 1, tag);
+            tree.modify(pos[u], out[u] - 1, tag);
         else if(pos[u] < out[u] - 1)
-            tree.Modify(pos[u] + 1, out[u] - 1, tag);
+            tree.modify(pos[u] + 1, out[u] - 1, tag);
     }
 
-    I Get(int v)
+    I get(int v)
     {
-        return tree.Get(pos[v]);
+        return tree.get(pos[v]);
     }
-    I QueryPath(int u, int v)
+    I query_path(int u, int v)
     {
         I res = I();
-        ProcessPath(u, v, [this, &res](int l, int r)    {res.Join(tree.Query(l, r));});
+        process_path(u, v, [this, &res](int l, int r)    {res = res.unite(tree.query(l, r));});
         return res;
     }
-    I QuerySubtree(int u)
+    I query_subtree(int u)
     {
         if(on_edge)
-            return (pos[u] < out[u] - 1 ? tree.Query(pos[u] + 1, out[u] - 1) : I());   
-        return tree.Query(pos[u], out[u] - 1);
+            return (pos[u] < out[u] - 1 ? tree.query(pos[u] + 1, out[u] - 1) : I());   
+        return tree.query(pos[u], out[u] - 1);
     }
 };

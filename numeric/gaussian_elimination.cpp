@@ -1,10 +1,10 @@
-class GaussChan
+class gauss_chan
 {
 public:
     int d, sz;
     vector<int> basis;
 
-    GaussChan (int d) : d(d), sz(0), basis(d) {};
+    gauss_chan (int d) : d(d), sz(0), basis(d) {};
 
     void insert(int mask)
     {

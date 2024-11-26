@@ -1,4 +1,4 @@
-class CHTChan
+class cht_chan
 {
 public:
     /*
@@ -78,9 +78,9 @@ public:
 		return it;
 	}
 
-	explicit CHTChan(bool isMax): isMax(isMax) {}
+	explicit cht_chan(bool isMax): isMax(isMax) {}
 
-	void addLine(int64_t a, int64_t b) //Add ax + b in logN time
+	void add_line(int64_t a, int64_t b) //Add ax + b in logN time
 	{
 		Line l3=Line(a, b);
 		auto it=hull.lower_bound(l3);
@@ -115,7 +115,7 @@ public:
 			updateLeftBorder(next(it));
 	}
 
-	int64_t getBest(int64_t x)
+	int64_t get_opt(int64_t x)
 	{
 		Line q;
 		q.val=x;

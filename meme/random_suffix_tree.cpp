@@ -1,5 +1,5 @@
 template<typename C, typename L, typename G, typename R>
-class RandomSuffixTreeChan
+class random_suffix_tree_chan
 {
     /*
     info:
@@ -19,7 +19,7 @@ public:
     vector<int> rep;
     vector<vector<int>> adj;
 
-    RandomSuffixTreeChan(int n, C compare, L length, G get, R rng) : 
+    random_suffix_tree_chan(int n, C compare, L length, G get, R rng) : 
     n(n), dep(2 * n + 5), nid(2 * n + 5), rep(2 * n + 5, -1), adj(2 * n + 5)
     {
         vector<int> alive(n);

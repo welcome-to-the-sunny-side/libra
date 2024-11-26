@@ -1,4 +1,4 @@
-struct Random : std::mt19937
+struct random : std::mt19937
 {
     using std::mt19937::mt19937;
     using std::mt19937::operator();
@@ -6,7 +6,7 @@ struct Random : std::mt19937
     {
         return std::chrono::steady_clock::now().time_since_epoch().count();
     }
-    Random() : std::mt19937(gen_seed()) {}
+    random() : std::mt19937(gen_seed()) {}
     template <class Int>
     auto operator()(Int a, Int b)
         -> std::enable_if_t<std::is_integral_v<Int>, Int>

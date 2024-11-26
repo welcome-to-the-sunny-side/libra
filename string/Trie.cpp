@@ -1,12 +1,12 @@
 template<const int C>
-class StaticNodeChan
+class static_node_chan
 {
 public:
     int sub = 0;
     int leaf = 0;
     array<int, C> next;
 };
-class DynamicNodeChan
+class dynamic_node_chan
 {
 public: 
     int sub = 0;
@@ -15,16 +15,16 @@ public:
 };
 
 template<typename S, typename T, typename I>
-class TrieChan
+class trie_chan
 {
 public:
     int r = 0, p = 0;
     vector<T> t;
     I ind;
 
-    TrieChan(int n, I ind) : t(n), ind(ind) {};
+    trie_chan(int n, I ind) : t(n), ind(ind) {};
 
-    void Insert(const vector<S> &s)
+    void insert(const vector<S> &s)
     {
         int v = r;
         for(auto x : s)

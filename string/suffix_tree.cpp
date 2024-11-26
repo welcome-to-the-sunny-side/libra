@@ -1,4 +1,4 @@
-class SuffixTreeChan
+class suffix_tree_chan
 {
     /*
     tc: O(n)
@@ -25,7 +25,7 @@ public:
     vector<int> dep, rep;
     vector<vector<int>> adj;
 
-    SuffixTreeChan(int n, vector<int> sa, vector<int> lcp) : 
+    suffix_tree_chan(int n, vector<int> sa, vector<int> lcp) : 
     n(n), m(n), dep(2 * n + 1), rep(2 * n + 1), adj(2 * n + 1)
     {
         vector<int> l(n), r(n);

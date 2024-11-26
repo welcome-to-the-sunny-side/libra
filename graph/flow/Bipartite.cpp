@@ -1,4 +1,4 @@
-class BipartiteChan
+class bipartite_chan
 {
     /*
         tc: O(E sqrt(V))
@@ -9,7 +9,7 @@ class BipartiteChan
             adj: left to right edges ONLY
         info:
             Both partitions are individually 1 indexed
-            After calling MaxMatching():
+            After calling max_matching():
                 - matching = size of max matching
                 - l[u] = matched right node for u (l[u] = -1 => unmatched)
                 - r[u] = matched left node for u (r[u] = -1 => unmatched)
@@ -24,20 +24,20 @@ public:
     int matching = 0;
     vector<vector<int>> adj;
     vector<int> l, r, lvl;
-    BipartiteChan(int n, int m, const vector<vector<int>> &adj) : 
+    bipartite_chan(int n, int m, const vector<vector<int>> &adj) : 
         n(n), m(m), l(n, -1), r(m, -1), adj(adj) {};
 
     // void Add(int u, int v)  { adj[u].push_back(v); }
-    bool Dfs(int u)
+    bool dfs(int u)
     {
         int t = exchange(lvl[u], -1) + 1;
         for (int v : adj[u])
-            if (r[v] == -1 or (lvl[r[v]] == t and Dfs(r[v])))
+            if (r[v] == -1 or (lvl[r[v]] == t and dfs(r[v])))
                 return l[u] = v, r[v] = u, 1;
         return 0;
     }
 
-    int MaxMatching()
+    int max_matching()
     {
         matching = 0;   
         vector<int> q(n);
@@ -66,12 +66,12 @@ public:
             
             for(int i = 0; i < n; i ++) 
                 if (l[i] == -1) 
-                    matching += Dfs(i);
+                    matching += dfs(i);
         }
         return matching;
     }
 
-    vector<pair<int, int>> MaxMatchingEdges()
+    vector<pair<int, int>> max_matching_edges()
     {
         vector<pair<int, int>> mme;
         for(int u = 0; u < n; u ++)
@@ -80,7 +80,7 @@ public:
         return mme;
     }
     
-    pair<vector<int>, vector<int>> MinVertexCover()
+    pair<vector<int>, vector<int>> min_vertex_cover()
     {
         vector<bool> lv(n, false), rv(m, false);
         

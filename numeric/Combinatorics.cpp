@@ -1,10 +1,10 @@
 template<typename T, const int P>
-class Combinatorics
+class combinatorics
 {
 public:
     int n;
     vector<T> inv, fac, ifac, pw;
-    Combinatorics (int n) : n(n), inv(n), fac(n), ifac(n), pw(n)
+    combinatorics (int n) : n(n), inv(n), fac(n), ifac(n), pw(n)
     {
         fac[0] = inv[0] = ifac[0] = pw[0] = T(1);
  

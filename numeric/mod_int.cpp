@@ -1,9 +1,9 @@
 template <const int &MOD>
-struct Mint
+struct modular_int
 {
     int val;
 
-    Mint(int64_t v = 0)
+    modular_int(int64_t v = 0)
     {
         if (v < 0)
             v = v % MOD + MOD;
@@ -12,15 +12,15 @@ struct Mint
         val = int(v);
     }
 
-    Mint(uint64_t v)
+    modular_int(uint64_t v)
     {
         if (v >= MOD)
             v %= MOD;
         val = int(v);
     }
 
-    Mint(int v) : Mint(int64_t(v)) {}
-    Mint(unsigned v) : Mint(uint64_t(v)) {}
+    modular_int(int v) : modular_int(int64_t(v)) {}
+    modular_int(unsigned v) : modular_int(uint64_t(v)) {}
 
     explicit operator int() const { return val; }
     explicit operator unsigned() const { return val; }
@@ -29,7 +29,7 @@ struct Mint
     explicit operator double() const { return val; }
     explicit operator long double() const { return val; }
 
-    Mint &operator+=(const Mint &other)
+    modular_int &operator+=(const modular_int &other)
     {
         val -= MOD - other.val;
         if (val < 0)
@@ -37,7 +37,7 @@ struct Mint
         return *this;
     }
 
-    Mint &operator-=(const Mint &other)
+    modular_int &operator-=(const modular_int &other)
     {
         val -= other.val;
         if (val < 0)
@@ -60,61 +60,61 @@ struct Mint
         return rem;
     }
 
-    Mint &operator*=(const Mint &other)
+    modular_int &operator*=(const modular_int &other)
     {
         val = fast_mod(uint64_t(val) * other.val);
         return *this;
     }
 
-    Mint &operator/=(const Mint &other)
+    modular_int &operator/=(const modular_int &other)
     {
         return *this *= other.inv();
     }
 
-    friend Mint operator+(const Mint &a, const Mint &b) { return Mint(a) += b; }
-    friend Mint operator-(const Mint &a, const Mint &b) { return Mint(a) -= b; }
-    friend Mint operator*(const Mint &a, const Mint &b) { return Mint(a) *= b; }
-    friend Mint operator/(const Mint &a, const Mint &b) { return Mint(a) /= b; }
+    friend modular_int operator+(const modular_int &a, const modular_int &b) { return modular_int(a) += b; }
+    friend modular_int operator-(const modular_int &a, const modular_int &b) { return modular_int(a) -= b; }
+    friend modular_int operator*(const modular_int &a, const modular_int &b) { return modular_int(a) *= b; }
+    friend modular_int operator/(const modular_int &a, const modular_int &b) { return modular_int(a) /= b; }
 
-    Mint &operator++()
+    modular_int &operator++()
     {
         val = val == MOD - 1 ? 0 : val + 1;
         return *this;
     }
 
-    Mint &operator--()
+    modular_int &operator--()
     {
         val = val == 0 ? MOD - 1 : val - 1;
         return *this;
     }
 
-    Mint operator++(int)
+    modular_int operator++(int)
     {
-        Mint before = *this;
+        modular_int before = *this;
         ++*this;
         return before;
     }
-    Mint operator--(int)
+    modular_int operator--(int)
     {
-        Mint before = *this;
+        modular_int before = *this;
         --*this;
         return before;
     }
 
-    Mint operator-() const
+    modular_int operator-() const
     {
         return val == 0 ? 0 : MOD - val;
     }
 
-    friend bool operator==(const Mint &a, const Mint &b) { return a.val == b.val; }
-    friend bool operator!=(const Mint &a, const Mint &b) { return a.val != b.val; }
-    friend bool operator<(const Mint &a, const Mint &b) { return a.val < b.val; }
-    friend bool operator>(const Mint &a, const Mint &b) { return a.val > b.val; }
-    friend bool operator<=(const Mint &a, const Mint &b) { return a.val <= b.val; }
-    friend bool operator>=(const Mint &a, const Mint &b) { return a.val >= b.val; }
+    friend bool operator==(const modular_int &a, const modular_int &b) { return a.val == b.val; }
+    friend bool operator!=(const modular_int &a, const modular_int &b) { return a.val != b.val; }
+    friend bool operator<(const modular_int &a, const modular_int &b) { return a.val < b.val; }
+    friend bool operator>(const modular_int &a, const modular_int &b) { return a.val > b.val; }
+    friend bool operator<=(const modular_int &a, const modular_int &b) { return a.val <= b.val; }
+    friend bool operator>=(const modular_int &a, const modular_int &b) { return a.val >= b.val; }
 
     static const int SAVE_INV = int(1e6) + 5;
-    static Mint save_inv[SAVE_INV];
+    static modular_int save_inv[SAVE_INV];
 
     static void prepare_inv()
     {
@@ -129,7 +129,7 @@ struct Mint
             save_inv[i] = save_inv[MOD % i] * (MOD - MOD / i);
     }
 
-    Mint inv() const
+    modular_int inv() const
     {
         if (save_inv[1] == 0)
             prepare_inv();
@@ -137,7 +137,7 @@ struct Mint
         if (val < SAVE_INV)
             return save_inv[val];
 
-        Mint product = 1;
+        modular_int product = 1;
         int v = val;
 
         do
@@ -149,12 +149,12 @@ struct Mint
         return product * save_inv[v];
     }
 
-    Mint pow(int64_t p) const
+    modular_int pow(int64_t p) const
     {
         if (p < 0)
             return inv().pow(-p);
 
-        Mint a = *this, result = 1;
+        modular_int a = *this, result = 1;
 
         while (p > 0)
         {
@@ -170,13 +170,13 @@ struct Mint
         return result;
     }
 
-    friend ostream &operator<<(ostream &os, const Mint &m)
+    friend ostream &operator<<(ostream &os, const modular_int &m)
     {
         return os << m.val;
     }
 };
 template <const int &MOD>
-Mint<MOD> Mint<MOD>::save_inv[Mint<MOD>::SAVE_INV];
+modular_int<MOD> modular_int<MOD>::save_inv[modular_int<MOD>::SAVE_INV];
 const int MOD = 998244353;
-using mint = Mint<MOD>;
+using mint = modular_int<MOD>;
 void __print(mint x) { cerr << x; }
