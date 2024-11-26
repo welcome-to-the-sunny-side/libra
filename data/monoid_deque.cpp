@@ -2,7 +2,7 @@ template<template<typename> typename S, typename T>
 class monoid_deque_chan
 {
 public:
-    S<T> l, r;
+    S<T> l, r, t;
 
     int size()
     {
@@ -18,7 +18,7 @@ public:
         bool f = false;
 
         if(r.empty())
-            f = true, l.swap(r);
+            f = true, l.rswap(r);
         
         int sz = r.size() / 2;
         while(sz -- )
@@ -29,7 +29,7 @@ public:
             r.push(t.top()), t.pop();
         
         if(f)
-            l.swap(r);
+            l.rswap(r);
     }
 
     void push_front(T x)
@@ -77,10 +77,10 @@ public:
         return r.top();
     }
 
-    void swap(monoid_deque_chan &other)
+    void rswap(monoid_deque_chan &other)
     {
-        l.swap(other.l);
-        r.swap(other.r);
-        t.swap(other.t);
+        l.rswap(other.l);
+        r.rswap(other.r);
+        t.rswap(other.t);
     }
 };

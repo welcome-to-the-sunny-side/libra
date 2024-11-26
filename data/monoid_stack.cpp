@@ -15,7 +15,7 @@ public:
 
     void push(T x)
     {
-        stk.push_back({x, x.Unite(sum())});
+        stk.push_back({x, x.unite(sum())});
     }
 
     void pop()
@@ -39,7 +39,7 @@ public:
         return stk[i].second;
     }
 
-    void swap(monoid_stack_chan &other)
+    void rswap(monoid_stack_chan &other)
     {
         swap(stk, other.stk);
     }
