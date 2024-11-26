@@ -1,45 +1,45 @@
 template<typename T>
-class MonoidStackChan
+class monoid_stack_chan
 {
 public:
     vector<pair<T, T>> stk;
-    int Size()
+    int size()
     {
         return stk.size();
     }
 
-    bool Empty()
+    bool empty()
     {
         return stk.empty();
     }
 
-    void Push(T x)
+    void push(T x)
     {
-        stk.push_back({x, x.Unite(Sum())});
+        stk.push_back({x, x.Unite(sum())});
     }
 
-    void Pop()
+    void pop()
     {
         assert(!stk.empty());
         stk.pop_back();
     }
 
-    T Top()
+    T top()
     {
         assert(!stk.empty());
         return stk.back().first;
     }
 
-    T Sum(int i = -1)
+    T sum(int i = -1)
     {
         if(i == -1) 
-            i = Size() - 1;
+            i = size() - 1;
         if(i == -1)
             return T();
         return stk[i].second;
     }
 
-    void Swap(MonoidStackChan &other)
+    void swap(monoid_stack_chan &other)
     {
         swap(stk, other.stk);
     }

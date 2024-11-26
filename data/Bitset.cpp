@@ -1,5 +1,5 @@
 template<typename T, const int B>
-class BitsetChan
+class bitset_chan
 {
 public:
     using T_T = T;
@@ -60,13 +60,13 @@ public:
     int n, m;
     std::vector<T> b;
  
-    BitsetChan(int n) : BitsetChan(n, false) {};
-    BitsetChan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
+    bitset_chan(int n) : bitset_chan(n, false) {};
+    bitset_chan(int n, bool init) : n(n), m((n + B - 1)/B), b(m, init ? ~T(0) : T(0)) 
     {
         trim();
     };
  
-    inline void Set(int i, bool val) noexcept
+    inline void set(int i, bool val) noexcept
     {
         assert(0 <= i and i < n);
         if(val)
@@ -75,19 +75,19 @@ public:
             b[i/B] &= ~(T(1) << (i % B));
     }
  
-    inline bool Get(int i) const noexcept
+    inline bool get(int i) const noexcept
     {
         assert(0 <= i and i < n);
         return (b[i/B] & (T(1) << (i % B))) != 0;
     }
  
-    void Reset() noexcept
+    void reset() noexcept
     {
         std::fill(b.begin(), b.end(), T(0));
     }
  
     //bitwise operations
-    void operator &= (const BitsetChan &other)
+    void operator &= (const bitset_chan &other)
     {
         for(int i = 0; i < std::min(m, other.m); i ++)
             b[i] &= other.b[i];
@@ -96,14 +96,14 @@ public:
         // trim();
     }
  
-    void operator |= (const BitsetChan &other)
+    void operator |= (const bitset_chan &other)
     {
         for(int i = 0; i < std::min(m, other.m); i ++)
             b[i] |= other.b[i];
         trim();
     }
  
-    void operator ^= (const BitsetChan &other)
+    void operator ^= (const bitset_chan &other)
     {
         for(int i = 0; i < std::min(m, other.m); i ++)
             b[i] ^= other.b[i];
@@ -117,7 +117,7 @@ public:
  
         if(x >= n)
         {
-            Reset();
+            reset();
             return;
         }
  
@@ -148,7 +148,7 @@ public:
      
         if(x >= n)
         {
-            Reset();
+            reset();
             return;
         }
  
@@ -169,55 +169,55 @@ public:
         // trim();
     }
  
-    bool operator == (const BitsetChan &other)
+    bool operator == (const bitset_chan &other)
     {
         return ((n == other.n) and b == other.b); 
     }
  
-    bool operator != (const BitsetChan &other)
+    bool operator != (const bitset_chan &other)
     {
         return !(*this == other);
     }
  
     //extended
-    BitsetChan operator & (const BitsetChan &other)
+    bitset_chan operator & (const bitset_chan &other)
     {
-        BitsetChan result(*this);
+        bitset_chan result(*this);
         result &= other;
         return result;
     }
  
-    BitsetChan operator | (const BitsetChan &other)
+    bitset_chan operator | (const bitset_chan &other)
     {
-        BitsetChan result(*this);
+        bitset_chan result(*this);
         result |= other;
         return result;
     }
  
-    BitsetChan operator ^ (const BitsetChan &other)
+    bitset_chan operator ^ (const bitset_chan &other)
     {
-        BitsetChan result(*this);
+        bitset_chan result(*this);
         result ^= other;
         return result;
     }
  
-    BitsetChan operator >> (int x)
+    bitset_chan operator >> (int x)
     {
-        BitsetChan result(*this);
+        bitset_chan result(*this);
         result >>= x;
         return result;
     }
  
-    BitsetChan operator << (int x)
+    bitset_chan operator << (int x)
     {
-        BitsetChan result(*this);
+        bitset_chan result(*this);
         result <<= x;
         return result;
     }
  
-    BitsetChan operator ~()
+    bitset_chan operator ~()
     {
-        BitsetChan result(*this);
+        bitset_chan result(*this);
         for(auto &v : result)
             v = ~v;
         result.trim();
@@ -225,12 +225,12 @@ public:
     }
  
     //custom operations
-    int Count() const noexcept
+    int count() const noexcept
     {
         return std::accumulate(b.begin(), b.end(), 0, [](int sum, T value) { return sum + popcnt(value); });
     }
      
-    int FindFirst()
+    int find_first()
     {
         int pos = -1;
 
@@ -246,7 +246,7 @@ public:
         return pos;
     }
 
-    int FindLast()
+    int find_last()
     {
         int pos = -1;
 
@@ -262,7 +262,7 @@ public:
         return pos;
     }
 
-    void RangeProcess(int l, int r, auto block_brute, auto block_quick)
+    void range_process(int l, int r, auto block_brute, auto block_quick)
     {
         assert(0 <= l and l <= r and r < n);
  
@@ -279,7 +279,7 @@ public:
         }
     }
  
-    void RangeSet(int l, int r, bool val)
+    void range_set(int l, int r, bool val)
     {
         auto block_brute = [&](int l, int r) -> void
         {
@@ -294,10 +294,10 @@ public:
         {
             b[bi] = (val ? ~T(0) : T(0));
         };
-        RangeProcess(l, r, block_brute, block_quick);
+        range_process(l, r, block_brute, block_quick);
     }
  
-    int Count(int l, int r)
+    int count(int l, int r)
     {
         int cnt = 0;
         auto block_brute = [&](int l, int r) -> void
@@ -308,17 +308,17 @@ public:
         {
             cnt += popcnt(b[bi]);
         };
-        RangeProcess(l, r, block_brute, block_quick);
+        range_process(l, r, block_brute, block_quick);
         return cnt;
     }
  
-    int FindFirst (int l, int r)
+    int find_first (int l, int r)
     {
         int pos = -1;
         auto block_brute = [&](int l, int r) -> void
         {
             for(int i = l; i <= r and pos == -1; i ++)
-                if(Get(i))
+                if(get(i))
                     pos = i;    
         };
         auto block_quick = [&](int bi) -> void
@@ -329,17 +329,17 @@ public:
             pos = ctz(b[bi]) + bi * B;
         };
  
-        RangeProcess(l, r, block_brute, block_quick);
+        range_process(l, r, block_brute, block_quick);
         return pos;
     }
     
-    int FindLast(int l, int r)
+    int find_last(int l, int r)
     {
         int pos = -1;
         auto block_brute = [&](int l, int r) -> void
         {
             for(int i = l; i <= r; i ++)
-                if(Get(i))
+                if(get(i))
                     pos = i;    
         };
         auto block_quick = [&](int bi) -> void
@@ -350,11 +350,11 @@ public:
             pos = B - clz(b[bi]) - 1 + bi * B;
         };
  
-        RangeProcess(l, r, block_brute, block_quick);
+        range_process(l, r, block_brute, block_quick);
         return pos;
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const BitsetChan &bitset)
+    friend std::ostream &operator<<(std::ostream &os, const bitset_chan &bitset)
     {
         for (int i = bitset.m - 1; i >= 0; --i)
             os << std::bitset<B>(bitset.b[i]);
@@ -363,4 +363,4 @@ public:
     }
 };
 
-using BitsetChan64 = BitsetChan<uint64_t, bit_width(uint64_t())>;
+using bitset_chan64 = bitset_chan<uint64_t, bit_width(uint64_t())>;

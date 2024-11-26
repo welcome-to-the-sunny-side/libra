@@ -5,23 +5,23 @@ general ideas:
 - BST property is maintained throughout (key can be redundant a lot of times)
 */
 
-namespace SplayChan
+namespace splay_chan
 {
     //common: push, splay, pull
-    bool IsRoot(Node* u)
+    bool is_root(node* u)
     {
         if(u == nullptr)
             return false;
         return (u->p == nullptr);
     }
 
-    void Rotate(Node* u)
+    void rotate(node* u)
     {
         auto p = u->p;
         assert(p != nullptr);
 
-        p->Push();
-        u->Push();
+        p->push();
+        u->push();
 
         u->p = p->p;
         p->p = u;
@@ -49,64 +49,64 @@ namespace SplayChan
             u->l = p;
         }
 
-        p->Pull();
-        u->Pull();
+        p->pull();
+        u->pull();
     }
 
-    void Splay(Node *u)
+    void splay(node *u)
     {
         if(u == nullptr)
             return;
-        while(!IsRoot(u))
+        while(!is_root(u))
         {
             auto p = u->p;
-            if(!IsRoot(p))
+            if(!is_root(p))
             {
                 if((p->l == u) ^ (p->p->l == p))
-                    Rotate(u);
+                    rotate(u);
                 else
-                    Rotate(p);
+                    rotate(p);
             }
-            Rotate(u);
+            rotate(u);
         }
     }
 
-    pair<Node*, int> Access(Node* u, const function<int(Node*)> &go_to)
+    pair<node*, int> access(node* u, const function<int(node*)> &go_to)
     {
         if(u == nullptr)
             return {u, 0};
-        Splay(u);
+        splay(u);
         int d = 0;
 
         while(1)
         {
-            u->Push();
+            u->push();
             d = go_to(u);
             if(d == 0)
                 break;
-            Node *v = (d == -1 ? u->l : u->r);
+            node *v = (d == -1 ? u->l : u->r);
             if(v == nullptr)
                 break;
             u = v;      
         }
 
-        Splay(u);
+        splay(u);
         return {u, d};
     }
 
-    Node* GetLeftmost(Node* u)
+    node* get_leftmost(node* u)
     {
-        return Access(u, [&](Node*) {return -1;}).first;
+        return access(u, [&](node*) {return -1;}).first;
     }
 
-    Node* GetRightmost(Node* u)
+    node* get_rightmost(node* u)
     {
-        return Access(u, [&](Node*) {return 1;}).first;
+        return access(u, [&](node*) {return 1;}).first;
     }
 
-    Node* GetKth(Node* u, int k)        // 0-indexed
+    node* get_kth(node* u, int k)        // 0-indexed
     {
-        pair<Node*, int> p = Access(u, [&](Node* u)
+        pair<node*, int> p = access(u, [&](node* u)
         {
             if(u->l != nullptr)
             {
@@ -121,154 +121,154 @@ namespace SplayChan
         });
 
         auto v = p.first;
-        v->Push();
-        Splay(v);
+        v->push();
+        splay(v);
 
         return (p.second == 0 ? v : nullptr); 
     }
 
-    int GetPosition(Node *u)        // 0 -indexed
+    int get_position(node *u)        // 0 -indexed
     {
-        Splay(u);
+        splay(u);
         return (u->l == nullptr ? 0 : u->l->siz);
     }
 
-    Node* GetRoot(Node* u)
+    node* get_root(node* u)
     {
-        Splay(u);
+        splay(u);
         return u;
     }
 
-    pair<Node*, Node*> Split(Node* u, const function<bool(Node*)> &IsRight)
+    pair<node*, node*> split(node* u, const function<bool(node*)> &IsRight)
     {
         if(u == nullptr)
             return {nullptr, nullptr};
         
-        pair<Node*, int> p = Access(u, [&](Node* u) {return IsRight(u) ? -1 : 1;});
+        pair<node*, int> p = access(u, [&](node* u) {return IsRight(u) ? -1 : 1;});
         
         //if p.second == 1, we have found the greatest node which should be in the left subtree
         //if p.second == -1, we have found the smallest node which should be in the right subtree
         //then in both cases, we splayed this node and its now the root
 
         u = p.first;
-        u->Push();
-        Splay(u);
+        u->push();
+        splay(u);
 
         if(p.second == -1)
         {
-            Node* v = u->l;
+            node* v = u->l;
             if(v == nullptr)
                 return {nullptr, u};
             u->l = nullptr;
             v->p = nullptr;
-            u->Pull();
+            u->pull();
             return {v, u};
         }
         else
         {
-            Node* v = u->r;
+            node* v = u->r;
             if(v == nullptr)
                 return {u, nullptr};
             u->r = nullptr;
             v->p = nullptr;
-            u->Pull();
+            u->pull();
             return {u, v};
         }
 
         return {nullptr, nullptr};
     }
 
-    Node* Merge(Node* u, Node* v)       //all in u <= all in v
+    node* merge(node* u, node* v)       //all in u <= all in v
     {
         if(u == nullptr)
             return v;
         if(v == nullptr)
             return u;
         
-        u = GetRightmost(u);
-        u->Push();
+        u = get_rightmost(u);
+        u->push();
         
-        Splay(u);
+        splay(u);
 
         assert(u->r == nullptr);
         u->r = v;
         v->p = u;
-        u->Pull();
+        u->pull();
 
         return u;
     }
 
-    Node *Insert(Node *r, Node *v, const function<bool(Node *)> &go_left)
+    node *insert(node *r, node *v, const function<bool(node *)> &go_left)
     {
         //returns new root
-        pair<Node *, Node *> p = Split(r, go_left);
-        return Merge(p.first, Merge(v, p.second));
+        pair<node *, node *> p = split(r, go_left);
+        return merge(p.first, merge(v, p.second));
     }
 
-    Node *Remove(Node *u)
+    node *remove(node *u)
     { 
         // returns the new root
-        Splay(u);
-        u->Push();
-        Node *x = u->l;
-        Node *y = u->r;
+        splay(u);
+        u->push();
+        node *x = u->l;
+        node *y = u->r;
         u->l = u->r = nullptr;
         if(x != nullptr)
             x->p = nullptr;
         if(y != nullptr) 
             y->p = nullptr;
-        Node *z = Merge(x, y);
+        node *z = merge(x, y);
         
         u->p = nullptr;
-        u->Push();
-        u->Pull(); // now u might be reusable...
+        u->push();
+        u->pull(); // now u might be reusable...
         
         return z;
     }
 
     //untested
-    Node *Next(Node *v)
+    node *next(node *v)
     {
-        Splay(v);
-        v->Push();
+        splay(v);
+        v->push();
         //find leftmost node in subtree of right child of node v
         if (v->r == nullptr)
             return nullptr;
         v = v->r;
         while (v->l != nullptr)
         {
-            v->Push();
+            v->push();
             v = v->l;
         }
-        Splay(v);
+        splay(v);
         return v;
     }
 
     //untested
-    Node *Prev(Node *v)
+    node *prev(node *v)
     {
-        Splay(v);
-        v->Push();
+        splay(v);
+        v->push();
         //find rightmost node in subtree of left child of v
         if (v->l == nullptr)
             return nullptr;
         v = v->l;
         while (v->r != nullptr)
         {
-            v->Push();
+            v->push();
             v = v->r;
         }
-        Splay(v);
+        splay(v);
         return v;
     }
 
     //0-indexed
-    //`operate(0, Node*)` is to operate with single node
-    //`operate(1, Node*)` is to operate on subtree of node
+    //`operate(0, node*)` is to operate with single node
+    //`operate(1, node*)` is to operate on subtree of node
     template<typename O>
-    Node* Query(Node* u, int l, int r, O operate)
+    node* query(node* u, int l, int r, O operate)
     {
-        u = GetKth(u, l);
+        u = get_kth(u, l);
         assert(u != nullptr);
         assert(l <= r and r < u->siz);
 
@@ -276,14 +276,14 @@ namespace SplayChan
         
         -- remaining;
         operate(0, u);
-        u->Push();
+        u->push();
 
         if(u->r != nullptr)
             u = u->r;
 
         while(remaining > 0)
         {
-            u->Push();
+            u->push();
 
             if(u->l != nullptr)
             {
@@ -307,20 +307,20 @@ namespace SplayChan
             u = u->r;
         }
 
-        u->Push();
-        Splay(u);
-        u->Pull();
+        u->push();
+        splay(u);
+        u->pull();
 
         return u;
     }
 
     //0-indexed
-    //`operate(0, Node*)` is to operate with single node
-    //`operate(1, Node*)` is to operate on subtree of node
+    //`operate(0, node*)` is to operate with single node
+    //`operate(1, node*)` is to operate on subtree of node
     template<typename O>
-    Node* Modify(Node* u, int l, int r, O operate)
+    node* modify(node* u, int l, int r, O operate)
     {
-        u = GetKth(u, l);
+        u = get_kth(u, l);
         assert(u != nullptr);
         assert(l <= r and r < u->siz);
 
@@ -328,15 +328,15 @@ namespace SplayChan
         
         -- remaining;
         operate(0, u);
-        u->Push();
+        u->push();
 
         auto dfs = [&](auto &&dfs) -> void
         {
             if(remaining == 0)
                 return;
             
-            Node* cur = u;
-            u->Push();
+            node* cur = u;
+            u->push();
 
             if(u->l != nullptr)
             {
@@ -345,13 +345,13 @@ namespace SplayChan
                     u = u->l;
                     dfs(dfs);
 
-                    cur->Pull();
+                    cur->pull();
                     return;
                 }
                 
                 remaining -= u->l->siz;
                 operate(1, u->l);
-                u->Pull();          //left child might have been updated
+                u->pull();          //left child might have been updated
             }
 
             if(remaining > 0)
@@ -362,29 +362,29 @@ namespace SplayChan
 
             if(u->r == nullptr)
             {
-                cur->Pull();
+                cur->pull();
                 return;
             }
 
             u = u->r;
             dfs(dfs);
 
-            cur->Pull();
+            cur->pull();
             return;
         };
 
         if(u->r != nullptr)
             u = u->r;
         
-        Node* cur = u;
+        node* cur = u;
         dfs(dfs);
-        cur->Pull();
+        cur->pull();
 
-        u->Push();
-        Splay(u);
-        u->Pull();
+        u->push();
+        splay(u);
+        u->pull();
 
         return u;
     }
 };
-using namespace SplayChan;
+using namespace splay_chan;

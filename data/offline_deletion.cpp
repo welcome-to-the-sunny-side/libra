@@ -1,5 +1,5 @@
 template<typename T, typename Q, typename D>
-class OfflineDeletionChan
+class offline_deletion_chan
 {
 public:
     int n;
@@ -7,11 +7,11 @@ public:
     vector<vector<T>> store;
     D ds;
 
-    OfflineDeletionChan(int n) : 
+    offline_deletion_chan(int n) : 
     n(n), ans(4 * n + 5), store(4 * n + 5) {};
 
-    //Put(L, R, life) puts element "life" into segment [L, R]
-    void Put(int L, int R, T life)
+    //put(L, R, life) puts element "life" into segment [L, R]
+    void put(int L, int R, T life)
     {
         auto rec = [&](int v, int l, int r, auto &&rec) -> void
         {
@@ -31,7 +31,7 @@ public:
         rec(1, 1, n, rec);
     }
 
-    void Compute()
+    void compute()
     {
         auto dfs = [&](int v, int l, int r, auto &&dfs) -> void
         {

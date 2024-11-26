@@ -1,34 +1,34 @@
-class NodeChan
+class node_chan
 {
 public:
     int v = 0;
 
-    inline void operator+=(NodeChan &other)
+    inline void operator+=(node_chan &other)
     {
         v += other.v;
     }
-    inline bool operator<(NodeChan &other)
+    inline bool operator<(node_chan &other)
     {
         return v < other.v;
     }
 };
 template <typename T>
-class FenwickChan
+class fenwick_tree_chan
 {
 public:
     vector<T> fenw;
     int n;
     int pw;
 
-    FenwickChan() : n(0) {}
-    FenwickChan(int n_) : n(n_)
+    fenwick_tree_chan() : n(0) {}
+    fenwick_tree_chan(int n) : n(n)
     {
         fenw.resize(n);
         pw = (n == 0 ? 0 : 1ULL << (63 - __builtin_clzll(unsigned(n))));
     }
 
     // a[x] += v;
-    void Modify(int x, T v)
+    void modify(int x, T v)
     {
         assert(0 <= x && x < n);
         while (x < n)
@@ -39,7 +39,7 @@ public:
     }
 
     /// sum of prefix [0, .. x] 
-    T Query(int x)
+    T query(int x)
     {
         ++ x;
         assert(0 <= x && x <= n);
@@ -53,7 +53,7 @@ public:
     }
 
     // Returns the length of the longest prefix (0 indexed) with sum <= c
-    int MaxPrefix(T c)
+    int max_prefix(T c)
     {
         T v{};
         int at = 0;

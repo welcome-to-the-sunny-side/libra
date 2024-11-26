@@ -1,23 +1,10 @@
-class ElementChan
-{
-public:
-    static constexpr int neutral = inf;
-    
-    int val;
-    ElementChan() : val(neutral) {};
-    ElementChan(int x) : val(x) {};
-    ElementChan Unite(const ElementChan &b) const
-    {
-        return ElementChan(min(val, b.val));
-    };
-};
 template <typename T>
-class SparseTableChan
+class sparse_table_chan
 {
 public:
     int n;
     vector<vector<T>> mat;
-    SparseTableChan(const vector<T> &a)
+    sparse_table_chan(const vector<T> &a)
     {
         n = a.size();
         int max_log = 32 - __builtin_clz(n);
@@ -30,7 +17,7 @@ public:
                 mat[j][i] = mat[j - 1][i].Unite(mat[j - 1][i + (1 << (j - 1))]);
         }
     }
-    T Query(int from, int to) const
+    T query(int from, int to) const
     {
         assert(0 <= from && from <= to && to <= n - 1);
         int lg = 32 - __builtin_clz(to - from + 1) - 1;

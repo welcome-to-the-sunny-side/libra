@@ -1,4 +1,4 @@
-class DSUChan
+class dsu_chan
 {
     /*
         tc: 
@@ -15,31 +15,32 @@ class DSUChan
     */
 public:
     int n;
-    vector<int> par, siz;
-    DSUChan(int n) : n(n), par(n), siz(n, 1)
+    vector<int> par;
+    vector<int> siz;
+    dsu_chan(int n) : n(n), par(n), siz(n, 1)
     {
         iota(par.begin(), par.end(), 0);
     };
     
-    int Get(int x)
+    int get(int x)
     {
-        return (par[x] == x ? x : par[x] = Get(par[x]));
+        return (par[x] == x ? x : par[x] = get(par[x]));
     }
 
-    void Unite(int x, int y)
+    void unite(int x, int y)
     {
-        x = Get(x), y = Get(y);
+        x = get(x), y = get(y);
         if(x == y)
             return;
         if(siz[x] > siz[y]) swap(x, y);
         par[x] = y, siz[y] += siz[x];
     }
 
-    vector<vector<int>> Groups()
+    vector<vector<int>> group()
     {
         vector<vector<int>> g(n);
         for(int u = 0; u < n; u ++)
-            g[Get(u)].push_back(u);
+            g[get(u)].push_back(u);
         return g;
     }
 };

@@ -1,8 +1,8 @@
-class Node
+class node
 {
 public:
 //tree info
-    Node *l, *r, *p;
+    node *l, *r, *p;
     //self
     int key;
     //subtree aggregate
@@ -18,14 +18,14 @@ public:
     //lazy propagation
     int64_t add;
 
-    Node()
+    node()
     {
         p = l = r = nullptr;
         key = siz = val = sum = add = 0;
     }
 
     //current attributes are already updated, update child attributes so that a pull would result in the correct aggregate
-    void Push()
+    void push()
     {
         if(l != nullptr)
             l->sum += add * l->siz, l->val += add, l->add += add;
@@ -33,7 +33,7 @@ public:
             r->sum += add * r->siz, r->val += add, r->add += add;
         add = 0;
     }
-    void Pull()
+    void pull()
     {
         siz = sum = 0;
         if(l != nullptr)

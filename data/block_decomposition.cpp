@@ -1,14 +1,14 @@
-class ElementChan
+class element_chan
 {
 public:
 };
-class BlockChan
+class block_chan
 {
 public:
 };
 
 template<typename E, typename T, const int B>
-class BlockDecompositionChan
+class block_decomposition_chan
 {
 public:
     static int ceil_div(int x, int y)
@@ -33,12 +33,12 @@ public:
     vector<E> element;
     vector<T> block;
 
-    BlockDecompositionChan(int n, vector<E> a, vector<T> b) : n(n), element(a), block(b)
+    block_decomposition_chan(int n, vector<E> a, vector<T> b) : n(n), element(a), block(b)
     {
 
     };
 
-    void Process(int l, int r, auto block_brute, auto block_quick)
+    void process(int l, int r, auto block_brute, auto block_quick)
     {
         assert(1 <= l and l <= r and r <= n);
 

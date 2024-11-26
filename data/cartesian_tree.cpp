@@ -1,5 +1,5 @@
 template<typename T, typename C>
-vector<vector<int>> CartesianTree(const vector<T> &p, C c = C())
+vector<vector<int>> cartesian_tree(const vector<T> &p, C c = C())
 {
     int n = p.size();
 

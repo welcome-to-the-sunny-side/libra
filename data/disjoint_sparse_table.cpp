@@ -1,23 +1,11 @@
-class ElementChan
-{
-public:
-    static constexpr int neutral = 0;
-    int val;
-    ElementChan() : val(neutral) {};
-    ElementChan(int x) : val(x) {};
-    ElementChan Unite(const ElementChan &b) const
-    {
-        return ElementChan(val + b.val);
-    };
-};
 template <typename T>
-class DisjointSparseTableChan
+class disjoint_sparse_table_chan
 {
 public:
     int n;
     vector<vector<T>> mat;
 
-    DisjointSparseTableChan(const vector<T> &a)
+    disjoint_sparse_table_chan(const vector<T> &a)
     {
         n = static_cast<int>(a.size());
         mat.push_back(a);
@@ -36,12 +24,12 @@ public:
         }
     }
 
-    T Query(int l, int r) const
+    T query(int l, int r) const
     {
         assert(0 <= l && l < r && r <= n);
         if (r - l == 1)
             return mat[0][l];
         int p = bit_width(unsigned(l ^ (r - 1))) - 1;
-        returnr mat[p][l].Unite(mat[p][r - 1]);
+        return mat[p][l].Unite(mat[p][r - 1]);
     }
 };
