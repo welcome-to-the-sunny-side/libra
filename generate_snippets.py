@@ -11,7 +11,7 @@ def create_snippet(file_path):
     elif filename == "hacker_cup":
         tab_trigger = "sport_hacker"
     else:
-        tab_trigger = f"Template{filename}"
+        tab_trigger = f"template_{filename}"
     
     with open(file_path, 'r') as f:
         content = f.readlines()
