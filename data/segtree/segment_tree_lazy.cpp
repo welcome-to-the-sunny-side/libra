@@ -27,7 +27,7 @@ public:
 
     void downdate_node(seg_tree::point a)
     {
-        if (!tags[a].Empty())
+        if (!tags[a].empty())
         {
             apply(a.c(0), tags[a]);
             apply(a.c(1), tags[a]);
