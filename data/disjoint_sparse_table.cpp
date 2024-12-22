@@ -16,10 +16,10 @@ public:
             {
                 mat[p][mid - 1] = a[mid - 1];
                 for (int j = mid - 2; j >= mid - (1 << p); j--)
-                    mat[p][j] = a[j].Unite(mat[p][j + 1]);
+                    mat[p][j] = a[j].unite(mat[p][j + 1]);
                 mat[p][mid] = a[mid];
                 for (int j = mid + 1; j < min(n, mid + (1 << p)); j++)
-                    mat[p][j] = mat[p][j - 1].Unite(a[j]);
+                    mat[p][j] = mat[p][j - 1].unite(a[j]);
             }
         }
     }
@@ -30,6 +30,6 @@ public:
         if (r - l == 1)
             return mat[0][l];
         int p = bit_width(unsigned(l ^ (r - 1))) - 1;
-        return mat[p][l].Unite(mat[p][r - 1]);
+        return mat[p][l].unite(mat[p][r - 1]);
     }
 };
