@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include<bitset>
+#include <bitset>
 
 void __print(int x) { std::cerr << x; }
 void __print(long x) { std::cerr << x; }

@@ -1,5 +1,20 @@
 class connectivity_chan
 {
+    /*
+        n -> number of nodes
+        bridge -> contains all bridges
+        a -> number of cutpoints
+        cut[u] -> is u an articulation point
+        m -> n + number of biconnected components (bcc's indexed in [n, inf))
+        bcc -> stores bcc's
+        b -> number of nodes in the block cut tree
+
+        Block: BCC
+        All edges form equivalence classes, these are grouped into blocks (BCCs)
+        These blocks may share vertices but not edges
+        A bipartite graph (and tree), BCT is formed by creating a node for every block, every
+        cut-point and adding an edge from every cut-point to all the blocks it is a part of.
+    */
 public:
     int n;
     vector<vector<int>> adj;
@@ -20,7 +35,9 @@ public:
     vector<vector<int>> bct_comp;    
     vector<vector<int>> bct;
 
-    connectivity_chan(const vector<vector<int>> &adj) : n(adj.size()), m(n), adj(adj), timer(0), tin(n, -1), low(n, -1), cut(n), bcc(n) 
+    connectivity_chan(const vector<vector<int>> &adj) : 
+    n(adj.size()), m(n), adj(adj), timer(0), tin(n, -1), low(n, -1), cut(n), bcc(n), 
+    block_node_id(n, -1), cut_node_id(n, -1) 
     {
         compute_connectivity();
         make_block_cut_tree();
@@ -115,7 +132,7 @@ public:
         }
 
         for(int i = 0; i < m - n; i ++)
-            for(auto u : bct_comp[i - n])
+            for(auto u : bct_comp[i])
                 if(cut[u])
                     bct[i].push_back(cut_node_id[u]), bct[cut_node_id[u]].push_back(i);
     }
