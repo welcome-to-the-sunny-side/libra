@@ -8,7 +8,7 @@ class bipartite_chan
             n, m: size of left and right partitions
             adj: left to right edges ONLY
         info:
-            Both partitions are individually 1 indexed
+            Both partitions are individually 0 indexed
             After calling max_matching():
                 - matching = size of max matching
                 - l[u] = matched right node for u (l[u] = -1 => unmatched)
