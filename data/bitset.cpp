@@ -364,5 +364,3 @@ public:
 };
 
 using bitset_chan64 = bitset_chan<uint64_t, bit_width(uint64_t())>;
-
-////
