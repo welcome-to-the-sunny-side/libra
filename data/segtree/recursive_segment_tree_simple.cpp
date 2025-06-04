@@ -1,9 +1,9 @@
-template <typename info>
+template <typename Info>
 class segment_tree_chan
 {
 public:
     int n;
-    vector<info> infos;
+    vector<Info> infos;
 
     template<typename O>
     void recurse(int lb, int rb, bool update, O op)
@@ -33,8 +33,8 @@ public:
     };
 
     segment_tree_chan() : segment_tree_chan(0) {};
-    segment_tree_chan(int n) : segment_tree_chan(vector<info> (n)) {};
-    segment_tree_chan(const vector<info> &a) : 
+    segment_tree_chan(int n) : segment_tree_chan(vector<Info> (n)) {};
+    segment_tree_chan(const vector<Info> &a) : 
     n((int)a.size()), infos(4 * n + 5)
     {
         auto build = [&](int v, int l, int r, auto &&build) -> void
@@ -43,7 +43,7 @@ public:
                 return;
             if(l == r)
             {
-                infos[v] = info(a[l]);
+                infos[v] = Info(a[l]);
                 return;
             }
             int m = (l + r)/2;
@@ -68,7 +68,7 @@ public:
             infos[v] = infos[v].unite(info);
         });
     }
-    info query(int lb, int rb)
+    Info query(int lb, int rb)
     {
         info res = info();
         recurse(lb, rb, false, [&](int v, int l, int r)
@@ -77,9 +77,9 @@ public:
         });
         return res;
     }
-    info get(int p)
+    Info get(int p)
     {
-        info res = info();
+        info res = Info();
         recurse(p, p, false, [&](int v, int l, int r)
         {
             res = infos[v];
