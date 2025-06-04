@@ -54,14 +54,14 @@ public:
         build(1, 0, n - 1, build);
     };
 
-    void set(int p, const info &info)
+    void set(int p, const Info &info)
     {
         recurse(p, p, true, [&](int v, int l, int r)
         {
             infos[v] = info;
         });
     }
-    void add(int p, const info &info)
+    void add(int p, const Info &info)
     {
         recurse(p, p, true, [&](int v, int l, int r)
         {
