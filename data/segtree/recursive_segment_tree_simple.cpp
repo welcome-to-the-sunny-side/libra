@@ -70,7 +70,7 @@ public:
     }
     Info query(int lb, int rb)
     {
-        info res = info();
+        Info res = Info();
         recurse(lb, rb, false, [&](int v, int l, int r)
         {
             res = res.unite(infos[v]);
@@ -79,7 +79,7 @@ public:
     }
     Info get(int p)
     {
-        info res = Info();
+        Info res = Info();
         recurse(p, p, false, [&](int v, int l, int r)
         {
             res = infos[v];
