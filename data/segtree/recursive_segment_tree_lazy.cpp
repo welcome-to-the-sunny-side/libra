@@ -1,5 +1,5 @@
 template <typename info, typename tag>
-class segment_tree_chan
+class r_lazy_segment_tree_chan
 {
 public:
     int n;
@@ -40,9 +40,9 @@ public:
         rec(1, 0, n - 1, rec);
     };
 
-    segment_tree_chan() : segment_tree_chan(0) {};
-    segment_tree_chan(int n) : segment_tree_chan(vector<info> (n)) {};
-    segment_tree_chan(const vector<info> &a) : 
+    r_lazy_segment_tree_chan() : r_lazy_segment_tree_chan(0) {};
+    r_lazy_segment_tree_chan(int n) : r_lazy_segment_tree_chan(vector<info> (n)) {};
+    r_lazy_segment_tree_chan(const vector<info> &a) : 
     n((int)a.size()), infos(4 * n + 5), tags(4 * n + 5)
     {
         auto build = [&](int v, int l, int r, auto &&build) -> void

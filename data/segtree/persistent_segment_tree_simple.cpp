@@ -1,5 +1,5 @@
 template <typename info>
-class r_segment_tree_chan
+class segment_tree_chan
 {
 public:
     int n;
@@ -32,9 +32,9 @@ public:
         rec(1, 0, n - 1, rec);
     };
 
-    r_segment_tree_chan() : r_segment_tree_chan(0) {};
-    r_segment_tree_chan(int n) : r_segment_tree_chan(vector<info> (n)) {};
-    r_segment_tree_chan(const vector<info> &a) : 
+    segment_tree_chan() : segment_tree_chan(0) {};
+    segment_tree_chan(int n) : segment_tree_chan(vector<info> (n)) {};
+    segment_tree_chan(const vector<info> &a) : 
     n((int)a.size()), infos(4 * n + 5)
     {
         auto build = [&](int v, int l, int r, auto &&build) -> void
