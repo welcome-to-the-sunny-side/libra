@@ -12,12 +12,11 @@ public:
     void recurse(int root, int lb, int rb, bool update, O op)
     {
         auto rec = [&](int v, int l, int r, auto &&rec) -> void
-        {
-            propagate(v, l, r, update);
-
+        {    
             if(l > r or v == 0)
-                return;
-
+               return;
+            
+            propagate(v, l, r, update);
 
             if(lb <= l and r <= rb)
             {
@@ -30,7 +29,7 @@ public:
             if(m >= lb)
             {
                 if(update)
-                    info_ptrs[v].lc = make_node(info_ptrs[v].lc);
+                    info_ptrs[v].lc = make_node(info_ptrs[v].lc, true);
                 rec(info_ptrs[v].lc, l, m, rec);
             }
             else if(update)
@@ -39,7 +38,7 @@ public:
             if(m + 1 <= rb)
             {
                 if(update)
-                    info_ptrs[v].rc = make_node(info_ptrs[v].rc);
+                    info_ptrs[v].rc = make_node(info_ptrs[v].rc, true);
                 rec(info_ptrs[v].rc, m + 1, r, rec);
             }
             else if(update)
@@ -91,21 +90,23 @@ public:
         tags[v].apply_to(infos[v], l, r);
         if(l != r)
         {
-            if(update)
+            if(info_ptrs[v].exp_create)
             {
-                info_ptrs[v].lc = make_node(info_ptrs[v].lc);
-                info_ptrs[v].rc = make_node(info_ptrs[v].rc);                
+                info_ptrs[v].exp_create = false;
+                info_ptrs[v].lc = make_node(info_ptrs[v].lc, true);
+                info_ptrs[v].rc = make_node(info_ptrs[v].rc, true);                
             }
             tags[v].apply_to(tags[info_ptrs[v].lc]);
             tags[v].apply_to(tags[info_ptrs[v].rc]);
         }
         tags[v] = tag();
     }
-    int make_node (int old_node = 0)
+    int make_node (int old_node = 0, bool exp_create = false)
     {
         int new_node = ++ U;
         infos[new_node] = infos[old_node];
         info_ptrs[new_node] = info_ptrs[old_node];
+        info_ptrs[new_node].exp_create = exp_create;
         tags[new_node] = tags[old_node];
         return new_node;
     }
@@ -117,10 +118,14 @@ public:
         old_root = (*it).second;
 
         assert(roots.find(new_root) == roots.end());
-        roots[new_root] = ++ U;
-        new_root = U;
-        infos[new_root] = infos[old_root];
-        info_ptrs[new_root] = info_ptrs[old_root];
+        int storev = new_root;
+        new_root = make_node(old_root, true);
+        roots[storev] = new_root;
+
+        // roots[new_root] = ++ U;
+        // new_root = U;
+        // infos[new_root] = infos[old_root];
+        // info_ptrs[new_root] = info_ptrs[old_root];
 
         return {new_root, old_root};
     };
