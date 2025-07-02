@@ -64,7 +64,7 @@ public:
 
     void propagate(int v, int l, int r)
     {
-        if(tags[v].Empty())
+        if(tags[v].empty())
             return;
         tags[v].apply_to(infos[v], l, r);
         if(l != r)
@@ -75,11 +75,11 @@ public:
         tags[v] = tag();
     }
 
-    void modify(int lb, int rb, const tag &tag)
+    void modify(int lb, int rb, const tag &tagnode)
     {
         recurse(lb, rb, true, [&](int v, int l, int r)
         {
-            tag.apply_to(tags[v]);
+            tagnode.apply_to(tags[v]);
             propagate(v, l, r);
         });
     }
