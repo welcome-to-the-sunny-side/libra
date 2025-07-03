@@ -16,10 +16,9 @@ public:
             if(l > r or v == 0)
                return;
             
-            propagate(v, l, r, update);
-
             if(lb <= l and r <= rb)
             {
+                propagate(v, l, r, update);
                 op(v, l, r);
                 return;
             }
@@ -33,7 +32,7 @@ public:
                 rec(info_ptrs[v].lc, l, m, rec);
             }
             else if(update)
-                propagate(info_ptrs[v].lc, l, m, update);
+               propagate(info_ptrs[v].lc, l, m, update);
 
             if(m + 1 <= rb)
             {
@@ -42,7 +41,7 @@ public:
                 rec(info_ptrs[v].rc, m + 1, r, rec);
             }
             else if(update)
-                propagate(info_ptrs[v].rc, m + 1, r, update);
+               propagate(info_ptrs[v].rc, m + 1, r, update);
             
             if(update)
                 infos[v] = infos[info_ptrs[v].lc].unite(infos[info_ptrs[v].rc]);
@@ -50,11 +49,12 @@ public:
         rec(root, 0, n - 1, rec);
     };
 
-    p_lazy_segment_tree_chan() : p_lazy_segment_tree_chan(0, 0) {};
-    p_lazy_segment_tree_chan(int n, int r) : p_lazy_segment_tree_chan(n, r, vector<info> (r)) {};
-    p_lazy_segment_tree_chan(int n, int r, const vector<info> &a) : 
-    n(n), r(r), infos(r + 1), tags(r + 1), info_ptrs(r + 1), U(0)
+    p_lazy_segment_tree_chan() : p_lazy_segment_tree_chan(0) {};
+    p_lazy_segment_tree_chan(int n) : p_lazy_segment_tree_chan(n, vector<info> (n)) {};
+    p_lazy_segment_tree_chan(int n, const vector<info> &a) : 
+    n(n), r(4 * (n + 1) + 5), infos(r), tags(r), info_ptrs(r), U(0)
     {
+        assert(n == a.size());
         auto build = [&](int v, int l, int r, auto &&build) -> void
         {
             if(!v or l > r)
@@ -104,6 +104,15 @@ public:
     int make_node (int old_node = 0, bool exp_create = false)
     {
         int new_node = ++ U;
+
+        if(U >= r)
+        {
+            r ++;
+            infos.resize(r);
+            info_ptrs.resize(r);
+            tags.resize(r);
+        }
+
         infos[new_node] = infos[old_node];
         info_ptrs[new_node] = info_ptrs[old_node];
         info_ptrs[new_node].exp_create = exp_create;
@@ -121,11 +130,6 @@ public:
         int storev = new_root;
         new_root = make_node(old_root, true);
         roots[storev] = new_root;
-
-        // roots[new_root] = ++ U;
-        // new_root = U;
-        // infos[new_root] = infos[old_root];
-        // info_ptrs[new_root] = info_ptrs[old_root];
 
         return {new_root, old_root};
     };
