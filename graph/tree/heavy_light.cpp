@@ -10,7 +10,7 @@ class heavy_light_chan
             - T: Lazy Tag struct of segment tree
             - S: segment tree class (S must support S<I, T>)
             - r = tree root
-            - on_edge = true => values on edges. Internally, value of edge is stored at lower node
+            - on_edge = true => values on edges. Internally, value of edge is stored at lower node.
         warning:
             - handle segtree initialization correctly
             - monoid operations must be commutative here

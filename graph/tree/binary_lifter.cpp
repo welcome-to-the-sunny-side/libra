@@ -5,11 +5,11 @@ class binary_lifter_chan
     ml: O(n logn)
 
     info:
-        1 indexed
-        n -> number of nodes
-        dep[u] -> depth of node u
-        tin[u], tout[u] -> intime, outtime of node u
-        up[u][i] -> stores 2^ith ancestor of u
+        - 0 indexed
+        - n -> number of nodes
+        - dep[u] -> depth of node u
+        - tin[u], tout[u] -> intime, outtime of node u
+        - up[u][i] -> stores 2^ith ancestor of u
     */
 public:
     int n, L, timer;

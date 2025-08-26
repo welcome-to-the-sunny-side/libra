@@ -1,5 +1,14 @@
 vector<int> offline_lca_chan(int n, int r, const vector<vector<int>> &adj, vector<pair<int, int>> query)
 {
+    /*
+        info:
+            - 0 indexed
+        vars:
+            - n : number of nodes
+            - r : root
+    */
+    
+
     //dsu
     vector<int> par(n), siz(n, 1);
     iota(par.begin(), par.end(), 0);

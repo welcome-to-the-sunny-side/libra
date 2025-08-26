@@ -1,6 +1,10 @@
 template <typename L>
 vector<pair<int, int>> virtual_tree_chan(vector<int> key, const vector<int> &tin, const vector<int> &tout, L &lca)
 {
+    /*
+        info:
+            - index agnostic
+    */
     assert(!key.empty());
     sort(key.begin(), key.end(), [&](int a, int b)  { return tin[a] < tin[b]; });
 
