@@ -1,23 +1,14 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <cmath>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-#include <queue>
-#include <stack>
-#include <deque>
-#include <bitset>
-#include <numeric>
-
+#include<bits/stdc++.h>
 using namespace std;
 
+#ifdef natural_selection
+#include "../libra/misc/dbg.h"
+#else
+#define debug(...)
 #define endl "\n"
+#endif
 
-int32_t main()
+signed main()
 {
     ios_base::sync_with_stdio(false), cin.tie(NULL);
     int t = 1;
