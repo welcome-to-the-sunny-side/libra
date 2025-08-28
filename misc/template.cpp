@@ -15,9 +15,6 @@
 
 using namespace std;
 
-#ifdef HOME
-#include "debug.h"
-
 #define endl "\n"
 
 int32_t main()
