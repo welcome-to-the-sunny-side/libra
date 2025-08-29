@@ -6,8 +6,12 @@ class connectivity_chan
         a -> number of cutpoints
         cut[u] -> is u an articulation point
         m -> n + number of biconnected components (bcc's indexed in [n, inf))
-        bcc -> stores bcc's
+        bcc -> stores bcc's (note that its of size m, and the first n elements are empty vectors)
         b -> number of nodes in the block cut tree
+        block_node_id -> id of bct-node that a certain node belongs to
+        cut_node_id -> new id of a cut node
+        bct_comp -> just stores the set of original nodes that correspond to a certain node in the bct
+        bct -> the actual adjacency list for the bct
 
         Block: BCC
         All edges form equivalence classes, these are grouped into blocks (BCCs)
@@ -111,6 +115,7 @@ public:
     {
         b = (m - n) + a;
         bct_comp.assign(b, vector<int>());
+        bct.assign(b, vector<int>());
 
         for(int i = n; i < m; i ++)
         {
