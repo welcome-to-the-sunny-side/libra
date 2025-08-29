@@ -1,4 +1,4 @@
-template <const int mode = 1>
+template <const int B, const int mode = 1>
 class mo_chan
 {
     /*
@@ -25,10 +25,10 @@ class mo_chan
                 };
     */
 public:
-    int n, q, B;
+    int n, q;
     vector<array<int, 3>> qr;
 
-    mo_chan(int n, const vector<pair<int, int>> &queries) : n(n), q(queries.size()), B(min(n, int(sqrt(n)) + 1)) 
+    mo_chan(int n, const vector<pair<int, int>> &queries) : n(n), q(queries.size()) 
     {
         for(int i = 0; i < q; i ++)
         {
@@ -63,7 +63,6 @@ public:
     void process(auto add, auto rem, auto query)
     {
         int l = 0, r = -1;
-
         for(auto [nl, nr, qi] : qr)
         {
             while(l > nl)

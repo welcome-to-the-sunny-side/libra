@@ -10,20 +10,29 @@ public:
 template<typename E, typename T, const int B>
 class block_decomposition_chan
 {
+    /*
+        info:
+            - 0 indexed
+            - E is the type of elements in the array
+            - T is the type of the blocks 
+            - B is the block size
+            - when passing in vector<E> (length = n) and vector<T>, make sure to have the size of vector<T> be at least ceil(n/B)
+            - for several queries, using process() will be rather awkward, so just implement your own external function  
+    */
 public:
-    static int ceil_div(int x, int y)
+    int ceil_div(int x, int y)
     {
         return (x + y - 1)/y;
     }
-    static int block_id(int i)
+    int block_id(int i)
     {
         return i/B;
     }
-    static int lb(int bid)
+    int lb(int bid)
     {
         return bid * B;
     }
-    static int rb(int bid)
+    int rb(int bid)
     {
         return min(n, (bid + 1) * B - 1);
     }
