@@ -4,7 +4,6 @@ using namespace std;
 #ifndef ONLINE_JUDGE
 #include "debug.h"
 #endif
-
 #define endl "\n"
 
 signed main()
