@@ -34,7 +34,7 @@ public:
     }
     int rb(int bid)
     {
-        return min(n, (bid + 1) * B - 1);
+        return min(n - 1, (bid + 1) * B - 1);
     }
 
 public:
