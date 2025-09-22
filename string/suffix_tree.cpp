@@ -8,7 +8,7 @@ class suffix_tree_chan
         0 indexed
         pass it 0 indexed suffix array and lcp array
         constructs suffix tree with the following properties:
-            1. node i (< n) represents suffix i (length = n - 1)
+            1. node i (< n) represents suffix i (length = n - i)
             2. for every suffix there exists node in the suffix tree (even if it has only child)
             3. if u > v, then u cannot be in the subtree of v
             4. adj[u] contains downward edges from node u, sorted lexicography in order of strings on their labels
