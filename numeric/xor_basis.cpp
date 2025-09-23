@@ -6,7 +6,7 @@ class xor_basis_chan
         - msb xor basis
         - d is the maximum mask size
         - sz is the size of the basis 
-        - pcnt[i] = the number of things in our basis with msb >= i
+        - pcnt[i] = the number of things in our basis with msb <= i
     */
 private:
     T pw(int i)
