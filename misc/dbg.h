@@ -53,17 +53,17 @@ void PPRINT(const std::vector<bool> &x) {
 template<size_t N>
 void PPRINT(const std::bitset<N>& x) { std::cerr << x; }
 
-void _print() {
+void PRINT() {
     std::cerr << "]\n";
 }
 
 template <typename T, typename... V>
-void _print(T t, V... v) {
+void PRINT(T t, V... v) {
     PPRINT(t);
     if (sizeof...(v)) std::cerr << ", ";
-    _print(v...);
+    PRINT(v...);
 }
 
-#define debug(x...) { std::cerr << "[" << #x << "] = ["; _print(x); }
+#define debug(x...) { std::cerr << "[" << #x << "] = ["; PRINT(x); }
 
 #endif // DEBUG_H
