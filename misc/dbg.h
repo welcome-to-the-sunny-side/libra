@@ -45,7 +45,7 @@ void PPRINT(const std::vector<bool> &x) {
     std::cerr << '{';
     for (size_t i = 0; i < x.size(); ++i) {
         std::cerr << (f++ ? "," : "");
-        PPRINT(static_cast<bool>(x[i])); // <-- cast the proxy to bool
+        PPRINT(static_cast<bool>(x[i]));
     }
     std::cerr << "}";
 }
