@@ -6,52 +6,60 @@
 #include <vector>
 #include <bitset>
 
-void __print(int x) { std::cerr << x; }
-void __print(long x) { std::cerr << x; }
-void __print(long long x) { std::cerr << x; }
-void __print(unsigned x) { std::cerr << x; }
-void __print(unsigned long x) { std::cerr << x; }
-void __print(unsigned long long x) { std::cerr << x; }
-void __print(float x) { std::cerr << x; }
-void __print(double x) { std::cerr << x; }
-void __print(long double x) { std::cerr << x; }
-void __print(char x) { std::cerr << '\'' << x << '\''; }
-void __print(const char *x) { std::cerr << '\"' << x << '\"'; }
-void __print(const std::string &x) { std::cerr << '\"' << x << '\"'; }
-void __print(const bool& x) { std::cerr << (x ? "true" : "false"); }
+void PPRINT(int x) { std::cerr << x; }
+void PPRINT(long x) { std::cerr << x; }
+void PPRINT(long long x) { std::cerr << x; }
+void PPRINT(unsigned x) { std::cerr << x; }
+void PPRINT(unsigned long x) { std::cerr << x; }
+void PPRINT(unsigned long long x) { std::cerr << x; }
+void PPRINT(float x) { std::cerr << x; }
+void PPRINT(double x) { std::cerr << x; }
+void PPRINT(long double x) { std::cerr << x; }
+void PPRINT(char x) { std::cerr << '\'' << x << '\''; }
+void PPRINT(const char *x) { std::cerr << '\"' << x << '\"'; }
+void PPRINT(const std::string &x) { std::cerr << '\"' << x << '\"'; }
+void PPRINT(const bool& x) { std::cerr << (x ? "true" : "false"); }
 
 template<typename T, typename V>
-void __print(const std::pair<T, V> &x) {
+void PPRINT(const std::pair<T, V> &x) {
     std::cerr << '{';
-    __print(x.first);
+    PPRINT(x.first);
     std::cerr << ',';
-    __print(x.second);
+    PPRINT(x.second);
     std::cerr << '}';
 }
 
+// Add explicit overloads for vector<bool> reference types
+void PPRINT(const std::vector<bool>::reference& x) { 
+    std::cerr << (static_cast<bool>(x) ? "true" : "false"); 
+}
+void PPRINT(const std::vector<bool>::const_reference& x) { 
+    std::cerr << (static_cast<bool>(x) ? "true" : "false"); 
+}
+
 template<typename T>
-void __print(const T &x) {
+void PPRINT(const T &x) {
     int f = 0;
     std::cerr << '{';
     for (auto &i : x) {
         std::cerr << (f++ ? "," : "");
-        __print(i);
+        PPRINT(i);
     }
     std::cerr << "}";
 }
 
-void __print(const std::vector<bool> &x) {
+void PPRINT(const std::vector<bool> &x) {
     int f = 0;
     std::cerr << '{';
     for (size_t i = 0; i < x.size(); ++i) {
         std::cerr << (f++ ? "," : "");
-        __print(x[i]);
+        PPRINT(x[i]);
     }
     std::cerr << "}";
 }
 
 template<size_t N>
-void __print(const std::bitset<N>& x) { std::cerr << x; }
+void PPRINT(const std::bitset<N>& x) { std::cerr << x; }
 
 void _print() {
     std::cerr << "]\n";
@@ -59,7 +67,7 @@ void _print() {
 
 template <typename T, typename... V>
 void _print(T t, V... v) {
-    __print(t);
+    PPRINT(t);
     if (sizeof...(v)) std::cerr << ", ";
     _print(v...);
 }
