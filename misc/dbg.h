@@ -29,14 +29,6 @@ void PPRINT(const std::pair<T, V> &x) {
     std::cerr << '}';
 }
 
-// Add explicit overloads for vector<bool> reference types
-void PPRINT(const std::vector<bool>::reference& x) { 
-    std::cerr << (static_cast<bool>(x) ? "true" : "false"); 
-}
-void PPRINT(const std::vector<bool>::const_reference& x) { 
-    std::cerr << (static_cast<bool>(x) ? "true" : "false"); 
-}
-
 template<typename T>
 void PPRINT(const T &x) {
     int f = 0;
@@ -53,7 +45,7 @@ void PPRINT(const std::vector<bool> &x) {
     std::cerr << '{';
     for (size_t i = 0; i < x.size(); ++i) {
         std::cerr << (f++ ? "," : "");
-        PPRINT(x[i]);
+        PPRINT(static_cast<bool>(x[i])); // <-- cast the proxy to bool
     }
     std::cerr << "}";
 }
