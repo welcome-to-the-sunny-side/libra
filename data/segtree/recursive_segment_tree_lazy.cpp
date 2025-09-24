@@ -83,18 +83,18 @@ public:
             propagate(v, l, r);
         });
     }
-    void set(int p, const info &info)
+    void set(int p, const info &Info)
     {
         recurse(p, p, true, [&](int v, int l, int r)
         {
-            infos[v] = info;
+            infos[v] = Info;
         });
     }
-    void add(int p, const info &info)
+    void add(int p, const info &Info)
     {
         recurse(p, p, true, [&](int v, int l, int r)
         {
-            infos[v] = infos[v].unite(info);
+            infos[v] = infos[v].unite(Info);
             propagate(v, l, r);
         });
     }
