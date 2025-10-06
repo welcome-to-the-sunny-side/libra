@@ -1,22 +1,10 @@
-class element_chan
-{
-public:
-};
-class block_chan
-{
-public:
-};
-
-template<typename E, typename T, const int B>
+template<const int B>
 class block_decomposition_chan
 {
     /*
         info:
             - 0 indexed
-            - E is the type of elements in the array
-            - T is the type of the blocks 
             - B is the block size
-            - when passing in vector<E> (length = n) and vector<T>, make sure to have the size of vector<T> be at least ceil(n/B)
             - for several queries, using process() will be rather awkward, so just implement your own external function  
     */
 public:
@@ -39,10 +27,8 @@ public:
 
 public:
     int n;
-    vector<E> element;
-    vector<T> block;
 
-    block_decomposition_chan(int n, vector<E> a, vector<T> b) : n(n), element(a), block(b)
+    block_decomposition_chan(int n) : n(n)
     {
     };
 
