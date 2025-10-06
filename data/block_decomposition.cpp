@@ -8,19 +8,19 @@ class block_decomposition_chan
             - for several queries, using process() will be rather awkward, so just implement your own external function  
     */
 public:
-    int ceil_div(int x, int y)
+    inline int ceil_div(int x, int y)
     {
         return (x + y - 1)/y;
     }
-    int block_id(int i)
+    inline int block_id(int i)
     {
         return i/B;
     }
-    int lb(int bid)
+    inline int lb(int bid)
     {
         return bid * B;
     }
-    int rb(int bid)
+    inline int rb(int bid)
     {
         return min(n - 1, (bid + 1) * B - 1);
     }
