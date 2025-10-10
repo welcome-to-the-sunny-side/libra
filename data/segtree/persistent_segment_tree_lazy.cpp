@@ -23,6 +23,8 @@ public:
                 return;
             }
 
+            propagate(v, l, r, update);
+
             int m = (l + r)/2;
 
             if(m >= lb)
