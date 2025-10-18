@@ -53,4 +53,4 @@ signed main()
     }
 }
 
-// compile with clang++ -std=c++20 -O3 -Wl,-stack_size,0x20000000 <file>.cpp  && ./a.out
+// compile with `clang++ -std=c++20 -O3 -Wl,-stack_size -Wl,0x20000000 <file>.cpp`
