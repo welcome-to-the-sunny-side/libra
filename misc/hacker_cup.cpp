@@ -55,4 +55,4 @@ signed main()
     }
 }
 
-// compile with `clang++ -std=c++20 -Dnatural_selection -O3 -Wl,-stack_size -Wl,0x20000000 <file>.cpp`
+// compile with `clang++ -std=c++20 -Dnatural_selection -O3 -Wl,-stack_size,0x20000000 <file>.cpp`
