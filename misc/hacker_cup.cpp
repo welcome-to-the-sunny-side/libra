@@ -42,15 +42,17 @@ using namespace std;
 signed main()
 {
     ios_base::sync_with_stdio(false), cin.tie(NULL);
-    ifstream fin("inp.txt");
-    ofstream fout("out.txt");
+#ifdef natural_selection
+    freopen("inp.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+#endif
 
     int t = 1;
-    fin >> t;
+    cin >> t;
     while(t --)
     {
 
     }
 }
 
-// compile with `clang++ -std=c++20 -O3 -Wl,-stack_size -Wl,0x20000000 <file>.cpp`
+// compile with `clang++ -std=c++20 -Dnatural_selection -O3 -Wl,-stack_size -Wl,0x20000000 <file>.cpp`
