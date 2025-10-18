@@ -51,7 +51,7 @@ signed main()
     cin >> t;
     while(t --)
     {
-
+        {{CURSOR}}
     }
 }
 
