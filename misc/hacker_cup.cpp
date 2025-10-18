@@ -49,9 +49,10 @@ signed main()
 
     int t = 1;
     cin >> t;
-    while(t --)
+    for(int tt = 1; tt <= t; tt ++)
     {
         {{CURSOR}}
+        // cout << "Case #" << tt << ": " << ans << endl;
     }
 }
 
