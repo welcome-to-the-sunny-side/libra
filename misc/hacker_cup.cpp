@@ -30,24 +30,27 @@
 #include <cctype>
 #include <cassert>
 #include <cstdlib>
+#include <fstream>
 using namespace std;
 
 #ifdef natural_selection
 #include "../libra/misc/dbg.h"
 #else
 #define debug(...)
-#define endl "\n"
 #endif
 
 signed main()
 {
     ios_base::sync_with_stdio(false), cin.tie(NULL);
+    ifstream fin("inp.txt");
+    ofstream fout("out.txt");
+
     int t = 1;
     cin >> t;
     while(t --)
     {
-        
+
     }
 }
 
-// compile with clang++ -std=c++20 -O2 -Wl,-stack_size,0x20000000 <file>.cpp  && ./a.out
+// compile with clang++ -std=c++20 -O3 -Wl,-stack_size,0x20000000 <file>.cpp  && ./a.out
