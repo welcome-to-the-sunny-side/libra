@@ -42,10 +42,6 @@ using namespace std;
 signed main()
 {
     ios_base::sync_with_stdio(false), cin.tie(NULL);
-#ifdef natural_selection
-    freopen("inp.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-#endif
 
     int t = 1;
     cin >> t;
