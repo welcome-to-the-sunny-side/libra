@@ -46,7 +46,7 @@ signed main()
     ofstream fout("out.txt");
 
     int t = 1;
-    cin >> t;
+    fin >> t;
     while(t --)
     {
 
