@@ -1,17 +1,3 @@
-class node_chan
-{
-public:
-    int v = 0;
-
-    inline void operator+=(node_chan &other)
-    {
-        v += other.v;
-    }
-    inline bool operator<(node_chan &other)
-    {
-        return v < other.v;
-    }
-};
 template <typename T>
 class fenwick_tree_chan
 {
@@ -38,7 +24,7 @@ public:
         }
     }
 
-    /// sum of prefix [0, .. x] 
+    // sum of prefix [0, .. x] 
     T query(int x)
     {
         ++ x;
@@ -72,5 +58,13 @@ public:
         }
         assert(0 <= at && at <= n);
         return at;
+    }
+
+    // sum of [l, l + 1, ... r]
+    T query(int l, int r)
+    {
+        if(l == 0)
+            return query(r);
+        return query(r) - query(l - 1);
     }
 };
