@@ -34,7 +34,7 @@ public:
 
     void process(int l, int r, auto block_brute, auto block_quick)
     {
-        assert(1 <= l and l <= r and r <= n);
+        assert(0 <= l and l <= r and r < n);
         int bl = block_id(l), br = block_id(r);
         if(bl == br)
             block_brute(l, r);
