@@ -54,7 +54,7 @@ public:
             return a[0] < b[0];
         };
         
-        if(mode == 1)
+        if constexpr (mode == 1)
             sort(qr.begin(), qr.end(), lmb1);
         else
             sort(qr.begin(), qr.end(), lmb2);
