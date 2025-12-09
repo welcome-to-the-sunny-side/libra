@@ -10,7 +10,7 @@ vector<int> offline_lca_chan(int n, int r, const vector<vector<int>> &adj, vecto
     
 
     //dsu
-    vector<int> par(n), siz(n, 1);
+    vector<int> par(n);
     iota(par.begin(), par.end(), 0);
     auto get = [&](int u, auto &&get) -> int
     {
@@ -19,11 +19,7 @@ vector<int> offline_lca_chan(int n, int r, const vector<vector<int>> &adj, vecto
     auto unite = [&](int u, int v) -> void
     {
         u = get(u, get), v = get(v, get);
-        if(u == v)
-            return;
-        if(siz[u] < siz[v])
-            swap(u, v);
-        par[v] = u, siz[u] += siz[v];
+        par[u] = v;
     };
 
     assert(!query.empty());
