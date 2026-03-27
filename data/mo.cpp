@@ -28,7 +28,7 @@ public:
     int n, q;
     vector<array<int, 3>> qr;
 
-    mo_chan(int n, const vector<pair<int, int>> &queries) : n(n), q(queries.size()) 
+    mo_chan(int n, const vector<array<int, 2>> &queries) : n(n), q(queries.size()) 
     {
         for(int i = 0; i < q; i ++)
         {
