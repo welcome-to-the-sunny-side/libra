@@ -1,6 +1,6 @@
-static_assert(MOD == 998244353, "duh");
 namespace poly
 {
+    static_assert(MOD == 998244353, "duh");
     const int G = 3;    //primitive root 
 
     void ntt(vector<mint> &a, bool invert)
