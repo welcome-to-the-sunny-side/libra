@@ -119,6 +119,9 @@ public:
     }
 };
 
+template <const int&... MODS>
+using multi_mint_mods = multi_mint<modular_int<MODS>...>;
+
 const int MOD1 = 998244353;
 const int MOD2 = 1000000007;
 const int MOD3 = 1000000009;
@@ -128,3 +131,5 @@ using mint2 = modular_int<MOD2>;
 using mint3 = modular_int<MOD3>;
 
 using mmint = multi_mint<mint1, mint2, mint3>;
+
+// using mmint = multi_mint_mods<MOD1, MOD2, MOD3>;
