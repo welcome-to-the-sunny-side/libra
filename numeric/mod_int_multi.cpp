@@ -5,11 +5,8 @@ struct multi_mint
     tuple<Mints...> v;
 
     multi_mint() = default;
-
-    // same integer copied into all coordinates
     multi_mint(int64_t x) : v(Mints(x)...) {}
 
-    // component-wise initialization
     template <typename... Ts, typename = enable_if_t<sizeof...(Ts) == D>>
     multi_mint(Ts... xs) : v(Mints(xs)...) {}
 
@@ -45,20 +42,11 @@ private:
     }
 
     template <size_t... I>
-    multi_mint pow_impl(int64_t p, index_sequence<I...>) const
+    multi_mint neg_impl(index_sequence<I...>) const
     {
         multi_mint res;
-        res.v = make_tuple(std::get<I>(v).pow(p)...);
+        res.v = std::make_tuple((-std::get<I>(v))...);
         return res;
-    }
-
-    template <size_t... I>
-    void print_impl(ostream &os, index_sequence<I...>) const
-    {
-        os << '{';
-        bool first = true;
-        ((os << (std::exchange(first, false) ? "" : ", ") << std::get<I>(v)), ...);
-        os << '}';
     }
 
 public:
@@ -86,6 +74,11 @@ public:
         return *this;
     }
 
+    multi_mint operator-() const
+    {
+        return neg_impl(make_index_sequence<D>{});
+    }
+
     friend multi_mint operator+(multi_mint a, const multi_mint &b) { return a += b; }
     friend multi_mint operator-(multi_mint a, const multi_mint &b) { return a -= b; }
     friend multi_mint operator*(multi_mint a, const multi_mint &b) { return a *= b; }
@@ -100,26 +93,9 @@ public:
     {
         return !(a == b);
     }
-
-    multi_mint pow(int64_t p) const
-    {
-        return pow_impl(p, make_index_sequence<D>{});
-    }
-
-    template <size_t I>
-    auto &get() { return std::get<I>(v); }
-
-    template <size_t I>
-    const auto &get() const { return std::get<I>(v); }
-
-    friend ostream &operator<<(ostream &os, const multi_mint &m)
-    {
-        m.print_impl(os, make_index_sequence<D>{});
-        return os;
-    }
 };
 
-template <const int&... MODS>
+template <const int &...MODS>
 using multi_mint_mods = multi_mint<modular_int<MODS>...>;
 
 const int MOD1 = 998244353;
