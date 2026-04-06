@@ -28,8 +28,12 @@
 #include <chrono>
 #include <cstring>
 #include <cctype>
-#include <cassert>
 #include <cstdlib>
+
+//too many asserts in the segtree
+//#define NDEBUG
+#include <cassert>
+
 using namespace std;
 
 #ifdef natural_selection
