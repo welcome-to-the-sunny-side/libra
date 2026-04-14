@@ -1,6 +1,7 @@
 template <int MOD>
 struct modular_int
 {
+    //REMEMBER THAT WE BUILD A 1e6 SIZED INV CACHE
     int val;
 
     modular_int(int64_t v = 0)
