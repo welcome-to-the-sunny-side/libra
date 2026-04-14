@@ -1,11 +1,11 @@
-namespace poly
+template <int MOD = 998244353, int G = 3>
+struct ntt_poly
 {
-    static_assert(MOD == 998244353, "duh");
-    const int G = 3;    //primitive root 
+    using mint = modular_int<MOD>;
 
-    void ntt(vector<mint> &a, bool invert)
+    static void ntt(vector<mint> &a, bool invert)
     {
-        int n = int(a.size());
+        int n = (int)a.size();
 
         static vector<int> rev;
         static vector<mint> roots{0, 1};
@@ -61,12 +61,12 @@ namespace poly
         }
     }
 
-    vector<mint> multiply(const vector<mint> &a, const vector<mint> &b)
+    static vector<mint> multiply(const vector<mint> &a, const vector<mint> &b)
     {
         if (a.empty() || b.empty())
             return {};
 
-        int need = int(a.size() + b.size() - 1);
+        int need = (int)a.size() + (int)b.size() - 1;
         int n = 1;
         while (n < need)
             n <<= 1;
@@ -77,12 +77,11 @@ namespace poly
 
         ntt(fa, false);
         ntt(fb, false);
-
         for (int i = 0; i < n; i++)
             fa[i] *= fb[i];
-
         ntt(fa, true);
+
         fa.resize(need);
         return fa;
     }
-}
+};
