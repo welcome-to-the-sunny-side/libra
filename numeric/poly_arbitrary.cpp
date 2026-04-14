@@ -21,17 +21,15 @@ struct arbitrary_poly
         static const m2 inv_p1_mod_p2 = m2(P1).inv();
         static const m3 inv_p1p2_mod_p3 = (m3(P1) * m3(P2)).inv();
 
-        long long t1 = x1;
-
-        long long t2 = (m2(x2) - m2(t1)) * inv_p1_mod_p2;
-        long long t3 = (m3(x3) - m3(t1) - m3(P1) * m3(t2)) * inv_p1p2_mod_p3;
+        int t1 = x1;
+        int t2 = int(((m2(x2) - m2((int)t1)) * inv_p1_mod_p2).val);
+        int t3 = int(((m3(x3) - m3((int)t1) - m3(P1) * m3((int)t2)) * inv_p1p2_mod_p3).val);
 
         mint res = mint(t1);
         res += mint(P1) * mint(t2);
         res += mint(1LL * P1 * P2 % MOD) * mint(t3);
         return res;
     }
-
     static vector<mint> multiply(const vector<mint> &a, const vector<mint> &b)
     {
         if (a.empty() || b.empty())
