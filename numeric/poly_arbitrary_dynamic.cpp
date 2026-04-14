@@ -26,7 +26,7 @@ struct dynamic_arbitrary_poly
 
         dmint res = dmint(t1);
         res += dmint(P1) * dmint(t2);
-        res += dmint(1LL * P1 * P2) * dmint(t3);
+        res += dmint(int64_t(1) * P1 * P2) * dmint(t3);
         return res;
     }
     static vector<dmint> multiply(const vector<dmint> &a, const vector<dmint> &b)

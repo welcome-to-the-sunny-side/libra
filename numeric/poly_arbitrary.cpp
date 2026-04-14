@@ -22,7 +22,7 @@ struct arbitrary_poly
         static const m3 inv_p1p2_mod_p3 = (m3(P1) * m3(P2)).inv();
 
         static const mint MP1 = mint(P1);
-        static const mint MP1P2 = mint(int64_t(1LL * P1 * P2 % MOD));       //CAREFUL
+        static const mint MP1P2 = mint(int64_t(int64_t(1) * P1 * P2 % MOD));       //CAREFUL
 
         int t1 = x1;
         int t2 = ((m2(x2) - m2(t1)) * inv_p1_mod_p2).val;
