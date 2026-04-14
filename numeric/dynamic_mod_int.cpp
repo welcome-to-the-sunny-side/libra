@@ -123,18 +123,20 @@ struct dynamic_modular_int
 
     dynamic_modular_int inv() const
     {
+        assert(val != 0);
+
         dynamic_modular_int product = 1;
         int v = val;
 
-        do
+        while (v > 1)
         {
             product *= MOD - MOD / v;
             v = MOD % v;
-        } while (v > 1);
+        }
 
         return product;
     }
-
+    
     dynamic_modular_int pow(int64_t p) const
     {
         if (p < 0)
