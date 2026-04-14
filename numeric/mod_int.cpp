@@ -1,4 +1,4 @@
-template <const int &MOD>
+template <int MOD>
 struct modular_int
 {
     int val;
@@ -175,7 +175,7 @@ struct modular_int
         return os << m.val;
     }
 };
-template <const int &MOD>
+template <int MOD>
 modular_int<MOD> modular_int<MOD>::save_inv[modular_int<MOD>::SAVE_INV];
 const int MOD = 998244353;
 using mint = modular_int<MOD>;

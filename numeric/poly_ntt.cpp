@@ -1,3 +1,4 @@
+//use MOD = NTT-friendly prime, G = primitive root 
 template <int MOD = 998244353, int G = 3>
 struct ntt_poly
 {
