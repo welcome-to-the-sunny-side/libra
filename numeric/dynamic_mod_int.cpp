@@ -1,7 +1,7 @@
 template<int ID = 0>
 struct dynamic_modular_int
 {
-    inline static int MOD = 998244353;
+    inline static int MOD = 1'000'000'007;
 
     static void set_mod(int m)
     {
