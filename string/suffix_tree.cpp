@@ -12,7 +12,7 @@ class suffix_tree_chan
             2. for every suffix there exists node in the suffix tree (even if it has only child)
             3. if u > v, then u cannot be in the subtree of v
             4. adj[u] contains downward edges from node u, sorted lexicography in order of strings on their labels
-            5. `root` is root node
+            5. `root` is root node and always has depth 0
             6. dep[u] contains length of path from root to node u, used for edge labels
             7. rep[u] = some i such that leaf for suffix i is in subtree of u 
             8. m is the total number of nodes in the suffix tree (so m - n is the number of new internal nodes)
