@@ -42,7 +42,7 @@ public:
                 ds.insert(point);
 
             if(l == r)
-                ans[l] = ds.Query();
+                ans[l] = ds.query();
             else
             {
                 int mid = (l + r)/2;
