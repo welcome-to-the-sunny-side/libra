@@ -39,7 +39,7 @@ public:
                 return;
 
             for(auto point : store[v])
-                ds.Insert(point);
+                ds.insert(point);
 
             if(l == r)
                 ans[l] = ds.Query();
@@ -51,7 +51,7 @@ public:
             }
             
             for(auto point : store[v])
-                ds.Rollback();
+                ds.rollback();
         };
         dfs(1, 1, n, dfs);
     }
