@@ -2,6 +2,7 @@
 - 0-indexed
 - pass edge list with all node indices in [0, n)
 - given graph is CONNECTED
+- handles self-loops and multi-edges correctly
 - returns {euler path by node index list, euler path by edge index list}
 - returns empty if path doesn't exist
 */
