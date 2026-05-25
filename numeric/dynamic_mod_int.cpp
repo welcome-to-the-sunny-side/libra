@@ -164,4 +164,5 @@ struct dynamic_modular_int
     }
 };
 using dmint = dynamic_modular_int<0>;
+//dmint::set_mod(998244353);
 void __print(dmint x) { cerr << x; }
