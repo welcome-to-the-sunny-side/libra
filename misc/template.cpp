@@ -29,6 +29,7 @@
 #include <cstring>
 #include <cctype>
 #include <cstdlib>
+#include <memory>
 
 //too many asserts in the segtree
 //#define NDEBUG
