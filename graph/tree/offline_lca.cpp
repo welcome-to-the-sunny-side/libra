@@ -1,4 +1,4 @@
-vector<int> offline_lca_chan(int n, int r, const vector<vector<int>> &adj, vector<pair<int, int>> query)
+vector<int> offline_lca_chan(int n, int r, const vector<vector<int>> &adj, vector<array<int, 2>> query)
 {
     /*
         info:
@@ -40,7 +40,7 @@ vector<int> offline_lca_chan(int n, int r, const vector<vector<int>> &adj, vecto
         for(auto i : store[u])
         {
             if(see[i])
-                ans[i] = get(query[i].first == u ? query[i].second : query[i].first, get);
+                ans[i] = get(query[i][0] == u ? query[i][1] : query[i][0], get);
             see[i] = true;
         }
 
