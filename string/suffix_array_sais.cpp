@@ -72,9 +72,13 @@ public:
                 if(s[i] == s[i + 1])
                     type[i] = type[i + 1];
                 else if(s[i] < s[i + 1])
-                    type[i] = 1;
-                else if(s[i] > s[i + 1])
+                    type[i] = 1;                        
+                else
+                {
                     type[i] = 0;
+                    if(type[i + 1] == 1)
+                        type[i + 1] = 2;
+                }
                 if(i == 0)
                     break;
             }
@@ -91,8 +95,8 @@ public:
             //identify lms types, place them in the SA
             copy(cnt, dcnt, dcnt);
             for(uint32_t i = 1; i + 1 < n; i ++)
-                if(type[i - 1] == 0 and type[i] == 1)
-                    type[i] = 2, sa[--dcnt[s[i]]] = i;
+                if(type[i] == 2)
+                    sa[--dcnt[s[i]]] = i;
             sa[--dcnt[s[n - 1]]] = n - 1;
 
             //induce L types
@@ -131,9 +135,7 @@ public:
 
                 for(uint32_t o = 1; ; o ++)
                 {
-                    if(s[i + o] != s[j + o])
-                        return true;
-                    if(type[i + o] != type[j + o])
+                    if((s[i + o] - s[j + o]) | (type[i + o] - type[j + o]))
                         return true;
                     if(type[i + o] == 2)
                         return false;
@@ -222,7 +224,8 @@ public:
             induce_l();
             induce_s();
         };
-
+        
+       
         recurse(n + 1, mx, t.data(), tsa.data(), type.data(), cnt.data(), lms.data(), recurse);
         copy(tsa.data() + 1, tsa.data() + n + 1, sa);
     }
