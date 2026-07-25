@@ -32,7 +32,7 @@ public:
     template<typename T>
     void sa(const uint32_t n, const T* s, uint32_t* sa)
     {
-        static_assert(is_scalar_v<T>);
+        static_assert(is_integral_v<T>);
         static_assert(sizeof(T) <= sizeof(uint32_t));
 
         if(n == 0)
