@@ -38,7 +38,7 @@ public:
         return v;
     }
 
-    // Returns the length of the longest prefix (0 indexed) with sum <= c
+    // Returns largest i such that sum[0, i) <= c
     int max_prefix(T c)
     {
         T v{};
